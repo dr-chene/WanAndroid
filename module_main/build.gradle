@@ -43,5 +43,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(path: ':lib_base')
+    api project(path: ':lib_base')
+
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 }

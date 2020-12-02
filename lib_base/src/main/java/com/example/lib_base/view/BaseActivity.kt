@@ -9,11 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 /**
 Created by chene on @date 20-12-2 下午9:37
  **/
-class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     /**
      * make statusbar transparent
-     *
+     * call this method in onCreate() of the child activity
      */
     protected fun makeStatusBarTransparent() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -29,6 +29,10 @@ class BaseActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * make statusbar icon grey
+     * call this method in onCreate() of the child activity
+     */
     protected fun makeStatusBarIconDark() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val option = window.decorView.systemUiVisibility

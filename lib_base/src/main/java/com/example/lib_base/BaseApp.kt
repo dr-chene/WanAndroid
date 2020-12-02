@@ -5,6 +5,4 @@ import android.app.Application
 /**
 Created by chene on @date 20-12-2 下午10:00
  **/
-class BaseApp : Application() {
-
-}
+open class BaseApp : Application()
