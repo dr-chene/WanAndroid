@@ -1,10 +1,12 @@
-package com.example.wanandroid.view.activity
+package com.example.module_main.view.activity
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+
 import com.example.lib_base.view.BaseActivity
-import com.example.wanandroid.R
-import com.example.wanandroid.databinding.ActivityMainBinding
+import com.example.module_main.R
+import com.example.module_main.databinding.ActivityMainBinding
+
 
 class MainActivity : BaseActivity() {
 

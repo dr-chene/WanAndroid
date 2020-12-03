@@ -1,4 +1,4 @@
-package com.example.module_app
+package com.example.wanandroid
 
 import com.example.lib_base.BaseApp
 import org.koin.android.ext.koin.androidContext
