@@ -33,13 +33,18 @@ class ArticleViewModel(
     }
 
     @ExperimentalCoroutinesApi
-    fun load() {
-        _articles.asFlow().zip(articleRepository.loadArticles()) { before, load ->
-            mutableListOf<Article>().apply {
-                addAll(before)
-                addAll(load)
-                _articles.postValue(this.toList())
+    suspend fun load() {
+        try {
+            _articles.asFlow().zip(articleRepository.loadArticles()) { before, load ->
+                mutableListOf<Article>().apply {
+                    addAll(before)
+                    addAll(load)
+                }.toList()
+            }.collect {
+                _articles.postValue(it)
             }
+        } catch (e: Throwable) {
+            throw e
         }
     }
 }

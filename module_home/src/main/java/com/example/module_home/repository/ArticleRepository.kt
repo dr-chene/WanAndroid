@@ -44,7 +44,12 @@ class ArticleRepository(
         }
     }
 
-    fun loadArticles() = getPageArticles(++curPage)
+    @ExperimentalCoroutinesApi
+    fun loadArticles() = try {
+        getPageArticles(++curPage)
+    } catch (e: Throwable) {
+        throw e
+    }
 
     @ExperimentalCoroutinesApi
     private fun getPageArticles(page: Int) = flow {

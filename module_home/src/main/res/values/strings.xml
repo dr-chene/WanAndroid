@@ -6,4 +6,5 @@
     <string name="article_test_author">作者：鸿洋</string>
     <string name="article_test_tag">new</string>
     <string name="home_fab_desc">tap to up</string>
+    <string name="tv_load_more">正在加载更多…</string>
 </resources>
