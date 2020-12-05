@@ -1,8 +1,6 @@
 package com.example.module_home.repository
 
 import android.accounts.NetworkErrorException
-import android.content.Context
-import android.widget.Toast
 import com.example.module_home.bean.*
 import com.example.module_home.remote.ArticleService
 import com.example.module_home.shouldUpdate
@@ -30,37 +28,26 @@ class ArticleRepository(
 
     @ExperimentalCoroutinesApi
     suspend fun refreshArticles() = flow {
-        try {
-            getTopArticles().zip(getPageArticles(0)) { top, page ->
-                mutableListOf<Article>().apply {
-                    addAll(top)
-                    addAll(page)
-                }
-            }.collect {
-                emit(it.toList())
+        getTopArticles().zip(getPageArticles(0)) { top, page ->
+            mutableListOf<Article>().apply {
+                addAll(top)
+                addAll(page)
             }
-        } catch (e: Throwable) {
-            throw e
+        }.collect {
+            emit(it.toList())
         }
     }
 
     @ExperimentalCoroutinesApi
-    fun loadArticles() = try {
-        getPageArticles(++curPage)
-    } catch (e: Throwable) {
-        throw e
-    }
+    fun loadArticles() = getPageArticles(++curPage)
+
 
     @ExperimentalCoroutinesApi
     private fun getPageArticles(page: Int) = flow {
         pageArticleDao.getArticlesByPage(page).collect {
             if (it == null || it.datas.isNullOrEmpty() || it.lastTime.shouldUpdate()) {
-                try {
-                    netPageArticle(page).collect { net ->
-                        emit(net.datas)
-                    }
-                } catch (e: Throwable) {
-                    throw e
+                netPageArticle(page).collect { net ->
+                    emit(net.datas)
                 }
             } else {
                 emit(it.datas)
@@ -72,13 +59,9 @@ class ArticleRepository(
     private fun getTopArticles() = flow {
         topArticleDao.getTopArticle().collect {
             if (it == null || it.lastTime.shouldUpdate()) {
-                try {
-                    netTopArticle().collect { net ->
-                        topArticleDao.insertTopArticle(net)
-                        emit(net.data)
-                    }
-                } catch (e: Throwable) {
-                    throw e
+                netTopArticle().collect { net ->
+                    topArticleDao.insertTopArticle(net)
+                    emit(net.data)
                 }
             } else {
                 emit(it.data)

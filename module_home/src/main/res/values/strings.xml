@@ -7,4 +7,5 @@
     <string name="article_test_tag">new</string>
     <string name="home_fab_desc">tap to up</string>
     <string name="tv_load_more">正在加载更多…</string>
+    <string name="load_error">加载数据错误</string>
 </resources>

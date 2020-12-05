@@ -1,10 +1,14 @@
 package com.example.module_home
 
 import com.example.module_home.adapter.ArticleRecyclerViewAdapter
+import com.example.module_home.adapter.MyBannerAdapter
 import com.example.module_home.bean.Article
+import com.example.module_home.bean.Banner
 import com.example.module_home.bean.Tag
 import com.example.module_home.repository.ArticleRepository
+import com.example.module_home.repository.BannerRepository
 import com.example.module_home.viewmodel.ArticleViewModel
+import com.example.module_home.viewmodel.BannerViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -26,5 +30,9 @@ val homeModule = module {
     single { ArticleRecyclerViewAdapter() }
     single { ArticleRepository(get(), get()) }
 
+    single { BannerRepository() }
+    single { (data: List<Banner>) -> MyBannerAdapter(data) }
+
     viewModel { ArticleViewModel(get()) }
+    viewModel { BannerViewModel(get()) }
 }

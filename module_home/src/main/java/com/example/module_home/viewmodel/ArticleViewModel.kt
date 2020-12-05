@@ -23,28 +23,20 @@ class ArticleViewModel(
 
     @ExperimentalCoroutinesApi
     suspend fun refresh() {
-        try {
-            articleRepository.refreshArticles().collect {
-                _articles.postValue(it)
-            }
-        } catch (e: Throwable) {
-            throw e
+        articleRepository.refreshArticles().collect {
+            _articles.postValue(it)
         }
     }
 
     @ExperimentalCoroutinesApi
     suspend fun load() {
-        try {
-            _articles.asFlow().zip(articleRepository.loadArticles()) { before, load ->
-                mutableListOf<Article>().apply {
-                    addAll(before)
-                    addAll(load)
-                }.toList()
-            }.collect {
-                _articles.postValue(it)
-            }
-        } catch (e: Throwable) {
-            throw e
+        _articles.asFlow().zip(articleRepository.loadArticles()) { before, load ->
+            mutableListOf<Article>().apply {
+                addAll(before)
+                addAll(load)
+            }.toList()
+        }.collect {
+            _articles.postValue(it)
         }
     }
 }

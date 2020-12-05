@@ -43,17 +43,27 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/article_others"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/include_article_tags" />
 
-            <include
-                android:id="@+id/article_others"
-                layout="@layout/include_article_others"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_article_title" />
+<!--            <androidx.constraintlayout.widget.Guideline-->
+<!--                android:id="@+id/article_guild_line"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                app:layout_constraintGuide_percent="0.672" />-->
+
+<!--            <include-->
+<!--                android:id="@+id/article_others"-->
+<!--                layout="@layout/include_article_others"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/tv_article_desc"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@id/article_guild_line"-->
+<!--                app:layout_constraintTop_toTopOf="@id/tv_article_title"-->
+<!--                bind:article="@{article}" />-->
 
             <TextView
                 android:id="@+id/tv_article_desc"
