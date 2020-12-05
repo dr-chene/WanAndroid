@@ -1,15 +1,15 @@
-package com.example.module_main.view.activity
+package com.example.module_main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.module_main.R
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.example.lib_base.view.BaseActivity
 import com.example.module_main.databinding.ActivitySplashBinding
 import org.koin.android.ext.android.get
 
-
-class SplashActivity : AppCompatActivity() {
+@Route(path = "/splash/activity")
+class SplashActivity : BaseActivity() {
 
     private lateinit var splashBinding: ActivitySplashBinding
 

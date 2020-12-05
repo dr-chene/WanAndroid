@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="article"
+            type="com.example.module_home.bean.Article" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_article_others_envelope"
+            bindEnvelopePic="@{article.envelopePic}"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/img_test"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_article_others_chapter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:text="@{article.superChapterName, default=类别_开源项目主Tab}"
+            android:textColor="@color/blue_light"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@id/iv_article_others_envelope"
+            app:layout_constraintStart_toStartOf="@id/iv_article_others_envelope"
+            app:layout_constraintTop_toBottomOf="@id/iv_article_others_envelope"
+            tools:ignore="SmallSp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.module_main.view.activity.SplashActivity">
+        tools:context="com.example.module_main.SplashActivity">
 
         <Button
             android:id="@+id/test_btn"

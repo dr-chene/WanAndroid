@@ -12,6 +12,12 @@ android {
         dataBinding true
     }
 
+    kapt {
+        arguments {
+            arg("AROUTER_MODULE_NAME", project.getName())
+        }
+    }
+
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
@@ -50,4 +56,7 @@ dependencies {
     api project(path: ':lib_base')
 
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+    implementation "com.alibaba:arouter-api:$arouter_version"
+    kapt "com.alibaba:arouter-compiler:$arouter_version"
 }

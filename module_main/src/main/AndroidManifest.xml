@@ -4,14 +4,16 @@
 
     <application>
 
-        <activity android:name="com.example.module_main.view.activity.SplashActivity"
+        <activity android:name="com.example.module_main.SplashActivity"
             android:theme="@style/SplashTheme">
+
+        </activity>
+        <activity android:name="com.example.module_main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.module_main.view.activity.MainActivity"/>
     </application>
 </manifest>
