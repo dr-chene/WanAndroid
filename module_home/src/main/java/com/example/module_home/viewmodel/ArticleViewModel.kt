@@ -23,8 +23,12 @@ class ArticleViewModel(
 
     @ExperimentalCoroutinesApi
     suspend fun refresh() {
-        articleRepository.refreshArticles().collect {
-            _articles.postValue(it)
+        try {
+            articleRepository.refreshArticles().collect {
+                _articles.postValue(it)
+            }
+        } catch (e: Throwable) {
+            throw e
         }
     }
 

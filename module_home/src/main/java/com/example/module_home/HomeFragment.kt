@@ -1,10 +1,12 @@
 package com.example.module_home
 
+import android.accounts.NetworkErrorException
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.module_home.adapter.ArticleRecyclerViewAdapter
@@ -13,6 +15,7 @@ import com.example.module_home.viewmodel.ArticleViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -41,29 +44,36 @@ class HomeFragment : Fragment() {
     private fun initView() {
         homeBinding.homeSwipeRefresh.isRefreshing = true
         homeBinding.includeContent.homeRv.adapter = adapter
-        CoroutineScope(Dispatchers.Main).launch {
-            articleViewModel.refresh()
-        }
+        refresh()
     }
 
     private fun initAction() {
         homeBinding.homeSwipeRefresh.setOnRefreshListener {
-            Log.d("TAG_01", "initAction: refresh")
-            CoroutineScope(Dispatchers.IO).launch {
-                articleViewModel.refresh()
-            }
+            refresh()
         }
     }
 
     private fun subscribe() {
         articleViewModel.articles.observe(viewLifecycleOwner) {
-            Log.d("TAG_01", "subscribe: ${it.size}")
-            it.forEach {
-                Log.d("TAG_02", "subscribe: ${it.title}")
-            }
             adapter.submitList(it)
-            Log.d("TAG_01", "subscribe: $adapter")
             homeBinding.homeSwipeRefresh.isRefreshing = false
         }
+    }
+
+    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
+        try {
+            articleViewModel.refresh()
+        } catch (e: NetworkErrorException) {
+            Toast.makeText(get(), "网络连接失败，请检查网络", Toast.LENGTH_SHORT).show()
+            loadDataError()
+        } catch (e: Throwable) {
+            Toast.makeText(get(), "获取数据失败，请及时向开发者反映", Toast.LENGTH_SHORT).show()
+            Log.d("TAG_EXCEPTION", "${e.message}")
+            loadDataError()
+        }
+    }
+
+    private fun loadDataError() {
+        homeBinding.homeSwipeRefresh.isRefreshing = false
     }
 }

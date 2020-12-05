@@ -12,9 +12,9 @@ Created by chene on @date 20-12-4 下午2:33
 @Entity(tableName = "top_articles")
 @TypeConverters(Article.ArticleListTypeConverter::class)
 data class TopArticle(
-    @PrimaryKey(autoGenerate = true)
-    val index: Int,
     val data: List<Article>,
+    @PrimaryKey
+    val index: Long = data[0].id,
     @ColumnInfo(name = "last_time")
     val lastTime: Long = System.currentTimeMillis()
 ) : BaseNetBean()

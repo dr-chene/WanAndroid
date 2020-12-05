@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -17,9 +18,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            bindTags="@{tags}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <include
+            layout="@layout/include_item_tag"
+            bind:tag="@{tags[3]}" />
+
+        <include
+            layout="@layout/include_item_tag"
+            bind:tag="@{tags[2]}" />
+
+        <include
+            layout="@layout/include_item_tag"
+            bind:tag="@{tags[1]}" />
+
+        <include
+            layout="@layout/include_item_tag"
+            bind:tag="@{tags[0]}" />
     </LinearLayout>
 </layout>

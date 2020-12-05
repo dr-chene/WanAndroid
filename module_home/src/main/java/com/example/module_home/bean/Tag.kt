@@ -11,8 +11,9 @@ Created by chene on @date 20-12-3 下午5:23
 data class Tag(
     val name: String,
     val url: String,
-    val color: Int = getRandomColor()
 ) {
+    val color: Int
+        get() = getRandomColor()
 
     companion object {
         private val colors = arrayOf(

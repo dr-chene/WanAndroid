@@ -35,7 +35,7 @@ data class Article(
     val shareUser: String,
     val superChapterId: Long,
     val superChapterName: String,
-    val tags: List<Tag>,
+    var tags: List<Tag>,
     val title: String,
     val type: Int,
     val userId: Long,

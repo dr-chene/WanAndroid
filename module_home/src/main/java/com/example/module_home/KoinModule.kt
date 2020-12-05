@@ -1,7 +1,6 @@
 package com.example.module_home
 
 import com.example.module_home.adapter.ArticleRecyclerViewAdapter
-import com.example.module_home.adapter.ArticleTagsRecyclerViewAdapter
 import com.example.module_home.bean.Article
 import com.example.module_home.bean.Tag
 import com.example.module_home.repository.ArticleRepository
@@ -24,7 +23,6 @@ val homeModule = module {
 
     single { Article.ArticleDiffCallBack() }
     single { Tag.TagDiffCallBack() }
-    single { ArticleTagsRecyclerViewAdapter() }
     single { ArticleRecyclerViewAdapter() }
     single { ArticleRepository(get(), get()) }
 

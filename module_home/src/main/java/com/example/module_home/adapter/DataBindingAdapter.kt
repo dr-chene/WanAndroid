@@ -1,5 +1,6 @@
 package com.example.module_home.adapter
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,11 +26,11 @@ fun bindTime(view: TextView, time: Long) {
         view.visibility = View.INVISIBLE
     }
     val cur = System.currentTimeMillis()
-    val text = when (cur - time) {
+    val text = when ((cur - time) / 1000) {
         in 0..60 -> "刚才"
-        in 60..3600 -> "${(cur - time) % 60}分钟前"
-        in 3600..86400 -> "${(cur - time) % 3600}小时前"
-        in 86400..259200 -> "${(cur - time) % 86400}天前"
+        in 60..3600 -> "${(cur - time) / 60000}分钟前"
+        in 3600..86400 -> "${(cur - time) / 3600000}小时前"
+        in 86400..259200 -> "${(cur - time) / 86400000}天前"
         else -> {
             val date = Date(time)
             val sdFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA)
@@ -53,16 +54,6 @@ fun bindAuthor(view: TextView, article: Article) {
         }
     }
     view.text = text
-}
-
-@BindingAdapter("bindTags")
-fun bindTags(view: RecyclerView, tags: List<Tag>) {
-    val tagsAdapter = get(ArticleTagsRecyclerViewAdapter::class.java)
-    view.apply {
-        layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        adapter = tagsAdapter
-    }
-    tagsAdapter.submitList(tags)
 }
 
 @BindingAdapter("bindEnvelopePic")

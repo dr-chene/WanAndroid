@@ -1,11 +1,9 @@
 package com.example.module_home.repository
 
+import android.accounts.NetworkErrorException
 import android.content.Context
 import android.widget.Toast
-import com.example.module_home.bean.Article
-import com.example.module_home.bean.NetPageArticle
-import com.example.module_home.bean.PageArticle
-import com.example.module_home.bean.TopArticle
+import com.example.module_home.bean.*
 import com.example.module_home.remote.ArticleService
 import com.example.module_home.shouldUpdate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,6 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import kotlin.coroutines.resumeWithException
 
 /**
 Created by chene on @date 20-12-3 下午7:24
@@ -31,13 +30,17 @@ class ArticleRepository(
 
     @ExperimentalCoroutinesApi
     suspend fun refreshArticles() = flow {
-        getTopArticles().zip(getPageArticles(0)) { top, page ->
-            mutableListOf<Article>().apply {
-                addAll(top)
-                addAll(page)
+        try {
+            getTopArticles().zip(getPageArticles(0)) { top, page ->
+                mutableListOf<Article>().apply {
+                    addAll(top)
+                    addAll(page)
+                }
+            }.collect {
+                emit(it.toList())
             }
-        }.collect {
-            emit(it.toList())
+        } catch (e: Throwable) {
+            throw e
         }
     }
 
@@ -47,8 +50,12 @@ class ArticleRepository(
     private fun getPageArticles(page: Int) = flow {
         pageArticleDao.getArticlesByPage(page).collect {
             if (it == null || it.datas.isNullOrEmpty() || it.lastTime.shouldUpdate()) {
-                netPageArticle(page).collect { net ->
-                    emit(net.datas)
+                try {
+                    netPageArticle(page).collect { net ->
+                        emit(net.datas)
+                    }
+                } catch (e: Throwable) {
+                    throw e
                 }
             } else {
                 emit(it.datas)
@@ -60,9 +67,13 @@ class ArticleRepository(
     private fun getTopArticles() = flow {
         topArticleDao.getTopArticle().collect {
             if (it == null || it.lastTime.shouldUpdate()) {
-                netTopArticle().collect { net ->
-                    topArticleDao.insertTopArticle(net)
-                    emit(net.data)
+                try {
+                    netTopArticle().collect { net ->
+                        topArticleDao.insertTopArticle(net)
+                        emit(net.data)
+                    }
+                } catch (e: Throwable) {
+                    throw e
                 }
             } else {
                 emit(it.data)
@@ -82,23 +93,26 @@ class ArticleRepository(
                         ) {
                             if (response.isSuccessful && response.body() != null) {
                                 response.body()?.let {
-                                    continuation.resume(it) { e ->
-                                        e.printStackTrace()
+                                    //添加“置顶”、“new”标签
+                                    continuation.resume(it.apply {
+                                        data.forEach { article ->
+                                            article.tags = mutableListOf<Tag>().apply {
+                                                addAll(article.tags)
+                                                add(Tag("置顶", ""))
+                                                if (article.fresh) add(Tag("new", ""))
+                                            }.toList()
+                                        }
+                                    }) { e ->
+                                        continuation.resumeWithException(e)
                                     }
                                 }
                             } else {
-                                Toast.makeText(
-                                    get(Context::class.java),
-                                    "网络数据获取失败",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                continuation.resumeWithException(NetworkErrorException())
                             }
                         }
 
                         override fun onFailure(call: Call<TopArticle>, t: Throwable) {
-                            Toast.makeText(get(Context::class.java), "网络连接失败", Toast.LENGTH_SHORT)
-                                .show()
+                            continuation.resumeWithException(t)
                         }
                     })
             }
@@ -118,23 +132,25 @@ class ArticleRepository(
                             if (response.isSuccessful && response.body() != null) {
                                 response.body()?.data?.let {
                                     curPage = it.curPage
-                                    continuation.resume(it) { e ->
-                                        e.printStackTrace()
+                                    //添加“new”标签
+                                    continuation.resume(it.apply {
+                                        datas.forEach { article ->
+                                            article.tags = mutableListOf<Tag>().apply {
+                                                addAll(article.tags)
+                                                if (article.fresh) add(Tag("new", ""))
+                                            }.toList()
+                                        }
+                                    }) { e ->
+                                        continuation.resumeWithException(e)
                                     }
                                 }
                             } else {
-                                Toast.makeText(
-                                    get(Context::class.java),
-                                    "网络数据获取失败",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                continuation.resumeWithException(NetworkErrorException())
                             }
                         }
 
                         override fun onFailure(call: Call<NetPageArticle>, t: Throwable) {
-                            Toast.makeText(get(Context::class.java), "网络数据获取失败", Toast.LENGTH_SHORT)
-                                .show()
+                            continuation.resumeWithException(t)
                         }
                     })
             }
