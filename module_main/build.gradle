@@ -57,6 +57,5 @@ dependencies {
 
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
-    implementation "com.alibaba:arouter-api:$arouter_version"
     kapt "com.alibaba:arouter-compiler:$arouter_version"
 }

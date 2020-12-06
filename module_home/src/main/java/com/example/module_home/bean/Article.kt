@@ -53,7 +53,7 @@ data class Article(
             Gson().toJson(list)
     }
 
-    class ArticleDiffCallBack: DiffUtil.ItemCallback<Article>(){
+    class ArticleDiffCallBack : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.title == newItem.title
         }

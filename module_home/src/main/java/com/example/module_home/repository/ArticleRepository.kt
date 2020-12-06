@@ -1,6 +1,7 @@
 package com.example.module_home.repository
 
 import android.accounts.NetworkErrorException
+import com.example.lib_base.netWorkCheck
 import com.example.module_home.bean.*
 import com.example.module_home.remote.ArticleService
 import com.example.module_home.shouldUpdate
@@ -41,16 +42,16 @@ class ArticleRepository(
     @ExperimentalCoroutinesApi
     fun loadArticles() = getPageArticles(++curPage)
 
-
     @ExperimentalCoroutinesApi
     private fun getPageArticles(page: Int) = flow {
         pageArticleDao.getArticlesByPage(page).collect {
-            if (it == null || it.datas.isNullOrEmpty() || it.lastTime.shouldUpdate()) {
+            if (netWorkCheck() && (it == null || it.datas.isNullOrEmpty() || it.lastTime.shouldUpdate())) {
                 netPageArticle(page).collect { net ->
+                    pageArticleDao.insertArticles(net)
                     emit(net.datas)
                 }
             } else {
-                emit(it.datas)
+                if (it != null)emit(it.datas)
             }
         }
     }
@@ -58,13 +59,13 @@ class ArticleRepository(
     @ExperimentalCoroutinesApi
     private fun getTopArticles() = flow {
         topArticleDao.getTopArticle().collect {
-            if (it == null || it.lastTime.shouldUpdate()) {
+            if (netWorkCheck() && (it == null || it.lastTime.shouldUpdate())) {
                 netTopArticle().collect { net ->
                     topArticleDao.insertTopArticle(net)
                     emit(net.data)
                 }
             } else {
-                emit(it.data)
+                if (it != null)emit(it.data)
             }
         }
     }

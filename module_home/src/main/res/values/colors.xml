@@ -21,4 +21,6 @@
     <color name="color_green_darker">#009688</color>
     <color name="color_brown">#FFBB7777</color>
     <color name="color_brown_light">#C9A375</color>
+
+    <color name="color_bg_et_search">#ECEFF1</color>
 </resources>

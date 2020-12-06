@@ -60,4 +60,6 @@ dependencies {
 
     api "com.alibaba:arouter-api:$arouter_version"
     kapt "com.alibaba:arouter-compiler:$arouter_version"
+
+    api "com.google.code.gson:gson:$gson_version"
 }
