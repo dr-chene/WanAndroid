@@ -11,21 +11,18 @@ import com.example.module_home.repository.HotKeyRepository
 import com.example.module_home.viewmodel.ArticleViewModel
 import com.example.module_home.viewmodel.BannerViewModel
 import com.example.module_home.viewmodel.HotKeyViewModel
+import okhttp3.OkHttpClient
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 /**
 Created by chene on @date 20-12-3 下午6:49
  **/
+
 val homeModule = module {
-    single {
-        Retrofit.Builder()
-            .baseUrl("https://www.wanandroid.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
 
     single { Article.ArticleDiffCallBack() }
     single { Tag.TagDiffCallBack() }

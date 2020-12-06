@@ -182,7 +182,10 @@ class HomeFragment : BaseFragment() {
 
     private fun load(error: (() -> Unit)?, load: () -> Unit) {
         try {
-            load()
+            if (!netWorkCheck()) {
+                Log.d("TAG_net", "load: false")
+            } else
+                load()
         } catch (e: NetworkErrorException) {
             if (error != null) {
                 error()

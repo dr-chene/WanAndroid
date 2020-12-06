@@ -3,7 +3,10 @@ package com.example.wanandroid
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.BaseApp
 import com.example.lib_base.isDebug
+import com.example.lib_base.netWorkCheck
+import com.example.lib_net.netModule
 import com.example.module_home.homeModule
+import com.tencent.mmkv.MMKV
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -21,11 +24,13 @@ class App : BaseApp() {
     override fun onCreate() {
         super.onCreate()
 
+        MMKV.initialize(this)
+
         startKoin {
             androidLogger(level = Level.DEBUG)
             androidContext(this@App)
             modules(
-                appModule, homeModule
+                appModule, homeModule, netModule
             )
         }
 

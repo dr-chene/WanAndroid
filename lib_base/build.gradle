@@ -62,4 +62,6 @@ dependencies {
     kapt "com.alibaba:arouter-compiler:$arouter_version"
 
     api "com.google.code.gson:gson:$gson_version"
+
+    api "com.tencent:mmkv-static:$mmkv_version"
 }

@@ -15,7 +15,7 @@ Created by chene on @date 20-12-3 下午6:38
 interface PageArticleDao {
 
     @Query("SELECT * FROM page_articles WHERE cur_page = :page")
-    fun getArticlesByPage(page: Int): Flow<PageArticle>
+    fun getArticlesByPage(page: Int): Flow<PageArticle?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArticles(articles: PageArticle)

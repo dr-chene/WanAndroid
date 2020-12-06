@@ -1,6 +1,6 @@
 package com.example.module_home.bean
 
-import com.example.lib_base.BaseNetBean
+import com.example.lib_net.BaseNetBean
 
 /**
 Created by chene on @date 20-12-5 下午7:34
@@ -18,4 +18,4 @@ data class Banner(
 
 class NetBanner(
     val data: List<Banner>
-) : BaseNetBean()
+) : com.example.lib_net.BaseNetBean()

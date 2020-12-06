@@ -1,4 +1,4 @@
-package com.example.lib_base
+package com.example.lib_net
 
 import java.io.Serializable
 
