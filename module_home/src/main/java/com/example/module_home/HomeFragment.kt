@@ -6,12 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.HotKey
-import com.example.lib_base.netWorkCheck
+import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseFragment
 import com.example.module_home.adapter.ArticleRecyclerViewAdapter
 import com.example.module_home.adapter.MyBannerAdapter
@@ -90,10 +89,8 @@ class HomeFragment : BaseFragment() {
         homeBinding.fabUp.setOnClickListener {
             (homeBinding.includeContent.root as NestedScrollView).smoothScrollTo(0, 0)
         }
-        homeBinding.includeContent.includeSearchBar.searchBar.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                search()
-            }
+        homeBinding.includeContent.includeSearchBar.searchBar.setOnClickListener {
+            search()
         }
     }
 
@@ -114,23 +111,23 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun refreshArticle() = load({ loadDataError() }) {
+    private fun refreshArticle() = load {
         CoroutineScope(Dispatchers.Main).launch {
-            if (!netWorkCheck()) Toast.makeText(get(), "网络未连接，加载本地文章", Toast.LENGTH_SHORT).show()
             loadBanner()
-            articleViewModel.refresh()
+            articleViewModel.refreshArticle(loadDataError)
         }
     }
 
-    private fun loadArticle() = load({ homeBinding.loadMore.root.visibility = View.GONE }) {
+    private fun loadArticle() = load {
         homeBinding.loadMore.root.visibility = View.VISIBLE
         CoroutineScope(Dispatchers.Main).launch {
-            if (!netWorkCheck()) Toast.makeText(get(), "网络未连接，加载本地文章", Toast.LENGTH_SHORT).show()
-            articleViewModel.load()
+            articleViewModel.loadArticle {
+                homeBinding.loadMore.root.visibility = View.GONE
+            }
         }
     }
 
-    private fun loadDataError() {
+    private val loadDataError: () -> Unit = {
         homeBinding.homeSwipeRefresh.isRefreshing = false
         homeBinding.includeContent.apply {
             homeRv.visibility = View.INVISIBLE
@@ -139,7 +136,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun loadDataSuccess() {
+    private val loadDataSuccess: () -> Unit = {
         homeBinding.includeContent.apply {
             homeRv.visibility = View.VISIBLE
             ivLoadError.visibility = View.INVISIBLE
@@ -147,15 +144,15 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun loadBanner() = load(null) {
+    private fun loadBanner() = load {
         CoroutineScope(Dispatchers.Main).launch {
-            bannerViewModel.loadBanner()
+            bannerViewModel.loadBanner {}
         }
     }
 
-    private fun loadHotKey() = load(null) {
+    private fun loadHotKey() = load {
         CoroutineScope(Dispatchers.Main).launch {
-            hotKeyViewModel.getHotKey()
+            hotKeyViewModel.getHotKey {}
         }
     }
 
@@ -180,22 +177,13 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun load(error: (() -> Unit)?, load: () -> Unit) {
+    private fun load(load: () -> Unit) {
         try {
-            if (!netWorkCheck()) {
-                Log.d("TAG_net", "load: false")
-            } else
-                load()
+            load()
         } catch (e: NetworkErrorException) {
-            if (error != null) {
-                error()
-            }
-            Toast.makeText(get(), "网络获取数据失败，请检查网络后重试", Toast.LENGTH_SHORT).show()
+            e.message?.showToast()
         } catch (e: Throwable) {
-            if (error != null) {
-                error()
-            }
-            Toast.makeText(get(), "发生了未知错误，请及时向开发者反映", Toast.LENGTH_SHORT).show()
+            "发生了未知错误，请及时向开发者反映".showToast()
             Log.d("TAG_EXCEPTION", "load:${e.message}")
         }
     }

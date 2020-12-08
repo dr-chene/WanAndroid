@@ -3,6 +3,7 @@ package com.example.module_home.bean
 import androidx.recyclerview.widget.DiffUtil
 import com.example.module_home.R
 import com.example.module_home.getResColor
+import org.koin.java.KoinJavaComponent.get
 import kotlin.random.Random
 
 /**
@@ -40,7 +41,7 @@ data class Tag(
         )
 
         fun getRandomColor() = colors[
-                Random(System.currentTimeMillis()).nextInt(colors.size)
+                get(Random::class.java).nextInt(colors.size)
         ]
     }
 

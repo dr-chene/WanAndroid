@@ -11,8 +11,8 @@ Created by chene on @date 20-12-3 下午7:16
  **/
 interface ArticleService {
     @GET("/article/list/{page}/json")
-    fun getArticlesByPage(@Path("page") page: Int): Call<NetPageArticle>
+    suspend fun getArticlesByPage(@Path("page") page: Int): NetPageArticle?
 
     @GET("/article/top/json")
-    fun getTopArticle(): Call<TopArticle>
+    suspend fun getTopArticle(): TopArticle?
 }

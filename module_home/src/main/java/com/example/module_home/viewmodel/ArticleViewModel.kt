@@ -8,6 +8,7 @@ import com.example.module_home.bean.Article
 import com.example.module_home.repository.ArticleRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
 
 /**
@@ -22,18 +23,18 @@ class ArticleViewModel(
     private val _articles = MutableLiveData<List<Article>>()
 
     @ExperimentalCoroutinesApi
-    suspend fun refresh() {
-        articleRepository.refreshArticles().collect {
+    suspend fun refreshArticle(netError: () -> Unit) {
+        articleRepository.refreshArticles(netError).collectLatest {
             _articles.postValue(it)
         }
     }
 
     @ExperimentalCoroutinesApi
-    suspend fun load() {
-        _articles.asFlow().zip(articleRepository.loadArticles()) { before, load ->
+    suspend fun loadArticle(netError: () -> Unit) {
+        _articles.asFlow().zip(articleRepository.loadArticles(netError)) { before, load ->
             mutableListOf<Article>().apply {
                 addAll(before)
-                addAll(load)
+                addAll(load.datas)
             }.toList()
         }.collect {
             _articles.postValue(it)

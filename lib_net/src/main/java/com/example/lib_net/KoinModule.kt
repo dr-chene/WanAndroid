@@ -12,11 +12,12 @@ Created by chene on @date 20-12-6 下午4:10
 private const val READ_TIMEOUT = 60L
 private const val WRITE_TIMEOUT = 60L
 private const val CONNECT_TIMEOUT = 3L
+
 val netModule = module {
     single {
         Retrofit.Builder()
             .baseUrl("https://www.wanandroid.com")
-//            .validateEagerly(true)
+            .validateEagerly(true)
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()

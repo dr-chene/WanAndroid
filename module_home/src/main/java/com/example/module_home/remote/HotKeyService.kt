@@ -10,5 +10,5 @@ Created by chene on @date 20-12-6 上午9:29
 interface HotKeyService {
 
     @GET("/hotkey/json")
-    fun getHotKey(): Call<NetHotKey>
+    suspend fun getHotKey(): NetHotKey?
 }

@@ -1,21 +1,15 @@
 package com.example.module_home.repository
 
-import android.accounts.NetworkErrorException
-import com.example.lib_base.netWorkCheck
-import com.example.module_home.bean.*
+import com.example.lib_net.response
+import com.example.module_home.bean.Article
+import com.example.module_home.bean.PageArticle
+import com.example.module_home.bean.Tag
+import com.example.module_home.bean.TopArticle
 import com.example.module_home.remote.ArticleService
 import com.example.module_home.shouldUpdate
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.zip
-import kotlinx.coroutines.suspendCancellableCoroutine
-import org.koin.java.KoinJavaComponent.get
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import kotlin.coroutines.resumeWithException
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import org.koin.java.KoinJavaComponent.inject
 
 /**
 Created by chene on @date 20-12-3 下午7:24
@@ -27,123 +21,83 @@ class ArticleRepository(
 
     var curPage = 0
 
+    private val articleApi by inject(ArticleService::class.java)
+
     @ExperimentalCoroutinesApi
-    suspend fun refreshArticles() = flow {
-        getTopArticles().zip(getPageArticles(0)) { top, page ->
+    suspend fun refreshArticles(netError: () -> Unit) = channelFlow {
+        getTopArticles(netError).zip(getPageArticles(0, netError)) { top, page ->
             mutableListOf<Article>().apply {
-                addAll(top)
-                addAll(page)
+                addAll(top.data)
+                addAll(page.datas)
             }
-        }.collect {
-            emit(it.toList())
+        }.collectLatest {
+            send(it)
         }
     }
 
     @ExperimentalCoroutinesApi
-    fun loadArticles() = getPageArticles(++curPage)
+    fun loadArticles(netError: () -> Unit) = getPageArticles(++curPage, netError)
 
     @ExperimentalCoroutinesApi
-    private fun getPageArticles(page: Int) = flow {
-        pageArticleDao.getArticlesByPage(page).collect {
-            if (netWorkCheck() && (it == null || it.datas.isNullOrEmpty() || it.lastTime.shouldUpdate())) {
-                netPageArticle(page).collect { net ->
-                    pageArticleDao.insertArticles(net)
-                    emit(net.datas)
+    private fun getPageArticles(page: Int, netError: () -> Unit) = flow {
+        val local = pageArticleDao.getArticlesByPage(page)
+        if (local == null || local.lastTime.shouldUpdate()) {
+            articleApi.getArticlesByPage(page)?.let {
+                response(it, netError).data.addTag().let { pageArticle ->
+                    emit(pageArticle)
+                    insertPageArticle(pageArticle)
                 }
-            } else {
-                if (it != null)emit(it.datas)
             }
+        } else {
+            emit(local)
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     @ExperimentalCoroutinesApi
-    private fun getTopArticles() = flow {
-        topArticleDao.getTopArticle().collect {
-            if (netWorkCheck() && (it == null || it.lastTime.shouldUpdate())) {
-                netTopArticle().collect { net ->
-                    topArticleDao.insertTopArticle(net)
-                    emit(net.data)
+    private fun getTopArticles(netError: () -> Unit) = flow {
+        val local = topArticleDao.getTopArticle()
+        if (local == null || local.lastTime.shouldUpdate()) {
+            articleApi.getTopArticle()?.let {
+                response(it, netError).addTag().let { topArticle ->
+                    emit(topArticle)
+                    insertTopArticle(topArticle)
                 }
-            } else {
-                if (it != null)emit(it.data)
+            }
+        } else {
+            emit(local)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    private fun insertTopArticle(article: TopArticle) = CoroutineScope(Dispatchers.IO).launch {
+        topArticleDao.insertTopArticle(article)
+    }
+
+    private fun insertPageArticle(article: PageArticle) = CoroutineScope(Dispatchers.IO).launch {
+        pageArticleDao.insertArticles(article)
+    }
+
+    //添加“new”,“置顶”标签
+    private fun TopArticle.addTag() = run {
+        this.apply {
+            data.forEach { article ->
+                article.tags = mutableListOf<Tag>().apply {
+                    addAll(article.tags)
+                    add(Tag("置顶", ""))
+                    if (article.fresh) add(Tag("new", ""))
+                }.toList()
             }
         }
     }
 
-    @ExperimentalCoroutinesApi
-    private fun netTopArticle() = flow<TopArticle> {
-        emit(
-            suspendCancellableCoroutine { continuation ->
-                get(Retrofit::class.java).create(ArticleService::class.java).getTopArticle()
-                    .enqueue(object : Callback<TopArticle> {
-                        override fun onResponse(
-                            call: Call<TopArticle>,
-                            response: Response<TopArticle>
-                        ) {
-                            if (response.isSuccessful && response.body() != null) {
-                                response.body()?.let {
-                                    //添加“置顶”、“new”标签
-                                    continuation.resume(it.apply {
-                                        data.forEach { article ->
-                                            article.tags = mutableListOf<Tag>().apply {
-                                                addAll(article.tags)
-                                                add(Tag("置顶", ""))
-                                                if (article.fresh) add(Tag("new", ""))
-                                            }.toList()
-                                        }
-                                    }) { e ->
-                                        continuation.resumeWithException(e)
-                                    }
-                                }
-                            } else {
-                                continuation.resumeWithException(NetworkErrorException())
-                            }
-                        }
-
-                        override fun onFailure(call: Call<TopArticle>, t: Throwable) {
-                            continuation.resumeWithException(t)
-                        }
-                    })
+    //添加“new”标签
+    private fun PageArticle.addTag() = run {
+        this.apply {
+            datas.forEach { article ->
+                article.tags = mutableListOf<Tag>().apply {
+                    addAll(article.tags)
+                    if (article.fresh) add(Tag("new", ""))
+                }.toList()
             }
-        )
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun netPageArticle(page: Int) = flow<PageArticle> {
-        emit(
-            suspendCancellableCoroutine { continuation ->
-                get(Retrofit::class.java).create(ArticleService::class.java).getArticlesByPage(page)
-                    .enqueue(object : Callback<NetPageArticle> {
-                        override fun onResponse(
-                            call: Call<NetPageArticle>,
-                            response: Response<NetPageArticle>
-                        ) {
-                            if (response.isSuccessful && response.body() != null) {
-                                response.body()?.data?.let {
-                                    curPage = it.curPage
-                                    //添加“new”标签
-                                    continuation.resume(it.apply {
-                                        datas.forEach { article ->
-                                            article.tags = mutableListOf<Tag>().apply {
-                                                addAll(article.tags)
-                                                if (article.fresh) add(Tag("new", ""))
-                                            }.toList()
-                                        }
-                                    }) { e ->
-                                        continuation.resumeWithException(e)
-                                    }
-                                }
-                            } else {
-                                continuation.resumeWithException(NetworkErrorException())
-                            }
-                        }
-
-                        override fun onFailure(call: Call<NetPageArticle>, t: Throwable) {
-                            continuation.resumeWithException(t)
-                        }
-                    })
-            }
-        )
-
+        }
     }
 }

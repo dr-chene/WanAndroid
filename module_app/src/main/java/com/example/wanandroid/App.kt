@@ -3,7 +3,6 @@ package com.example.wanandroid
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.BaseApp
 import com.example.lib_base.isDebug
-import com.example.lib_base.netWorkCheck
 import com.example.lib_net.netModule
 import com.example.module_home.homeModule
 import com.tencent.mmkv.MMKV

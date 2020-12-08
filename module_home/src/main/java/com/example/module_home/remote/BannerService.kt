@@ -10,5 +10,5 @@ Created by chene on @date 20-12-5 下午7:37
 interface BannerService {
 
     @GET("/banner/json")
-    fun getBanner(): Call<NetBanner>
+    suspend fun getBanner(): NetBanner?
 }

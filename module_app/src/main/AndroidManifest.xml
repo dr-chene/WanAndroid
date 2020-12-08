@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WanAndroid">
 
+<!--        <receiver android:name="com.example.lib_net.NetBroadcastReceiver">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
     </application>
 
 </manifest>
