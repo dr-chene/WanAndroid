@@ -1,15 +1,13 @@
 package com.example.lib_net
 
 import android.accounts.NetworkErrorException
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.lib_base.showToast
-import org.koin.java.KoinJavaComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
 Created by chene on @date 20-12-6 下午9:18
@@ -24,6 +22,27 @@ fun <T : BaseNetBean> response(bean: T, netError: () -> Unit): T {
         }
     }
 }
+
+suspend fun <T> Call<T>.get() = withContext(Dispatchers.IO){
+    async {
+        var result: T? = null
+        this@get.enqueue(object : Callback<T> {
+            override fun onResponse(call: Call<T>, response: Response<T>) {
+                result = if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    null
+                }
+            }
+
+            override fun onFailure(call: Call<T>, t: Throwable) {
+                t.message?.showToast()
+                result = null
+            }
+        })
+        return@async result
+    }
+}.await()
 
 //fun netWorkCheck(): Boolean =
 //    (KoinJavaComponent.get(Context::class.java)
