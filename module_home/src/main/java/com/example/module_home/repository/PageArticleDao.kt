@@ -4,8 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.module_home.bean.PageArticle
-import kotlinx.coroutines.flow.Flow
+import com.example.share_home_search.bean.PageArticle
 
 
 /**

@@ -3,8 +3,9 @@ package com.example.module_home.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.lib_base.HotKey
+import com.example.lib_net.NetResult
 import com.example.module_home.repository.HotKeyRepository
+import com.example.share_home_search.bean.HotKey
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 
@@ -20,11 +21,11 @@ class HotKeyViewModel(
     private val _hotKeys = MutableLiveData<List<HotKey>>()
 
     @ExperimentalCoroutinesApi
-    suspend fun getHotKey(netError: () -> Unit) {
-        hotKeyRepository.getHotKey(netError).collectLatest {
-            _hotKeys.postValue(it.data.sortedBy { hotKey ->
-                hotKey.order
-            })
+    suspend fun getHotKey() {
+        hotKeyRepository.getHotKey().collectLatest {
+            if (it is NetResult.Success) {
+                _hotKeys.postValue(it.value)
+            }
         }
     }
 }

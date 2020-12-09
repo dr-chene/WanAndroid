@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/module_home" />
             <option value="$PROJECT_DIR$/module_main" />
             <option value="$PROJECT_DIR$/module_search" />
+            <option value="$PROJECT_DIR$/share_home_search" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

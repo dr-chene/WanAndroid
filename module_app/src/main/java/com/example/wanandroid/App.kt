@@ -5,6 +5,8 @@ import com.example.lib_base.BaseApp
 import com.example.lib_base.isDebug
 import com.example.lib_net.netModule
 import com.example.module_home.homeModule
+import com.example.module_search.searchModule
+import com.example.share_home_search.shareHomeSearchModule
 import com.tencent.mmkv.MMKV
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -29,7 +31,7 @@ class App : BaseApp() {
             androidLogger(level = Level.DEBUG)
             androidContext(this@App)
             modules(
-                appModule, homeModule, netModule
+                appModule, homeModule, netModule, shareHomeSearchModule, searchModule
             )
         }
 

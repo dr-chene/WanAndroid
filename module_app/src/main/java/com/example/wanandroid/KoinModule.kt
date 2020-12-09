@@ -9,4 +9,5 @@ val appModule = module {
     single { AppDataBase.buildDatabase(get()) }
     single { get<AppDataBase>().getTopArticleDao() }
     single { get<AppDataBase>().getPageArticleDao() }
+    single { get<AppDataBase>().getSearchHistoryDao() }
 }

@@ -1,14 +1,17 @@
 package com.example.module_home.repository
 
-import com.example.lib_net.response
-import com.example.module_home.bean.Article
-import com.example.module_home.bean.PageArticle
-import com.example.module_home.bean.Tag
+import com.example.lib_net.NetResult
 import com.example.module_home.bean.TopArticle
 import com.example.module_home.remote.ArticleService
 import com.example.module_home.shouldUpdate
-import kotlinx.coroutines.*
+import com.example.share_home_search.bean.Article
+import com.example.share_home_search.bean.PageArticle
+import com.example.share_home_search.bean.Tag
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 
 /**
@@ -20,15 +23,30 @@ class ArticleRepository(
 ) {
 
     var curPage = 0
+    private var over = false
 
     private val articleApi by inject(ArticleService::class.java)
 
     @ExperimentalCoroutinesApi
-    suspend fun refreshArticles(netError: () -> Unit) = channelFlow {
-        getTopArticles(netError).zip(getPageArticles(0, netError)) { top, page ->
-            mutableListOf<Article>().apply {
-                addAll(top.data)
-                addAll(page.datas)
+    suspend fun refreshArticles() = channelFlow {
+        getTopArticles().zip(getPageArticles(0)) { top, page ->
+            when {
+                top is NetResult.Failure -> {
+                    top
+                }
+                page is NetResult.Failure -> {
+                    page
+                }
+                else -> {
+                    val t = if (top is NetResult.Success) top.value else null
+                    val p = if (page is NetResult.Success) page.value else null
+                    NetResult.Success(
+                        mutableListOf<Article>().apply {
+                            if (t != null) addAll(t.data)
+                            if (p != null) addAll(p.datas)
+                        }.toList()
+                    )
+                }
             }
         }.collectLatest {
             send(it)
@@ -36,43 +54,50 @@ class ArticleRepository(
     }
 
     @ExperimentalCoroutinesApi
-    fun loadArticles(netError: () -> Unit) = getPageArticles(++curPage, netError)
+    fun loadArticles() = getPageArticles(++curPage)
 
     @ExperimentalCoroutinesApi
-    private fun getPageArticles(page: Int, netError: () -> Unit) = flow {
-        val local = pageArticleDao.getArticlesByPage(page)
-        if (local == null || local.lastTime.shouldUpdate()) {
-            articleApi.getArticlesByPage(page)?.let {
-                response(it, netError).data.addTag().let { pageArticle ->
-                    emit(pageArticle)
-                    insertPageArticle(pageArticle)
+    private fun getPageArticles(page: Int) = flow {
+        try {
+            if (!over) {
+                var data = pageArticleDao.getArticlesByPage(page)
+                if (data == null || data.lastTime.shouldUpdate()) {
+                    articleApi.getArticlesByPage(page).data.addTag().let {
+                        insertArticle(it)
+                        data = it
+                    }
                 }
+                over = data?.over ?: false
+                emit(NetResult.Success(data))
+            } else {
+                emit(NetResult.Failure(Exception("没有更多数据...")))
             }
-        } else {
-            emit(local)
+        } catch (e: Exception) {
+            emit(NetResult.Failure(e.cause))
         }
     }.flowOn(Dispatchers.IO)
 
     @ExperimentalCoroutinesApi
-    private fun getTopArticles(netError: () -> Unit) = flow {
-        val local = topArticleDao.getTopArticle()
-        if (local == null || local.lastTime.shouldUpdate()) {
-            articleApi.getTopArticle()?.let {
-                response(it, netError).addTag().let { topArticle ->
-                    emit(topArticle)
-                    insertTopArticle(topArticle)
+    private fun getTopArticles() = flow {
+        try {
+            var data = topArticleDao.getTopArticle()
+            if (data == null || data.lastTime.shouldUpdate()) {
+                TopArticle(articleApi.getTopArticle().data).addTag().let {
+                    insertArticle(it)
+                    data = it
                 }
             }
-        } else {
-            emit(local)
+            emit(NetResult.Success(data))
+        } catch (e: Exception) {
+            emit(NetResult.Failure(e.cause))
         }
     }.flowOn(Dispatchers.IO)
 
-    private fun insertTopArticle(article: TopArticle) = CoroutineScope(Dispatchers.IO).launch {
+    private fun insertArticle(article: TopArticle) = CoroutineScope(Dispatchers.IO).launch {
         topArticleDao.insertTopArticle(article)
     }
 
-    private fun insertPageArticle(article: PageArticle) = CoroutineScope(Dispatchers.IO).launch {
+    private fun insertArticle(article: PageArticle) = CoroutineScope(Dispatchers.IO).launch {
         pageArticleDao.insertArticles(article)
     }
 

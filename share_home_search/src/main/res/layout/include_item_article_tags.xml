@@ -3,10 +3,8 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="java.util.List" />
-
-        <import type="com.example.module_home.bean.Tag" />
+        <import type="com.example.share_home_search.bean.Tag"/>
 
         <variable
             name="tags"

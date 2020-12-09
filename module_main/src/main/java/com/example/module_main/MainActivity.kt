@@ -3,6 +3,7 @@ package com.example.module_main
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.view.BaseActivity
@@ -24,9 +25,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initView() {
-        supportFragmentManager.nav(
-            ARouter.getInstance().build("/home/fragment").navigation() as Fragment
-        )
+        supportFragmentManager.commit {
+            add(R.id.main_fragment_container,
+                ARouter.getInstance().build("/home/fragment").navigation() as Fragment)
+        }
     }
 
     private fun initAction() {

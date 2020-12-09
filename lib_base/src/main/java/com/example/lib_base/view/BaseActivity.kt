@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -38,6 +39,15 @@ open class BaseActivity : AppCompatActivity() {
             val option = window.decorView.systemUiVisibility
             window.decorView.systemUiVisibility = option or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = Color.parseColor("#80EEEEEE")
+        }
+    }
+
+    protected fun hideInput() {
+        window.peekDecorView()?.let {
+            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                it.windowToken,
+                0
+            )
         }
     }
 }

@@ -1,48 +1,46 @@
 package com.example.lib_net
 
 import android.accounts.NetworkErrorException
+import android.util.Log
 import com.example.lib_base.showToast
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.resumeWithException
 
 /**
 Created by chene on @date 20-12-6 下午9:18
  **/
-fun <T : BaseNetBean> response(bean: T, netError: () -> Unit): T {
-    when (bean.errorCode) {
-        NetConstant.SUCCESS -> return bean
-        else -> {
-            bean.errorMsg.showToast()
-            netError.invoke()
-            throw NetworkErrorException("网络连接错误")
-        }
-    }
-}
 
-suspend fun <T> Call<T>.get() = withContext(Dispatchers.IO){
-    async {
-        var result: T? = null
-        this@get.enqueue(object : Callback<T> {
-            override fun onResponse(call: Call<T>, response: Response<T>) {
-                result = if (response.isSuccessful) {
-                    response.body()
-                } else {
-                    null
+@ExperimentalCoroutinesApi
+inline fun <reified T> Call<T>.get() = flow<T?> {
+    emit(
+        suspendCancellableCoroutine { cor ->
+            this@get.enqueue(object : Callback<T> {
+                override fun onResponse(call: Call<T>, response: Response<T>) {
+                    Log.d("TAG_remote", "onResponse: ${response.body().toString()}")
+                    if (cor.isActive) {
+                        if (response.isSuccessful) {
+                            cor.resume(response.body()) { t ->
+                                cor.resumeWithException(t)
+                            }
+                        } else {
+                            cor.resumeWithException(NetworkErrorException())
+                        }
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<T>, t: Throwable) {
-                t.message?.showToast()
-                result = null
-            }
-        })
-        return@async result
-    }
-}.await()
+                override fun onFailure(call: Call<T>, t: Throwable) {
+                    t.message?.showToast()
+                    cor.resumeWithException(t)
+                }
+            })
+        }
+    )
+}
 
 //fun netWorkCheck(): Boolean =
 //    (KoinJavaComponent.get(Context::class.java)

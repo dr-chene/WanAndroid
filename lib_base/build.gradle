@@ -64,4 +64,7 @@ dependencies {
     api "com.google.code.gson:gson:$gson_version"
 
     api "com.tencent:mmkv-static:$mmkv_version"
+
+    api "androidx.room:room-runtime:$room_version"
+    api "androidx.room:room-ktx:$room_version"
 }

@@ -1,30 +1,24 @@
 package com.example.module_home
 
-import android.accounts.NetworkErrorException
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.example.lib_base.HotKey
 import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseFragment
-import com.example.module_home.adapter.ArticleRecyclerViewAdapter
 import com.example.module_home.adapter.MyBannerAdapter
 import com.example.module_home.bean.Banner
 import com.example.module_home.databinding.FragmentHomeBinding
 import com.example.module_home.viewmodel.ArticleViewModel
 import com.example.module_home.viewmodel.BannerViewModel
 import com.example.module_home.viewmodel.HotKeyViewModel
+import com.example.share_home_search.adapter.ArticleRecyclerViewAdapter
+import com.example.share_home_search.bean.HotKey
 import com.youth.banner.indicator.CircleIndicator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.get
+import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -38,7 +32,7 @@ class HomeFragment : BaseFragment() {
     private val articleViewModel by viewModel<ArticleViewModel>()
     private val bannerViewModel by viewModel<BannerViewModel>()
     private val hotKeyViewModel by viewModel<HotKeyViewModel>()
-    private val articleAdapter by inject<ArticleRecyclerViewAdapter>()
+    private val articleAdapter by inject<ArticleRecyclerViewAdapter> { parametersOf(true) }
     private val bannerAdapter by inject<MyBannerAdapter> { parametersOf(listOf<Banner>()) }
     private var hotKeys: List<HotKey> = listOf()
 
@@ -66,7 +60,6 @@ class HomeFragment : BaseFragment() {
             adapter = bannerAdapter
         }
         refreshArticle()
-        loadHotKey()
     }
 
     private fun initAction() {
@@ -85,6 +78,7 @@ class HomeFragment : BaseFragment() {
                     homeBinding.fabUp.visibility = View.VISIBLE
                 }
             })
+        //拦截点击事件
         homeBinding.loadMore.root.setOnClickListener { }
         homeBinding.fabUp.setOnClickListener {
             (homeBinding.includeContent.root as NestedScrollView).smoothScrollTo(0, 0)
@@ -97,9 +91,6 @@ class HomeFragment : BaseFragment() {
     private fun subscribe() {
         articleViewModel.articles.observe(viewLifecycleOwner) {
             articleAdapter.submitList(it)
-            loadDataSuccess()
-            homeBinding.homeSwipeRefresh.isRefreshing = false
-            homeBinding.loadMore.root.visibility = View.GONE
         }
         bannerViewModel.banners.observe(viewLifecycleOwner) {
             bannerAdapter.setDatas(it)
@@ -111,19 +102,35 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun refreshArticle() = load {
-        CoroutineScope(Dispatchers.Main).launch {
-            loadBanner()
-            articleViewModel.refreshArticle(loadDataError)
+    private fun refreshArticle() = CoroutineScope(Dispatchers.Main).launch {
+        loadBanner()
+        loadHotKey()
+        articleViewModel.refreshArticle(
+            start = {},
+            end = {
+                loadDataSuccess()
+                homeBinding.homeSwipeRefresh.isRefreshing = false
+                homeBinding.loadMore.root.visibility = View.GONE
+                cancel()
+            }
+        ) {
+            it?.showToast()
+            loadDataError.invoke()
         }
     }
 
-    private fun loadArticle() = load {
-        homeBinding.loadMore.root.visibility = View.VISIBLE
-        CoroutineScope(Dispatchers.Main).launch {
-            articleViewModel.loadArticle {
+    private fun loadArticle() = CoroutineScope(Dispatchers.Main).launch {
+        articleViewModel.loadArticle(
+            start = {
+                homeBinding.loadMore.root.visibility = View.VISIBLE
+            },
+            end = {
                 homeBinding.loadMore.root.visibility = View.GONE
+                cancel()
             }
+        ) {
+            it?.showToast()
+            loadDataError.invoke()
         }
     }
 
@@ -144,17 +151,15 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun loadBanner() = load {
-        CoroutineScope(Dispatchers.Main).launch {
-            bannerViewModel.loadBanner {}
-        }
+    private suspend fun loadBanner() = withContext(Dispatchers.IO) {
+        bannerViewModel.loadBanner()
     }
 
-    private fun loadHotKey() = load {
-        CoroutineScope(Dispatchers.Main).launch {
-            hotKeyViewModel.getHotKey {}
-        }
+
+    private suspend fun loadHotKey() = withContext(Dispatchers.IO) {
+        hotKeyViewModel.getHotKey()
     }
+
 
     private fun changeHotWord(hotKeys: List<HotKey>) = CoroutineScope(Dispatchers.Main).launch {
         var index = 0;
@@ -177,20 +182,14 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun load(load: () -> Unit) {
-        try {
-            load()
-        } catch (e: NetworkErrorException) {
-            e.message?.showToast()
-        } catch (e: Throwable) {
-            "发生了未知错误，请及时向开发者反映".showToast()
-            Log.d("TAG_EXCEPTION", "load:${e.message}")
-        }
-    }
-
     private fun search() {
+        val cur = homeBinding.includeContent.includeSearchBar.let {
+            if (it.tvCur.y < it.tvNext.y) it.tvCur else it.tvNext
+        }
         ARouter.getInstance().build("/search/activity")
+            .withTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_from_bottom)
             .withObject("hotkeys", hotKeys)
+            .withString("hotkey", cur.text.toString())
             .navigation()
     }
 

@@ -1,6 +1,6 @@
 package com.example.module_home.repository
 
-import com.example.lib_net.response
+import com.example.lib_net.NetResult
 import com.example.module_home.remote.BannerService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -14,10 +14,14 @@ class BannerRepository {
     private val bannerApi by KoinJavaComponent.inject(BannerService::class.java)
 
     @ExperimentalCoroutinesApi
-    fun getBanner(netError: () -> Unit) = flow {
-        bannerApi.getBanner()?.let {
-            emit(response(it, netError))
-        }
+    fun getBanner() = flow {
+        emit(
+            try {
+                NetResult.Success(bannerApi.getBanner().data)
+            } catch (e: Exception) {
+                NetResult.Failure(e.cause)
+            }
+        )
     }
 
 }

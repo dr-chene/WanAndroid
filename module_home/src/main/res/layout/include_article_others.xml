@@ -7,7 +7,7 @@
 
         <variable
             name="article"
-            type="com.example.module_home.bean.Article" />
+            type="com.example.share_home_search.bean.Article" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

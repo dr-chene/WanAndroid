@@ -1,7 +1,7 @@
 package com.example.module_home.remote
 
-import com.example.module_home.bean.NetHotKey
-import retrofit2.Call
+import com.example.lib_net.NetBean
+import com.example.share_home_search.bean.HotKey
 import retrofit2.http.GET
 
 /**
@@ -10,5 +10,5 @@ Created by chene on @date 20-12-6 上午9:29
 interface HotKeyService {
 
     @GET("/hotkey/json")
-    suspend fun getHotKey(): NetHotKey?
+    suspend fun getHotKey(): NetBean<List<HotKey>>
 }

@@ -8,7 +8,7 @@
 
         <variable
             name="tag"
-            type="com.example.module_home.bean.Tag" />
+            type="com.example.share_home_search.bean.Tag" />
     </data>
 
     <androidx.cardview.widget.CardView

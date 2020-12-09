@@ -1,6 +1,6 @@
 package com.example.module_home.repository
 
-import com.example.lib_net.response
+import com.example.lib_net.NetResult
 import com.example.module_home.remote.HotKeyService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -14,9 +14,13 @@ class HotKeyRepository {
     private val hotKeyApi by KoinJavaComponent.inject(HotKeyService::class.java)
 
     @ExperimentalCoroutinesApi
-    fun getHotKey(netError: () -> Unit) = flow {
-        hotKeyApi.getHotKey()?.let {
-            emit(response(it, netError))
-        }
+    fun getHotKey() = flow {
+        emit(
+            try {
+                NetResult.Success(hotKeyApi.getHotKey().data)
+            } catch (e: Exception) {
+                NetResult.Failure(e.cause)
+            }
+        )
     }
 }

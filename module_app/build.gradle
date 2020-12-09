@@ -12,6 +12,12 @@ android {
         dataBinding true
     }
 
+    kapt {
+        arguments {
+            arg("AROUTER_MODULE_NAME", project.getName())
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.wanandroid"
         minSdkVersion 21
@@ -54,4 +60,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
+    kapt "com.alibaba:arouter-compiler:$arouter_version"
 }

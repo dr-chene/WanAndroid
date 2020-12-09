@@ -1,9 +1,6 @@
-package com.example.module_home.bean
+package com.example.share_home_search.bean
 
 import androidx.recyclerview.widget.DiffUtil
-import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 /**
 Created by chene on @date 20-12-3 下午4:55
@@ -42,16 +39,6 @@ data class Article(
     val visible: Int,
     val zan: Int
 ) {
-    class ArticleListTypeConverter {
-
-        @TypeConverter
-        fun stringToList(s: String): List<Article> =
-            Gson().fromJson(s, object : TypeToken<List<Article>>() {}.type)
-
-        @TypeConverter
-        fun listToString(list: List<Article>): String =
-            Gson().toJson(list)
-    }
 
     class ArticleDiffCallBack : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {

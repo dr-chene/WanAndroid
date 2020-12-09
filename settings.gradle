@@ -1,3 +1,4 @@
+include ':share_home_search'
 include ':lib_net'
 include ':module_search'
 include ':module_home'

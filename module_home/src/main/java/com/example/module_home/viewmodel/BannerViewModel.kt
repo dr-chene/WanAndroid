@@ -3,6 +3,7 @@ package com.example.module_home.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.lib_net.NetResult
 import com.example.module_home.bean.Banner
 import com.example.module_home.repository.BannerRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,11 +21,9 @@ class BannerViewModel(
     private val _banners = MutableLiveData<List<Banner>>()
 
     @ExperimentalCoroutinesApi
-    suspend fun loadBanner(netError: () -> Unit) {
-        bannerRepository.getBanner(netError).collectLatest {
-            _banners.postValue(it.data.sortedBy { banner ->
-                banner.order
-            })
+    suspend fun loadBanner() = bannerRepository.getBanner().collectLatest {
+        if (it is NetResult.Success) {
+            _banners.postValue(it.value)
         }
     }
 }
