@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.example.module_mine.bean.RankUser" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/img_test_avatar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/AvatarStyle" />
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            bindNickname="@{user.user.nickname}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_id_head"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar" />
+
+        <TextView
+            android:id="@+id/tv_id_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/id_head"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_id"
+            app:layout_constraintStart_toStartOf="@id/tv_id"
+            app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
+
+        <TextView
+            android:id="@+id/tv_rank_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rank_head"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/tv_rank"
+            app:layout_constraintTop_toTopOf="@id/tv_id_head" />
+
+        <TextView
+            android:id="@+id/tv_id"
+            bindInt="@{user.user.id}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_email_head"
+            app:layout_constraintStart_toStartOf="@id/tv_nickname"
+            app:layout_constraintTop_toBottomOf="@id/tv_id_head" />
+
+        <TextView
+            android:id="@+id/tv_rank"
+            bindInt="@{user.rank}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/tv_id"
+            app:layout_constraintTop_toTopOf="@id/tv_id" />
+
+        <TextView
+            android:id="@+id/tv_email_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/email_head"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+            app:layout_constraintStart_toStartOf="@id/tv_nickname"
+            app:layout_constraintTop_toBottomOf="@id/tv_id" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            bindEmail="@{user.user.email}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_email_head"
+            app:layout_constraintStart_toEndOf="@id/tv_email_head"
+            app:layout_constraintTop_toTopOf="@id/tv_email_head" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -4,14 +4,15 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
-import com.example.lib_base.isDebug
 
 /**
 Created by chene on @date 20-12-4 上午10:06
  **/
 fun Long.shouldUpdate(): Boolean {
     //网络请求更新本地数据间隔时间:3小时
-    val intervalTime = 1000 * 60 * 60 * if (isDebug) 0 else 3
+    val intervalTime = 1000 * 60 * 60 *
+//            if (isDebug) 0 else
+                3
     return (System.currentTimeMillis() - this) > intervalTime
 }
 

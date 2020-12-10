@@ -5,6 +5,7 @@ import com.example.lib_base.BaseApp
 import com.example.lib_base.isDebug
 import com.example.lib_net.netModule
 import com.example.module_home.homeModule
+import com.example.module_mine.mineModule
 import com.example.module_search.searchModule
 import com.example.share_home_search.shareHomeSearchModule
 import com.tencent.mmkv.MMKV
@@ -31,7 +32,8 @@ class App : BaseApp() {
             androidLogger(level = Level.DEBUG)
             androidContext(this@App)
             modules(
-                appModule, homeModule, netModule, shareHomeSearchModule, searchModule
+                appModule, homeModule, netModule, shareHomeSearchModule, searchModule,
+                mineModule
             )
         }
 

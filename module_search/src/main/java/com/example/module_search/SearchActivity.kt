@@ -10,7 +10,8 @@ import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.view.BaseActivity
-import com.example.module_search.databinding.ActivitySearchBinding
+import com.example.module_search.databinding.SearchActivityBinding
+
 import com.example.module_search.fragment.NotSearchedFragment
 import com.example.module_search.fragment.SearchedFragment
 import com.example.module_search.viewmodel.SearchActivityViewModel
@@ -27,14 +28,14 @@ class SearchActivity : BaseActivity() {
     @Autowired(name = "hotkey")
     lateinit var hotKey: String
 
-    private lateinit var searchBinding: ActivitySearchBinding
+    private lateinit var searchBinding: SearchActivityBinding
     private val searchViewModel by viewModel<SearchActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         makeStatusBarTransparent()
         makeStatusBarIconDark()
         super.onCreate(savedInstanceState)
-        searchBinding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+        searchBinding = DataBindingUtil.setContentView(this, R.layout.search_activity)
 
         ARouter.getInstance().inject(this)
 

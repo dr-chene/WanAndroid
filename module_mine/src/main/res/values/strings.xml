@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email_head">邮箱：</string>
+    <string name="id_head">id:</string>
+    <string name="rank_head">rank:</string>
+    <string name="item_coin">我的积分</string>
+    <string name="item_collect">收藏文章</string>
+    <string name="item_web">收藏网站</string>
+    <string name="item_article">分享文章</string>
+    <string name="item_setting">设置</string>
+    <string name="email_null">"暂无"</string>
+</resources>

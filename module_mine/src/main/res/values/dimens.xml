@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="avatar_corner_radius_m">25%</dimen>
+    <dimen name="avatar_corner_radius_s">5dp</dimen>
+</resources>

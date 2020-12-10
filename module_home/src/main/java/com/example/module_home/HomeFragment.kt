@@ -11,7 +11,7 @@ import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseFragment
 import com.example.module_home.adapter.MyBannerAdapter
 import com.example.module_home.bean.Banner
-import com.example.module_home.databinding.FragmentHomeBinding
+import com.example.module_home.databinding.HomeFragmentBinding
 import com.example.module_home.viewmodel.ArticleViewModel
 import com.example.module_home.viewmodel.BannerViewModel
 import com.example.module_home.viewmodel.HotKeyViewModel
@@ -28,7 +28,7 @@ import kotlin.math.min
 @Route(path = "/home/fragment")
 class HomeFragment : BaseFragment() {
 
-    private lateinit var homeBinding: FragmentHomeBinding
+    private lateinit var homeBinding: HomeFragmentBinding
     private val articleViewModel by viewModel<ArticleViewModel>()
     private val bannerViewModel by viewModel<BannerViewModel>()
     private val hotKeyViewModel by viewModel<HotKeyViewModel>()
@@ -41,7 +41,7 @@ class HomeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        homeBinding = HomeFragmentBinding.inflate(inflater, container, false)
         context ?: return homeBinding.root
 
         initView()

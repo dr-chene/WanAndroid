@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AvatarStyle">
+        <item name="cornerFamilyBottomLeft">cut</item>
+        <item name="cornerSizeBottomLeft">@dimen/avatar_corner_radius_m</item>
+        <item name="cornerFamilyBottomRight">cut</item>
+        <item name="cornerSizeBottomRight">@dimen/avatar_corner_radius_m</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopRight">@dimen/avatar_corner_radius_m</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/avatar_corner_radius_s</item>
+    </style>
+</resources>
