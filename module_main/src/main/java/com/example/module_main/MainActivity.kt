@@ -15,9 +15,9 @@ class MainActivity : BaseActivity() {
     private lateinit var mainBinding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         makeStatusBarTransparent()
         makeStatusBarIconDark()
-        super.onCreate(savedInstanceState)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.main_activity)
 
         initView()

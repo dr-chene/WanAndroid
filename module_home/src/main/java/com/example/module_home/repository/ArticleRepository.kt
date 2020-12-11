@@ -62,18 +62,24 @@ class ArticleRepository(
             if (!over) {
                 var data = pageArticleDao.getArticlesByPage(page)
                 if (data == null || data.lastTime.shouldUpdate()) {
-                    articleApi.getArticlesByPage(page).data.addTag().let {
-                        insertArticle(it)
-                        data = it
+                    articleApi.getArticlesByPage(page).let {
+                        if (it.data == null) {
+                            emit(NetResult.Failure(it.errorMsg))
+                        } else {
+                            it.data?.addTag()?.let { page ->
+                                insertArticle(page)
+                                data = page
+                            }
+                        }
                     }
                 }
                 over = data?.over ?: false
                 emit(NetResult.Success(data))
             } else {
-                emit(NetResult.Failure(Exception("没有更多数据...")))
+                emit(NetResult.Failure("没有更多数据..."))
             }
         } catch (e: Exception) {
-            emit(NetResult.Failure(e.cause))
+            emit(NetResult.Failure(e.message))
         }
     }.flowOn(Dispatchers.IO)
 
@@ -82,14 +88,22 @@ class ArticleRepository(
         try {
             var data = topArticleDao.getTopArticle()
             if (data == null || data.lastTime.shouldUpdate()) {
-                TopArticle(articleApi.getTopArticle().data).addTag().let {
-                    insertArticle(it)
-                    data = it
+                articleApi.getTopArticle().let {
+                    if (it.data != null) {
+                        it.data?.let { list ->
+                            TopArticle(list).addTag().let { top ->
+                                insertArticle(top)
+                                data = top
+                            }
+                        }
+                    } else {
+                        emit(NetResult.Failure(it.errorMsg))
+                    }
                 }
             }
             emit(NetResult.Success(data))
         } catch (e: Exception) {
-            emit(NetResult.Failure(e.cause))
+            emit(NetResult.Failure(e.message))
         }
     }.flowOn(Dispatchers.IO)
 

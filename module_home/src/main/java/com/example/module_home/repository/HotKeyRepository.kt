@@ -19,7 +19,7 @@ class HotKeyRepository {
             try {
                 NetResult.Success(hotKeyApi.getHotKey().data)
             } catch (e: Exception) {
-                NetResult.Failure(e.cause)
+                NetResult.Failure(e.message)
             }
         )
     }

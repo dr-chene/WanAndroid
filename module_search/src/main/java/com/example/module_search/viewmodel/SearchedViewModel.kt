@@ -31,7 +31,7 @@ class SearchedViewModel internal constructor(
                 .onCompletion { end.invoke() }
                 .collectLatest {
                     it.doFailure { t ->
-                        t?.message?.showToast()
+                        t?.showToast()
                     }
                     it.doSuccess { list ->
                         send(list)

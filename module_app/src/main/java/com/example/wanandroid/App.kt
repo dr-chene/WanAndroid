@@ -5,8 +5,10 @@ import com.example.lib_base.BaseApp
 import com.example.lib_base.isDebug
 import com.example.lib_net.netModule
 import com.example.module_home.homeModule
+import com.example.module_login.loginModule
 import com.example.module_mine.mineModule
 import com.example.module_search.searchModule
+import com.example.module_setting.settingModule
 import com.example.share_home_search.shareHomeSearchModule
 import com.tencent.mmkv.MMKV
 import org.koin.android.ext.koin.androidContext
@@ -33,7 +35,7 @@ class App : BaseApp() {
             androidContext(this@App)
             modules(
                 appModule, homeModule, netModule, shareHomeSearchModule, searchModule,
-                mineModule
+                mineModule, loginModule, settingModule
             )
         }
 

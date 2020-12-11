@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/Theme.WanAndroid">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:elevation="5dp"
+            android:src="@drawable/ic_back_white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.62" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/LoginBackgroundStyle"
+            app:srcCompat="@drawable/img_login_bg" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@color/white"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toTopOf="@id/input"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.618"
+            app:shapeAppearanceOverlay="@style/CircleStyle"
+            app:srcCompat="@drawable/img_test" />
+
+        <include
+            android:id="@+id/input"
+            layout="@layout/include_login_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal_center"
+            app:layout_constraintTop_toTopOf="@id/guideline_horizontal_center" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/login_btn"
+            app:layout_constraintEnd_toStartOf="@id/btn_register"
+            app:layout_constraintStart_toStartOf="@id/input"
+            app:layout_constraintTop_toBottomOf="@id/input" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_register"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/register_btn"
+            app:layout_constraintEnd_toEndOf="@id/input"
+            app:layout_constraintStart_toEndOf="@id/btn_login"
+            app:layout_constraintTop_toTopOf="@id/btn_login" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

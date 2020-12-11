@@ -14,7 +14,12 @@ object MmkvUtil {
 
     fun getCookies() = kv.decodeStringSet(KEY_COOKIE)
 
-    fun clearCookies() {
+    fun loginOut(){
+        clearCookies()
+        kv.clear()
+    }
+
+    private fun clearCookies() {
         kv.clearAll()
     }
 

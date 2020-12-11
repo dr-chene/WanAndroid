@@ -6,7 +6,10 @@
 
         <variable
             name="user"
-            type="com.example.module_mine.bean.RankUser" />
+            type="com.example.lib_base.bean.User" />
+        <variable
+            name="coin"
+            type="com.example.module_mine.bean.Coin" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +31,7 @@
 
         <TextView
             android:id="@+id/tv_nickname"
-            bindNickname="@{user.user.nickname}"
+            bindNickname="@{user.nickname}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -60,7 +63,7 @@
 
         <TextView
             android:id="@+id/tv_id"
-            bindInt="@{user.user.id}"
+            bindInt="@{user.id}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -71,7 +74,7 @@
 
         <TextView
             android:id="@+id/tv_rank"
-            bindInt="@{user.rank}"
+            bindInt="@{coin.rank}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -94,7 +97,7 @@
 
         <TextView
             android:id="@+id/tv_email"
-            bindEmail="@{user.user.email}"
+            bindEmail="@{user.email}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"

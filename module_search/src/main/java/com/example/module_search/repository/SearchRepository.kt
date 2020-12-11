@@ -26,16 +26,20 @@ class SearchRepository {
                     curSearch
                 }
                 if (!over) {
-                    searchApi.getSearch(curPage, searchKey).data.let {
-                        over = it.over
-                        curPage = it.curPage
-                        emit(NetResult.Success(it.datas))
+                    searchApi.getSearch(curPage, searchKey).let {
+                        if (it.data == null){
+                            emit(NetResult.Failure(it.errorMsg))
+                        } else it.data?.let { page ->
+                            over = page.over
+                            curPage = page.curPage
+                            emit(NetResult.Success(page.datas))
+                        }
                     }
                 } else {
-                    emit(NetResult.Failure(Exception("没有更多数据...")))
+                    emit(NetResult.Failure("没有更多数据..."))
                 }
             } catch (e: Exception) {
-                emit(NetResult.Failure(e.cause))
+                emit(NetResult.Failure(e.message))
             }
         }
 

@@ -2,6 +2,7 @@ package com.example.module_mine.adapter
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.example.module_mine.bean.Coin
 
 /**
 Created by chene on @date 20-12-10 下午5:36
@@ -24,5 +25,15 @@ fun bindNickname(view: TextView, nickname: String?) {
 fun bindInt(view: TextView, d: Int) {
     val text = if (d <= 0) "--"
     else d.toString()
+    view.text = text
+}
+
+@BindingAdapter("bindCoin")
+fun bindCoin(view: TextView, coin: Coin?) {
+    val text = if (coin == null) {
+        ""
+    } else {
+        "当前积分： ${coin.coinCount} "
+    }
     view.text = text
 }

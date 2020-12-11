@@ -19,7 +19,7 @@ class BannerRepository {
             try {
                 NetResult.Success(bannerApi.getBanner().data)
             } catch (e: Exception) {
-                NetResult.Failure(e.cause)
+                NetResult.Failure(e.message)
             }
         )
     }

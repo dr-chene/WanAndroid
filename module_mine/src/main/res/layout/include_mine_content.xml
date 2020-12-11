@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="coin"
+            type="com.example.module_mine.bean.Coin" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +23,17 @@
             app:layout_constraintTop_toTopOf="parent"
             bind:icon="@{@drawable/ic_coin_black}"
             bind:title="@{@string/item_coin}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            bindCoin="@{coin}"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/blue_light"
+            app:layout_constraintTop_toTopOf="@id/coin"
+            app:layout_constraintBottom_toBottomOf="@id/coin"
+            app:layout_constraintEnd_toEndOf="@id/coin"/>
 
         <include
             android:id="@+id/collect"

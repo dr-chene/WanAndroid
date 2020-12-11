@@ -29,7 +29,7 @@ class ArticleViewModel(
             .onCompletion { end.invoke() }
             .collectLatest {
                 if (it is NetResult.Failure) {
-                    error.invoke(it.throwable?.message)
+                    error.invoke(it.errorMsg)
                 } else if (it is NetResult.Success) {
                     _articles.postValue(it.value)
                 }
@@ -42,7 +42,7 @@ class ArticleViewModel(
             .onStart { start.invoke() }
             .onCompletion { end.invoke() }.collectLatest {
                 if (it is NetResult.Failure) {
-                    error.invoke(it.throwable?.message)
+                    error.invoke(it.errorMsg)
                 } else if (it is NetResult.Success) {
                     it.value?.datas?.let { v ->
                         _articles.value?.let { a ->

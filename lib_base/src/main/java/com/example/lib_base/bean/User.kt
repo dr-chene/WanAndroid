@@ -1,30 +1,67 @@
 package com.example.lib_base.bean
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcel
+import android.os.Parcelable
 
 /**
 Created by chene on @date 20-12-10 下午5:13
  **/
-@Entity(tableName = "user")
-data class User(
+class User(
     val admin: Boolean,
-    @ColumnInfo(name = "chapter_tops")
-    val chapterTops: List<Any>,
-    @ColumnInfo(name = "coin_count")
+//    val chapterTops: List<Any>,
     val coinCount: Int,
-    @ColumnInfo(name = "collect_ids")
-    val collectIds: List<Int>,
-    val email: String,
-    val icon: String,
-    @PrimaryKey
+//    val collectIds: List<Int>,
+    val email: String?,
+    val icon: String?,
     val id: Int,
-    val nickname: String,
-    val password: String,
-    @ColumnInfo(name = "public_name")
-    val publicName: String,
-    val token: String,
+    val nickname: String?,
+    val password: String?,
+    val publicName: String?,
+    val token: String?,
     val type: Int,
-    val username: String,
-)
+    val username: String?,
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readInt(),
+        parcel.readString()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeByte(if (admin) 1 else 0)
+        parcel.writeInt(coinCount)
+        parcel.writeString(email)
+        parcel.writeString(icon)
+        parcel.writeInt(id)
+        parcel.writeString(nickname)
+        parcel.writeString(password)
+        parcel.writeString(publicName)
+        parcel.writeString(token)
+        parcel.writeInt(type)
+        parcel.writeString(username)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<User> {
+        override fun createFromParcel(parcel: Parcel): User {
+            return User(parcel)
+        }
+
+        override fun newArray(size: Int): Array<User?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+}

@@ -11,7 +11,7 @@ Created by chene on @date 20-12-6 下午4:10
  **/
 private const val READ_TIMEOUT = 60L
 private const val WRITE_TIMEOUT = 60L
-private const val CONNECT_TIMEOUT = 3L
+private const val CONNECT_TIMEOUT = 30L
 
 val netModule = module {
     single {

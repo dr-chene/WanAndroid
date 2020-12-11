@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/white"/>
+
+    <item>
+        <bitmap
+            android:antialias="true"
+            android:gravity="center"
+            android:src="@drawable/ic_code_blue" 
+            android:layout_height="50dp"
+            android:layout_width="50dp" />
+    </item>
+</layer-list>
