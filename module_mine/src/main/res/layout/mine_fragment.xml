@@ -11,7 +11,7 @@
 
         <variable
             name="coin"
-            type="com.example.module_mine.bean.Coin" />
+            type="com.example.share_mine_coin.Coin" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

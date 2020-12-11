@@ -1,6 +1,6 @@
 package com.example.module_home.repository
 
-import com.example.lib_net.NetResult
+import com.example.lib_net.bean.NetResult
 import com.example.module_home.bean.TopArticle
 import com.example.module_home.remote.ArticleService
 import com.example.module_home.shouldUpdate

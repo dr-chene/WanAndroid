@@ -1,6 +1,6 @@
 package com.example.module_home.remote
 
-import com.example.lib_net.NetBean
+import com.example.lib_net.bean.NetBean
 import com.example.share_home_search.bean.Article
 import com.example.share_home_search.bean.PageArticle
 import retrofit2.http.GET

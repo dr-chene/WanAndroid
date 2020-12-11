@@ -7,8 +7,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.lib_base.save
 import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseActivity
-import com.example.lib_net.doFailure
-import com.example.lib_net.doSuccess
+import com.example.lib_net.bean.doFailure
+import com.example.lib_net.bean.doSuccess
 import com.example.module_login.databinding.LoginActivityBinding
 import com.example.module_login.repository.LoginRepository
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +27,8 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        makeStatusBarTransparent()
+        makeStatusBarIconDark()
         loginBinding = DataBindingUtil.setContentView(this, R.layout.login_activity)
 
         initView()

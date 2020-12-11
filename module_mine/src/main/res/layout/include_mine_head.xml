@@ -9,7 +9,7 @@
             type="com.example.lib_base.bean.User" />
         <variable
             name="coin"
-            type="com.example.module_mine.bean.Coin" />
+            type="com.example.share_mine_coin.Coin" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/img_test_avatar"
+            android:src="@drawable/img_test_nian"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -1,6 +1,6 @@
 package com.example.module_setting.repository
 
-import com.example.lib_net.NetResult
+import com.example.lib_net.bean.NetResult
 import com.example.module_setting.remote.LoginOutService
 import kotlinx.coroutines.flow.flow
 import org.koin.java.KoinJavaComponent.inject

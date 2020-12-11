@@ -2,8 +2,9 @@ package com.example.module_search.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.lib_base.showToast
-import com.example.lib_net.doFailure
-import com.example.lib_net.doSuccess
+import com.example.lib_net.bean.doFailure
+import com.example.lib_net.bean.doSuccess
+
 import com.example.module_search.repository.SearchRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.channelFlow

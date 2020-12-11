@@ -6,7 +6,7 @@
     <data>
         <variable
             name="coin"
-            type="com.example.module_mine.bean.Coin" />
+            type="com.example.share_mine_coin.Coin" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +15,7 @@
         android:background="@color/grey_background">
 
         <include
-            android:id="@+id/coin"
+            android:id="@+id/mine_coin"
             layout="@layout/include_mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,47 +31,47 @@
             bindCoin="@{coin}"
             android:layout_marginEnd="20dp"
             android:textColor="@color/blue_light"
-            app:layout_constraintTop_toTopOf="@id/coin"
-            app:layout_constraintBottom_toBottomOf="@id/coin"
-            app:layout_constraintEnd_toEndOf="@id/coin"/>
+            app:layout_constraintTop_toTopOf="@id/mine_coin"
+            app:layout_constraintBottom_toBottomOf="@id/mine_coin"
+            app:layout_constraintEnd_toEndOf="@id/mine_coin"/>
 
         <include
-            android:id="@+id/collect"
+            android:id="@+id/mine_collect"
             layout="@layout/include_mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/coin"
+            app:layout_constraintTop_toBottomOf="@id/mine_coin"
             bind:icon="@{@drawable/ic_collect_black}"
             bind:title="@{@string/item_collect}" />
 
         <include
-            android:id="@+id/web"
+            android:id="@+id/mine_web"
             layout="@layout/include_mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/collect"
+            app:layout_constraintTop_toBottomOf="@id/mine_collect"
             bind:icon="@{@drawable/ic_web_black}"
             bind:title="@{@string/item_web}" />
 
         <include
-            android:id="@+id/article"
+            android:id="@+id/mine_article"
             layout="@layout/include_mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/web"
+            app:layout_constraintTop_toBottomOf="@id/mine_web"
             bind:icon="@{@drawable/ic_article_black}"
             bind:title="@{@string/item_article}" />
 
         <include
-            android:id="@+id/setting"
+            android:id="@+id/mine_setting"
             layout="@layout/include_mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/article"
+            app:layout_constraintTop_toBottomOf="@id/mine_article"
             bind:icon="@{@drawable/ic_setting_black}"
             bind:title="@{@string/item_setting}" />
 

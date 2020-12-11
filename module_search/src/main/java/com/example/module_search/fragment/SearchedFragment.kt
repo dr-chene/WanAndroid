@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.example.lib_base.view.BaseFragment
+import com.example.lib_net.loadMore
 import com.example.module_search.databinding.FragmentSearchedBinding
-import com.example.module_search.isSlideToBottom
 import com.example.module_search.viewmodel.SearchActivityViewModel
 import com.example.module_search.viewmodel.SearchedViewModel
 import com.example.share_home_search.adapter.ArticleRecyclerViewAdapter
@@ -51,14 +50,9 @@ class SearchedFragment : BaseFragment() {
     }
 
     private fun initAction() {
-        searchedBinding.rv1searchedResult.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING && recyclerView.isSlideToBottom()) {
-                    loadMore()
-                }
-            }
-        })
+        searchedBinding.rv1searchedResult.loadMore {
+            loadMore()
+        }
     }
 
     private fun subscribe() {

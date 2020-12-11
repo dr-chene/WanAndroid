@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.618"
             app:shapeAppearanceOverlay="@style/CircleStyle"
-            app:srcCompat="@drawable/img_test" />
+            app:srcCompat="@drawable/img_test_nian" />
 
         <include
             android:id="@+id/input"

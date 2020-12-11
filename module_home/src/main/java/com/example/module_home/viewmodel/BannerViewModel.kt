@@ -3,7 +3,7 @@ package com.example.module_home.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.lib_net.NetResult
+import com.example.lib_net.bean.NetResult
 import com.example.module_home.bean.Banner
 import com.example.module_home.repository.BannerRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi

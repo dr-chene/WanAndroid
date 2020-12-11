@@ -79,7 +79,7 @@ class HomeFragment : BaseFragment() {
                 }
             })
         //拦截点击事件
-        homeBinding.loadMore.root.setOnClickListener { }
+        homeBinding.homeLoad.root.setOnClickListener { }
         homeBinding.fabUp.setOnClickListener {
             (homeBinding.includeContent.root as NestedScrollView).smoothScrollTo(0, 0)
         }
@@ -110,7 +110,7 @@ class HomeFragment : BaseFragment() {
             end = {
                 loadDataSuccess()
                 homeBinding.homeSwipeRefresh.isRefreshing = false
-                homeBinding.loadMore.root.visibility = View.GONE
+                homeBinding.homeLoad.root.visibility = View.GONE
                 cancel()
             }
         ) {
@@ -122,10 +122,10 @@ class HomeFragment : BaseFragment() {
     private fun loadArticle() = CoroutineScope(Dispatchers.Main).launch {
         articleViewModel.loadArticle(
             start = {
-                homeBinding.loadMore.root.visibility = View.VISIBLE
+                homeBinding.homeLoad.root.visibility = View.VISIBLE
             },
             end = {
-                homeBinding.loadMore.root.visibility = View.GONE
+                homeBinding.homeLoad.root.visibility = View.GONE
                 cancel()
             }
         ) {

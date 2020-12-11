@@ -7,9 +7,9 @@ import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseActivity
-import com.example.lib_net.MmkvUtil
-import com.example.lib_net.doFailure
-import com.example.lib_net.doSuccess
+import com.example.lib_net.bean.doFailure
+import com.example.lib_net.bean.doSuccess
+import com.example.lib_net.util.MmkvUtil
 import com.example.module_setting.databinding.SettingActivityBinding
 import com.example.module_setting.repository.LoginOutRepository
 import kotlinx.coroutines.CoroutineScope

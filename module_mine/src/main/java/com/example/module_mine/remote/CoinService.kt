@@ -1,7 +1,7 @@
 package com.example.module_mine.remote
 
-import com.example.lib_net.NetBean
-import com.example.module_mine.bean.Coin
+import com.example.lib_net.bean.NetBean
+import com.example.share_mine_coin.Coin
 import retrofit2.http.GET
 
 /**

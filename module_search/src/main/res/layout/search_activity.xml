@@ -26,8 +26,8 @@
             app:layout_constraintTop_toBottomOf="@id/search_bar" />
 
         <include
-            android:id="@+id/searching"
-            layout="@layout/include_load"
+            android:id="@+id/search_searching"
+            layout="@layout/view_item_load"
             android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

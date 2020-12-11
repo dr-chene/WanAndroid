@@ -1,7 +1,7 @@
 package com.example.module_login.remote
 
 import com.example.lib_base.bean.User
-import com.example.lib_net.NetBean
+import com.example.lib_net.bean.NetBean
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Query

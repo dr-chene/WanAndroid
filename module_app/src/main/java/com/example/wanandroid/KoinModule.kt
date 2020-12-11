@@ -10,4 +10,5 @@ val appModule = module {
     single { get<AppDataBase>().getTopArticleDao() }
     single { get<AppDataBase>().getPageArticleDao() }
     single { get<AppDataBase>().getSearchHistoryDao() }
+    single { get<AppDataBase>().getPageCoinRankDao() }
 }

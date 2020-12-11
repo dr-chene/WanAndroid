@@ -1,4 +1,4 @@
-package com.example.lib_net
+package com.example.lib_net.bean
 
 /**
  * Created by chene on @date 20-12-4 下午2:36

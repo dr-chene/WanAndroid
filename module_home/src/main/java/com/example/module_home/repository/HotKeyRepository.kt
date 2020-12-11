@@ -1,6 +1,6 @@
 package com.example.module_home.repository
 
-import com.example.lib_net.NetResult
+import com.example.lib_net.bean.NetResult
 import com.example.module_home.remote.HotKeyService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow

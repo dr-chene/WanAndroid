@@ -1,4 +1,4 @@
-package com.example.lib_net
+package com.example.lib_net.util
 
 import com.tencent.mmkv.MMKV
 

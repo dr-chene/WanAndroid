@@ -2,9 +2,9 @@ package com.example.module_login.repository
 
 import android.util.Log
 import com.example.lib_base.bean.User
-import com.example.lib_net.MmkvUtil
-import com.example.lib_net.NetBean
-import com.example.lib_net.NetResult
+import com.example.lib_net.bean.NetBean
+import com.example.lib_net.bean.NetResult
+import com.example.lib_net.util.MmkvUtil
 import com.example.module_login.remote.LoginService
 import kotlinx.coroutines.flow.flow
 import org.koin.java.KoinJavaComponent.inject

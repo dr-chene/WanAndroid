@@ -1,4 +1,4 @@
-package com.example.module_mine.bean
+package com.example.share_mine_coin
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -8,22 +8,26 @@ Created by chene on @date 20-12-10 下午11:32
  **/
 data class Coin(
     val coinCount: Int,
+    val level: Int,
     val rank: Int,
     val userId: Int,
-    val userName: String?
+    val username: String?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readInt(),
         parcel.readString()
-    )
+    ) {
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(coinCount)
+        parcel.writeInt(level)
         parcel.writeInt(rank)
         parcel.writeInt(userId)
-        parcel.writeString(userName)
+        parcel.writeString(username)
     }
 
     override fun describeContents(): Int {

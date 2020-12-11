@@ -18,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
-            android:id="@+id/load_more_progress"
+            android:id="@+id/view_item_load_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="5dp"
@@ -32,10 +32,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:elevation="5dp"
-            android:text="@string/tv_load"
+            android:text="@string/view_item_load_text"
             android:textColor="@color/blue_dark"
-            app:layout_constraintEnd_toEndOf="@id/load_more_progress"
-            app:layout_constraintStart_toStartOf="@id/load_more_progress"
-            app:layout_constraintTop_toBottomOf="@id/load_more_progress" />
+            app:layout_constraintEnd_toEndOf="@id/view_item_load_progress"
+            app:layout_constraintStart_toStartOf="@id/view_item_load_progress"
+            app:layout_constraintTop_toBottomOf="@id/view_item_load_progress" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

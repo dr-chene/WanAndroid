@@ -9,10 +9,9 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.bean.User
 import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseFragment
-import com.example.lib_net.MmkvUtil
-import com.example.lib_net.doFailure
-import com.example.lib_net.doSuccess
-import com.example.module_mine.bean.Coin
+import com.example.lib_net.bean.doFailure
+import com.example.lib_net.bean.doSuccess
+import com.example.lib_net.util.MmkvUtil
 import com.example.module_mine.databinding.MineFragmentBinding
 import com.example.module_mine.repository.CoinRepository
 import com.tencent.mmkv.MMKV
@@ -30,7 +29,7 @@ class MineFragment : BaseFragment() {
     private val coinRepository by inject<CoinRepository>()
     private val mmkv = MMKV.defaultMMKV()
     private var user: User? = null
-    private var coin: Coin? = null
+    private var coin: com.example.share_mine_coin.Coin? = null
     private var getCoinJob: Job? = null
 
     override fun onCreateView(
@@ -63,8 +62,14 @@ class MineFragment : BaseFragment() {
                 login()
             }
         }
-        mineBinding.mineContent.setting.root.setOnClickListener {
+        mineBinding.mineContent.mineSetting.root.setOnClickListener {
             setting()
+        }
+        mineBinding.mineHead.tvRankHead.setOnClickListener {
+            coinRank()
+        }
+        mineBinding.mineHead.tvRank.setOnClickListener {
+            coinRank()
         }
     }
 
@@ -80,9 +85,13 @@ class MineFragment : BaseFragment() {
         ARouter.getInstance().build("/setting/activity").navigation()
     }
 
+    private fun coinRank() {
+        ARouter.getInstance().build("/coin/rank/activity").navigation()
+    }
+
     private fun userShow() {
         user = mmkv.decodeParcelable("user", User::class.java)
-        coin = mmkv.decodeParcelable("coin", Coin::class.java)
+        coin = mmkv.decodeParcelable("coin", com.example.share_mine_coin.Coin::class.java)
         if (user != null && coin == null) {
             getCoinJob = getCoin()
         } else if (user == null) {

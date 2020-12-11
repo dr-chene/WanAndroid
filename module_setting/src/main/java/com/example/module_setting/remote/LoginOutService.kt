@@ -1,6 +1,6 @@
 package com.example.module_setting.remote
 
-import com.example.lib_net.NetBean
+import com.example.lib_net.bean.NetBean
 import retrofit2.http.GET
 
 /**
