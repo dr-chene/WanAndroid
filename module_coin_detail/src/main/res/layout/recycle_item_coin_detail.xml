@@ -30,12 +30,13 @@
             android:id="@+id/coin_detail_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:text="@{coinDetail.desc, default=@string/default_coin_detail_desc}"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@id/coin_detail_count"
-            app:layout_constraintStart_toEndOf="@id/coin_detail_reason"
+            app:layout_constraintStart_toStartOf="@id/coin_detail_reason"
             app:layout_constraintTop_toBottomOf="@id/coin_detail_reason" />
 
         <TextView

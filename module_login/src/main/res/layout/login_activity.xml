@@ -9,10 +9,10 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="30dp"
+            android:layout_width="25dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:elevation="5dp"
             android:src="@drawable/ic_back_white"
             app:layout_constraintStart_toStartOf="parent"

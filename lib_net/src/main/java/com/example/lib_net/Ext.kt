@@ -1,6 +1,8 @@
 package com.example.lib_net
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lib_base.showToast
+import com.example.lib_net.util.MmkvUtil
 
 /**
 Created by chene on @date 20-12-11 下午8:44
@@ -17,4 +19,12 @@ fun RecyclerView.loadAction(load: () -> Unit) {
             }
         }
     })
+}
+
+fun loginCheck(isLogin: () -> Unit){
+    if (MmkvUtil.isLogin()) {
+        isLogin.invoke()
+    } else {
+        "请先登录！".showToast()
+    }
 }

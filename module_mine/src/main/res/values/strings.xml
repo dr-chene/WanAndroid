@@ -9,4 +9,9 @@
     <string name="item_article">分享文章</string>
     <string name="item_setting">设置</string>
     <string name="email_null">"暂无"</string>
+    <string name="alert_input_title_hint">title</string>
+    <string name="alert_input_link_hint">link</string>
+    <string name="alert_input_author_hint">author</string>
+    <string name="alert_confirm_btn_share">share</string>
+    <string name="alert_confirm_btn_collect">collect</string>
 </resources>
