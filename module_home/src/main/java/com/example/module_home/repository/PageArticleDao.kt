@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.share_home_search.bean.PageArticle
+import com.example.share_article.bean.PageArticle
 
 
 /**

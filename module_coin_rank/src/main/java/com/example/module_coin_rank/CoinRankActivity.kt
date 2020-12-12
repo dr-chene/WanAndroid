@@ -15,7 +15,7 @@ import com.example.module_coin_rank.adapter.CoinRankRecyclerViewAdapter
 import com.example.module_coin_rank.bean.PageCoinRank
 import com.example.module_coin_rank.databinding.CoinRankActivityBinding
 import com.example.module_coin_rank.repository.PageCoinRankRepository
-import com.example.share_mine_coin.Coin
+import com.example.share_coin.Coin
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow

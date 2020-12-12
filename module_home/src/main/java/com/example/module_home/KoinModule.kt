@@ -11,8 +11,8 @@ import com.example.module_home.repository.HotKeyRepository
 import com.example.module_home.viewmodel.ArticleViewModel
 import com.example.module_home.viewmodel.BannerViewModel
 import com.example.module_home.viewmodel.HotKeyViewModel
-import com.example.share_home_search.bean.Article
-import com.example.share_home_search.bean.Tag
+import com.example.share_article.bean.Article
+import com.example.share_article.bean.Tag
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit

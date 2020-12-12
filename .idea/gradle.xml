@@ -21,10 +21,11 @@
             <option value="$PROJECT_DIR$/module_login" />
             <option value="$PROJECT_DIR$/module_main" />
             <option value="$PROJECT_DIR$/module_mine" />
+            <option value="$PROJECT_DIR$/module_nav" />
             <option value="$PROJECT_DIR$/module_search" />
             <option value="$PROJECT_DIR$/module_setting" />
-            <option value="$PROJECT_DIR$/share_home_search" />
-            <option value="$PROJECT_DIR$/share_mine_coin" />
+            <option value="$PROJECT_DIR$/share_article" />
+            <option value="$PROJECT_DIR$/share_coin" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -15,7 +15,7 @@ import com.example.module_search.databinding.SearchActivityBinding
 import com.example.module_search.fragment.NotSearchedFragment
 import com.example.module_search.fragment.SearchedFragment
 import com.example.module_search.viewmodel.SearchActivityViewModel
-import com.example.share_home_search.bean.HotKey
+import com.example.share_article.bean.HotKey
 import org.koin.android.ext.android.get
 import org.koin.android.viewmodel.ext.android.viewModel
 

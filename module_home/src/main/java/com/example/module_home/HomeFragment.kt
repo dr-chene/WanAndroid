@@ -15,8 +15,8 @@ import com.example.module_home.databinding.HomeFragmentBinding
 import com.example.module_home.viewmodel.ArticleViewModel
 import com.example.module_home.viewmodel.BannerViewModel
 import com.example.module_home.viewmodel.HotKeyViewModel
-import com.example.share_home_search.adapter.ArticleRecyclerViewAdapter
-import com.example.share_home_search.bean.HotKey
+import com.example.share_article.adapter.ArticleRecyclerViewAdapter
+import com.example.share_article.bean.HotKey
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject

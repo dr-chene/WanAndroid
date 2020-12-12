@@ -13,6 +13,8 @@ val appModule = module {
     single { get<AppDataBase>().getSearchHistoryDao() }
     single { get<AppDataBase>().getPageCoinRankDao() }
     single { get<AppDataBase>().getPageCoinDetailDao() }
+    single { get<AppDataBase>().getNavDao() }
+    single { get<AppDataBase>().getTreeDao() }
 
     single { Random(System.currentTimeMillis()) }
 }

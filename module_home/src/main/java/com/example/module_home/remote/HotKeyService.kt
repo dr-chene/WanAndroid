@@ -1,7 +1,7 @@
 package com.example.module_home.remote
 
 import com.example.lib_net.bean.NetBean
-import com.example.share_home_search.bean.HotKey
+import com.example.share_article.bean.HotKey
 import retrofit2.http.GET
 
 /**

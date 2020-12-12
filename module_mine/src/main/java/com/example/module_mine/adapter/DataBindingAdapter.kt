@@ -2,7 +2,6 @@ package com.example.module_mine.adapter
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.example.share_mine_coin.Coin
 
 /**
 Created by chene on @date 20-12-10 下午5:36
@@ -29,7 +28,7 @@ fun bindInt(view: TextView, d: Int) {
 }
 
 @BindingAdapter("bindCoin")
-fun bindCoin(view: TextView, coin: com.example.share_mine_coin.Coin?) {
+fun bindCoin(view: TextView, coin: com.example.share_coin.Coin?) {
     val text = if (coin == null) {
         ""
     } else {

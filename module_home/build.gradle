@@ -54,7 +54,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    api project(path: ':share_home_search')
+    api project(path: ':share_article')
     api project(path: ':lib_net')
 
     implementation "com.youth.banner:banner:$banner_version"

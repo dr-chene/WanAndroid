@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.lib_net.bean.NetResult
 import com.example.module_home.repository.ArticleRepository
-import com.example.share_home_search.bean.Article
+import com.example.share_article.bean.Article
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion

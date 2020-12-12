@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.lib_net.bean.NetResult
 
 import com.example.module_home.repository.HotKeyRepository
-import com.example.share_home_search.bean.HotKey
+import com.example.share_article.bean.HotKey
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 

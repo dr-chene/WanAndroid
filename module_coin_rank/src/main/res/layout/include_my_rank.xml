@@ -7,7 +7,7 @@
 
         <variable
             name="coin"
-            type="com.example.share_mine_coin.Coin" />
+            type="com.example.share_coin.Coin" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

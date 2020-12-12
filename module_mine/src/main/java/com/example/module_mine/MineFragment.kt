@@ -35,7 +35,7 @@ class MineFragment : BaseFragment() {
     private val coinRepository by inject<CoinRepository>()
     private val mmkv = MMKV.defaultMMKV()
     private var user: User? = null
-    private var coin: com.example.share_mine_coin.Coin? = null
+    private var coin: com.example.share_coin.Coin? = null
     private var getCoinJob: Job? = null
     private val shareCollectRepository by inject<ShareCollectRepository>()
     private val aRouter by lazy {
@@ -171,7 +171,7 @@ class MineFragment : BaseFragment() {
 
     private fun userShow() {
         user = mmkv.decodeParcelable("user", User::class.java)
-        coin = mmkv.decodeParcelable("coin", com.example.share_mine_coin.Coin::class.java)
+        coin = mmkv.decodeParcelable("coin", com.example.share_coin.Coin::class.java)
         if (user != null && coin == null) {
             getCoinJob = getCoin()
         } else if (user == null) {

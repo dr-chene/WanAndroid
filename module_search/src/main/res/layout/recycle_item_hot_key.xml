@@ -6,7 +6,7 @@
 
         <variable
             name="hotKey"
-            type="com.example.share_home_search.bean.HotKey" />
+            type="com.example.share_article.bean.HotKey" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

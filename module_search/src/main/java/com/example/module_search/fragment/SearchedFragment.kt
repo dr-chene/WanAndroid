@@ -9,7 +9,7 @@ import com.example.lib_net.loadAction
 import com.example.module_search.databinding.FragmentSearchedBinding
 import com.example.module_search.viewmodel.SearchActivityViewModel
 import com.example.module_search.viewmodel.SearchedViewModel
-import com.example.share_home_search.adapter.ArticleRecyclerViewAdapter
+import com.example.share_article.adapter.ArticleRecyclerViewAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel

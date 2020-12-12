@@ -4,9 +4,9 @@ import com.example.lib_net.bean.NetResult
 import com.example.module_home.bean.TopArticle
 import com.example.module_home.remote.ArticleService
 import com.example.module_home.shouldUpdate
-import com.example.share_home_search.bean.Article
-import com.example.share_home_search.bean.PageArticle
-import com.example.share_home_search.bean.Tag
+import com.example.share_article.bean.Article
+import com.example.share_article.bean.PageArticle
+import com.example.share_article.bean.Tag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

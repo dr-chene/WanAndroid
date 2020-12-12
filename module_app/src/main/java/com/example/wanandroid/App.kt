@@ -9,9 +9,10 @@ import com.example.module_coin_rank.coinRankModule
 import com.example.module_home.homeModule
 import com.example.module_login.loginModule
 import com.example.module_mine.mineModule
+import com.example.module_nav.navModule
 import com.example.module_search.searchModule
 import com.example.module_setting.settingModule
-import com.example.share_home_search.shareHomeSearchModule
+import com.example.share_article.shareHomeSearchModule
 import com.tencent.mmkv.MMKV
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -37,7 +38,8 @@ class App : BaseApp() {
             androidContext(this@App)
             modules(
                 appModule, homeModule, netModule, shareHomeSearchModule, searchModule,
-                mineModule, loginModule, settingModule, coinRankModule, coinDetailModule
+                mineModule, loginModule, settingModule, coinRankModule, coinDetailModule,
+                navModule
             )
         }
 

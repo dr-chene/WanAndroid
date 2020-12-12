@@ -1,7 +1,7 @@
 package com.example.module_search.remote
 
 import com.example.lib_net.bean.NetBean
-import com.example.share_home_search.bean.PageArticle
+import com.example.share_article.bean.PageArticle
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query

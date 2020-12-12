@@ -10,7 +10,7 @@ import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseFragment
 import com.example.module_search.adapter.HotKeyAdapter
 import com.example.module_search.adapter.MyFlowTagAdapter
-import com.example.module_search.bean.FlowTag
+import com.example.module_search.bean.SearchHistoryTag
 import com.example.module_search.databinding.FragmentNotSearchedBinding
 import com.example.module_search.viewmodel.SearchActivityViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -56,7 +56,7 @@ class NotSearchedFragment : BaseFragment() {
     private fun initAction() {
         notSearchedBinding.searchHistory.apply {
             setOnTagClickListener { _, position, _ ->
-                searchActivityViewModel.search((adapter.getItem(position) as FlowTag).text)
+                searchActivityViewModel.search((adapter.getItem(position) as SearchHistoryTag).text)
                 return@setOnTagClickListener true
             }
         }
@@ -74,7 +74,7 @@ class NotSearchedFragment : BaseFragment() {
                 notSearchedBinding.searchHistory.adapter =
                     get<MyFlowTagAdapter> {
                         parametersOf(it.map { sear ->
-                            FlowTag(sear.searchContent)
+                            SearchHistoryTag(sear.searchContent)
                         })
                     }
                 notSearchedBinding.ivDeleteSearchHistory.visibility =
@@ -100,7 +100,7 @@ class NotSearchedFragment : BaseFragment() {
     private fun deleteAll() = CoroutineScope(Dispatchers.IO).launch {
         notSearchedBinding.searchHistory.adapter.apply {
             for (i in 0 until count) {
-                searchActivityViewModel.deleteSearchHistory((getItem(i) as FlowTag).text)
+                searchActivityViewModel.deleteSearchHistory((getItem(i) as SearchHistoryTag).text)
             }
         }
     }

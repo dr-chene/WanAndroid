@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.module_search.databinding.RecycleItemHotKeyBinding
-import com.example.share_home_search.bean.HotKey
+import com.example.share_article.bean.HotKey
 
 /**
 Created by chene on @date 20-12-8 下午9:20

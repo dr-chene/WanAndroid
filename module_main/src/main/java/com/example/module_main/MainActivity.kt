@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
         mainBinding.mainNavBottom.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.item_home -> nav("/home/fragment")
-                R.id.item_friend -> nav("")
+                R.id.item_nav -> nav("/nav/fragment")
                 R.id.item_tree -> nav("")
                 R.id.item_square -> nav("")
                 R.id.item_mine -> nav("/mine/fragment")

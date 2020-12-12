@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.module_search.bean.SearchHistory
 import com.example.module_search.repository.SearchHistoryRepository
-import com.example.share_home_search.bean.HotKey
+import com.example.share_article.bean.HotKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
