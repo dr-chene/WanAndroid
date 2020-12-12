@@ -1,16 +1,12 @@
 package com.example.share_home_search
 
-import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import org.koin.java.KoinJavaComponent
 import java.util.*
 import java.util.regex.Pattern
 
 /**
 Created by chene on @date 20-12-8 下午8:45
  **/
-fun Int.getResColor() = ContextCompat.getColor(KoinJavaComponent.get(Context::class.java), this)
 
 const val emStart = "<em class='highlight'>"
 const val emEnd = "</em>"

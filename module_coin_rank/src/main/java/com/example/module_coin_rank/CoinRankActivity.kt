@@ -10,7 +10,7 @@ import com.example.lib_base.view.BaseActivity
 import com.example.lib_net.bean.NetResult
 import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
-import com.example.lib_net.loadMore
+import com.example.lib_net.loadAction
 import com.example.module_coin_rank.adapter.CoinRankRecyclerViewAdapter
 import com.example.module_coin_rank.bean.PageCoinRank
 import com.example.module_coin_rank.databinding.CoinRankActivityBinding
@@ -64,7 +64,7 @@ class CoinRankActivity : BaseActivity() {
         coinRankBinding.coinRankHead.coinIvBack.setOnClickListener {
             onBackPressed()
         }
-        coinRankBinding.coinRankContent.coinRv.loadMore {
+        coinRankBinding.coinRankContent.coinRv.loadAction {
             coinRankBinding.coinRankLoad.root.visibility = View.VISIBLE
             load()
         }

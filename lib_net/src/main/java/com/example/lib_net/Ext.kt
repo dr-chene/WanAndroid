@@ -9,7 +9,7 @@ fun RecyclerView.isSlideToBottom() =
     (this.computeVerticalScrollExtent() + this.computeVerticalScrollOffset()
             >= this.computeVerticalScrollRange())
 
-fun RecyclerView.loadMore(load: () -> Unit) {
+fun RecyclerView.loadAction(load: () -> Unit) {
     this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             if (newState == RecyclerView.SCROLL_STATE_DRAGGING && recyclerView.isSlideToBottom()) {

@@ -17,4 +17,6 @@
     <color name="blue_grey_dark">#000a12</color>
 
     <color name="color_bg_et_search">#ECEFF1</color>
+
+    <color name="grey_line_background">#8a8a8a</color>
 </resources>

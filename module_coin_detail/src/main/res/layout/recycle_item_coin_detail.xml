@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="coinDetail"
+            type="com.example.module_coin_detail.bean.CoinDetail" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@{coinDetail.backgroundColor}">
+
+        <TextView
+            android:id="@+id/coin_detail_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@{coinDetail.reason, default=签到}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/coin_detail_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{coinDetail.desc, default=@string/default_coin_detail_desc}"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/coin_detail_count"
+            app:layout_constraintStart_toEndOf="@id/coin_detail_reason"
+            app:layout_constraintTop_toBottomOf="@id/coin_detail_reason" />
+
+        <TextView
+            android:id="@+id/coin_detail_date"
+            bindTime="@{coinDetail.date}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="2010-12-21"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coin_detail_desc" />
+
+        <TextView
+            android:id="@+id/coin_detail_count_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/coin_detail_count_head"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@id/coin_detail_desc"
+            app:layout_constraintEnd_toStartOf="@id/coin_detail_count" />
+
+        <TextView
+            android:id="@+id/coin_detail_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@{String.valueOf(coinDetail.coinCount), default=12}"
+            android:textColor="@color/blue_primary"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/coin_detail_count_head"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

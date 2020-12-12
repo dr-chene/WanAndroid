@@ -1,3 +1,4 @@
+include ':module_coin_detail'
 include ':share_mine_coin'
 include ':module_coin_rank'
 include ':module_setting'

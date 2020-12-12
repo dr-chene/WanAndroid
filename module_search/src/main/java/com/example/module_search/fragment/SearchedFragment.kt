@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.lib_base.view.BaseFragment
-import com.example.lib_net.loadMore
+import com.example.lib_net.loadAction
 import com.example.module_search.databinding.FragmentSearchedBinding
 import com.example.module_search.viewmodel.SearchActivityViewModel
 import com.example.module_search.viewmodel.SearchedViewModel
@@ -50,7 +50,7 @@ class SearchedFragment : BaseFragment() {
     }
 
     private fun initAction() {
-        searchedBinding.rv1searchedResult.loadMore {
+        searchedBinding.rv1searchedResult.loadAction {
             loadMore()
         }
     }

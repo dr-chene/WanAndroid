@@ -1,6 +1,7 @@
 package com.example.wanandroid
 
 import org.koin.dsl.module
+import kotlin.random.Random
 
 /**
 Created by chene on @date 20-12-3 下午6:33
@@ -11,4 +12,7 @@ val appModule = module {
     single { get<AppDataBase>().getPageArticleDao() }
     single { get<AppDataBase>().getSearchHistoryDao() }
     single { get<AppDataBase>().getPageCoinRankDao() }
+    single { get<AppDataBase>().getPageCoinDetailDao() }
+
+    single { Random(System.currentTimeMillis()) }
 }

@@ -1,8 +1,8 @@
 package com.example.share_home_search.bean
 
 import androidx.recyclerview.widget.DiffUtil
+import com.example.lib_base.getResColor
 import com.example.share_article.R
-import com.example.share_home_search.getResColor
 import org.koin.java.KoinJavaComponent.get
 import kotlin.random.Random
 

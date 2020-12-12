@@ -31,6 +31,9 @@ class MineFragment : BaseFragment() {
     private var user: User? = null
     private var coin: com.example.share_mine_coin.Coin? = null
     private var getCoinJob: Job? = null
+    private val aRouter by lazy {
+        ARouter.getInstance()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +74,9 @@ class MineFragment : BaseFragment() {
         mineBinding.mineHead.tvRank.setOnClickListener {
             coinRank()
         }
+        mineBinding.mineContent.mineCoin.root.setOnClickListener {
+            coinDetail()
+        }
     }
 
     private fun subscribe() {
@@ -78,15 +84,19 @@ class MineFragment : BaseFragment() {
     }
 
     private fun login() {
-        ARouter.getInstance().build("/login/activity").navigation()
+        aRouter.build("/login/activity").navigation()
     }
 
     private fun setting() {
-        ARouter.getInstance().build("/setting/activity").navigation()
+        aRouter.build("/setting/activity").navigation()
     }
 
     private fun coinRank() {
-        ARouter.getInstance().build("/coin/rank/activity").navigation()
+        aRouter.build("/coin/rank/activity").navigation()
+    }
+
+    private fun coinDetail() {
+        aRouter.build("/coin_detail/activity").navigation()
     }
 
     private fun userShow() {

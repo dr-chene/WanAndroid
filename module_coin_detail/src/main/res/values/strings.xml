@@ -1,0 +1,5 @@
+<resources>
+    <string name="default_coin_detail_desc">2020-12-12 00:11:40 签到 , 积分：10 + 2</string>
+    <string name="coin_detail_count_head">合计:</string>
+    <string name="coin_detail_title">积分获取明细</string>
+</resources>

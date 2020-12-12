@@ -2,8 +2,10 @@ package com.example.lib_base
 
 import android.content.Context
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.lib_base.bean.User
 import com.tencent.mmkv.MMKV
+import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.get
 
 /**
@@ -17,4 +19,4 @@ fun User.save(){
     MMKV.defaultMMKV().encode("user", this)
 }
 
-fun getUser(): User = MMKV.defaultMMKV().decodeParcelable("user", User::class.java)
+fun Int.getResColor() = ContextCompat.getColor(KoinJavaComponent.get(Context::class.java), this)

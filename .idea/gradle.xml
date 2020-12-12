@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/lib_base" />
             <option value="$PROJECT_DIR$/lib_net" />
             <option value="$PROJECT_DIR$/module_app" />
+            <option value="$PROJECT_DIR$/module_coin_detail" />
             <option value="$PROJECT_DIR$/module_coin_rank" />
             <option value="$PROJECT_DIR$/module_home" />
             <option value="$PROJECT_DIR$/module_login" />

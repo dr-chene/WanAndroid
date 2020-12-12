@@ -4,6 +4,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.BaseApp
 import com.example.lib_base.isDebug
 import com.example.lib_net.netModule
+import com.example.module_coin_detail.coinDetailModule
 import com.example.module_coin_rank.coinRankModule
 import com.example.module_home.homeModule
 import com.example.module_login.loginModule
@@ -36,7 +37,7 @@ class App : BaseApp() {
             androidContext(this@App)
             modules(
                 appModule, homeModule, netModule, shareHomeSearchModule, searchModule,
-                mineModule, loginModule, settingModule, coinRankModule
+                mineModule, loginModule, settingModule, coinRankModule, coinDetailModule
             )
         }
 

@@ -16,7 +16,6 @@ import com.example.share_home_search.bean.Tag
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import kotlin.random.Random
 
 /**
 Created by chene on @date 20-12-3 下午6:49
@@ -35,8 +34,6 @@ val homeModule = module {
     single { (get() as Retrofit).create(ArticleService::class.java) }
     single { (get() as Retrofit).create(BannerService::class.java) }
     single { (get() as Retrofit).create(HotKeyService::class.java) }
-
-    single { Random(System.currentTimeMillis()) }
 
     viewModel { ArticleViewModel(get()) }
     viewModel { BannerViewModel(get()) }
