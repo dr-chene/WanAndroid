@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.view.BaseFragment
 import com.example.module_nav.adaptTreeNav
 import com.example.module_nav.adapter.NavRecyclerViewAdapter
@@ -27,7 +28,10 @@ class TabTreeFragment : BaseFragment() {
     private lateinit var fragmentTreeBinding: FragmentTreeBinding
     private val treeViewModel by viewModel<TreeViewModel>()
     private val click: (AdaptTag) -> Unit = {
-        TODO("Not define")
+        ARouter.getInstance()
+            .build("/tree/activity")
+            .withString("cid", it.id.toString())
+            .navigation()
     }
     private val navAdapter by inject<NavRecyclerViewAdapter> { parametersOf(click) }
 
@@ -48,7 +52,6 @@ class TabTreeFragment : BaseFragment() {
 
     private fun initView() {
         fragmentTreeBinding.navTree.navRv.adapter = navAdapter
-        refresh()
     }
 
     private fun initAction() {

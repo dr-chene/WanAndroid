@@ -27,7 +27,7 @@
             android:ellipsize="end"
             android:maxLength="20"
             android:singleLine="true"
-            android:text="@{flowTag.text, default=kotlin}"
+            android:text="@{flowTag.content, default=kotlin}"
             android:textColor="@color/black"
             android:textSize="15sp" />
     </androidx.cardview.widget.CardView>

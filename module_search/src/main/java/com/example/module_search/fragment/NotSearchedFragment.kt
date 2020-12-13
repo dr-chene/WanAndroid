@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseFragment
+import com.example.module_search.R
 import com.example.module_search.adapter.HotKeyAdapter
 import com.example.module_search.adapter.MyFlowTagAdapter
+import com.example.module_search.bean.SearchHistory
 import com.example.module_search.bean.SearchHistoryTag
 import com.example.module_search.databinding.FragmentNotSearchedBinding
 import com.example.module_search.viewmodel.SearchActivityViewModel
@@ -29,8 +31,8 @@ class NotSearchedFragment : BaseFragment() {
 
     private lateinit var notSearchedBinding: FragmentNotSearchedBinding
     private val searchActivityViewModel by sharedViewModel<SearchActivityViewModel>()
-    private val click: (String) -> Unit = {
-        searchActivityViewModel.search(it)
+    private val click: (SearchHistoryTag) -> Unit = {
+        searchActivityViewModel.search(it.content, it.tag)
     }
     private val hotKeyAdapter by inject<HotKeyAdapter> { parametersOf(click) }
 
@@ -50,18 +52,31 @@ class NotSearchedFragment : BaseFragment() {
     }
 
     private fun initView() {
-        notSearchedBinding.rvHotKey.adapter = hotKeyAdapter
+        notSearchedBinding.searchRvHotKey.adapter = hotKeyAdapter
+        notSearchedBinding.searchChipKey.isChecked = true
     }
 
     private fun initAction() {
-        notSearchedBinding.searchHistory.apply {
+        notSearchedBinding.searchSearchHistory.apply {
             setOnTagClickListener { _, position, _ ->
-                searchActivityViewModel.search((adapter.getItem(position) as SearchHistoryTag).text)
+                (adapter.getItem(position) as SearchHistoryTag).apply {
+                    searchActivityViewModel.search(content, tag)
+                }
                 return@setOnTagClickListener true
             }
         }
-        notSearchedBinding.ivDeleteSearchHistory.setOnClickListener {
+        notSearchedBinding.searchIvDeleteSearchHistory.setOnClickListener {
             delete()
+        }
+        notSearchedBinding.searchNotSearchChipGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.search_chip_key -> {
+                    searchActivityViewModel.changeSearchTag(SearchHistory.SEARCH_TAG_KEY)
+                }
+                R.id.search_chip_author -> {
+                    searchActivityViewModel.changeSearchTag(SearchHistory.SEARCH_TAG_AUTHOR)
+                }
+            }
         }
     }
 
@@ -71,13 +86,13 @@ class NotSearchedFragment : BaseFragment() {
         }
         CoroutineScope(Dispatchers.Main).launch {
             searchActivityViewModel.searchHistory.collect {
-                notSearchedBinding.searchHistory.adapter =
+                notSearchedBinding.searchSearchHistory.adapter =
                     get<MyFlowTagAdapter> {
-                        parametersOf(it.map { sear ->
-                            SearchHistoryTag(sear.searchContent)
+                        parametersOf(it.map { search ->
+                            SearchHistoryTag(search.searchContent, search.searchTag)
                         })
                     }
-                notSearchedBinding.ivDeleteSearchHistory.visibility =
+                notSearchedBinding.searchIvDeleteSearchHistory.visibility =
                     if (it.isEmpty()) View.INVISIBLE else View.VISIBLE
             }
         }
@@ -98,9 +113,9 @@ class NotSearchedFragment : BaseFragment() {
     }
 
     private fun deleteAll() = CoroutineScope(Dispatchers.IO).launch {
-        notSearchedBinding.searchHistory.adapter.apply {
+        notSearchedBinding.searchSearchHistory.adapter.apply {
             for (i in 0 until count) {
-                searchActivityViewModel.deleteSearchHistory((getItem(i) as SearchHistoryTag).text)
+                searchActivityViewModel.deleteSearchHistory((getItem(i) as SearchHistoryTag).content)
             }
         }
     }

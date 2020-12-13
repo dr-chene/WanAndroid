@@ -1,3 +1,4 @@
+include ':module_web'
 include ':module_nav'
 include ':module_coin_detail'
 include ':share_coin'

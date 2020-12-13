@@ -23,7 +23,7 @@ import org.koin.core.parameter.parametersOf
 /**
 Created by chene on @date 20-12-8 下午7:24
  **/
-class SearchedFragment : BaseFragment() {
+class SearchedFragment(private val tag: Int) : BaseFragment() {
 
     private lateinit var searchedBinding: FragmentSearchedBinding
     private val searchViewModel by sharedViewModel<SearchActivityViewModel>()
@@ -58,7 +58,7 @@ class SearchedFragment : BaseFragment() {
     private fun subscribe() {
         searchViewModel.searchContent.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) CoroutineScope(Dispatchers.Main).launch {
-                searchedViewModel.search(it) {
+                searchedViewModel.search(tag, it) {
                     searchViewModel.endSearch()
                 }.collectLatest { cur ->
                     searchAdapter.submitList(cur)
@@ -71,7 +71,7 @@ class SearchedFragment : BaseFragment() {
     }
 
     private fun loadMore() = CoroutineScope(Dispatchers.Main).launch {
-        searchedViewModel.load(
+        searchedViewModel.load(tag,
             { searchViewModel.startSearch() }
         ) {
             searchViewModel.endSearch()

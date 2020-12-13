@@ -62,6 +62,7 @@ dependencies {
     implementation project(path: ':module_coin_rank')
     implementation project(path: ':module_coin_detail')
     implementation project(path: ':module_nav')
+    implementation project(path: ':module_web')
 
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-runtime:$room_version"

@@ -1,6 +1,5 @@
 package com.example.module_search.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,22 +40,28 @@ class SearchActivityViewModel internal constructor(
     val searchContent: LiveData<String>
         get() = _searchContent
     private val _searchContent = MutableLiveData<String>()
-    fun search(content: String) {
-        Log.d("TAG_no", "search: $content")
+    fun search(content: String, tag: Int) {
         _searchContent.postValue(content)
         startSearch()
-        Log.d("TAG_no", "search: post $content")
         CoroutineScope(Dispatchers.IO).launch {
-            insertHistory(content)
+            insertHistory(content, tag)
         }
     }
 
     val searchHistory = searchHistoryRepository.searchHistory
 
-    private suspend fun insertHistory(searchContent: String) = withContext(Dispatchers.IO) {
-        searchHistoryRepository.insertSearchHistory(SearchHistory(searchContent))
-    }
+    private suspend fun insertHistory(searchContent: String, tag: Int) =
+        withContext(Dispatchers.IO) {
+            searchHistoryRepository.insertSearchHistory(SearchHistory(searchContent, tag))
+        }
 
     suspend fun deleteSearchHistory(content: String) =
         searchHistoryRepository.deleteSearchHistory(content)
+
+    val searchTag: LiveData<Int>
+        get() = _searchTag
+    private val _searchTag = MutableLiveData(SearchHistory.SEARCH_TAG_KEY)
+    fun changeSearchTag(tag: Int) {
+        _searchTag.postValue(tag)
+    }
 }

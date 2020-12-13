@@ -22,8 +22,6 @@ import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import kotlin.math.max
-import kotlin.math.min
 
 @Route(path = "/home/fragment")
 class HomeFragment : BaseFragment() {
@@ -35,6 +33,10 @@ class HomeFragment : BaseFragment() {
     private val articleAdapter by inject<ArticleRecyclerViewAdapter> { parametersOf(true) }
     private val bannerAdapter by inject<MyBannerAdapter> { parametersOf(listOf<Banner>()) }
     private var hotKeys: List<HotKey> = listOf()
+    private var hotKeysAnim: Job? = null
+    private var  first = true
+    private var curY = 0f
+    private var nextY = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,7 +100,14 @@ class HomeFragment : BaseFragment() {
         }
         hotKeyViewModel.hotKeys.observe(viewLifecycleOwner) {
             hotKeys = it
-            changeHotWord(it)
+            if (first) {
+                curY = homeBinding.includeContent.includeSearchBar.tvCur.y
+                nextY = homeBinding.includeContent.includeSearchBar.tvNext.y
+                first = false
+
+            }
+            hotKeysAnim?.cancel()
+            hotKeysAnim = changeHotWord(hotKeys)
         }
     }
 
@@ -162,13 +171,11 @@ class HomeFragment : BaseFragment() {
 
 
     private fun changeHotWord(hotKeys: List<HotKey>) = CoroutineScope(Dispatchers.Main).launch {
-        var index = 0;
+        var index = 0
         if (hotKeys.isNotEmpty()) homeBinding.includeContent.includeSearchBar.apply {
             val len = hotKeys.size
             while (true) {
                 val curText = hotKeys[index++ % len].name
-                val curY = min(tvCur.y, tvNext.y)
-                val nextY = max(tvCur.y, tvNext.y)
                 val distance = nextY - curY
                 val nextTextView = if (tvCur.y < tvNext.y) tvNext else tvCur
                 val curTextView = if (tvCur.y > tvNext.y) tvNext else tvCur

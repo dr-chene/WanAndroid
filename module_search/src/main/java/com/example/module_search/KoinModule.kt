@@ -19,14 +19,14 @@ Created by chene on @date 20-12-8 下午9:07
  **/
 val searchModule = module {
 
-    factory { (click: (String) -> Unit) -> HotKeyAdapter(click) }
+    factory { (click: (SearchHistoryTag) -> Unit) -> HotKeyAdapter(click) }
     factory { (data: List<SearchHistoryTag>) -> MyFlowTagAdapter(data) }
     single { SearchHistoryRepository(get()) }
 
     factory { NotSearchedFragment() }
-    factory { SearchedFragment() }
+    factory { (tag: Int) -> SearchedFragment(tag) }
     single { (get() as Retrofit).create(SearchService::class.java) }
-    single { SearchRepository() }
+    factory { SearchRepository() }
 
     viewModel { SearchedViewModel(get()) }
     viewModel { SearchActivityViewModel(get()) }

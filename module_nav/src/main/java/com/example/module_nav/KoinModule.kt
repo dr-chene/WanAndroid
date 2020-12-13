@@ -23,10 +23,10 @@ val navModule = module {
     factory { (tags: List<AdaptTag>) -> TagFlowAdapter(tags) }
 
     single { AdaptNav.AdaptNavDiffCallBack() }
-    factory {(click: (AdaptTag) -> Unit) -> NavRecyclerViewAdapter(click) }
+    factory { (click: (AdaptTag) -> Unit) -> NavRecyclerViewAdapter(click) }
 
-    single { (get() as Retrofit).create(TreeService::class.java) }
-    single { TreeRepository(get()) }
+    factory { (get() as Retrofit).create(TreeService::class.java) }
+    factory { TreeRepository(get()) }
 
     viewModel { NavViewModel(get()) }
     viewModel { TreeViewModel(get()) }

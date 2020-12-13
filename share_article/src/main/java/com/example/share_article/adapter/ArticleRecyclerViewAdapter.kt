@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.example.share_article.bean.Article
 import com.example.share_article.databinding.RecycleItemArticleBinding
 import org.koin.java.KoinJavaComponent.get
@@ -33,7 +34,10 @@ class ArticleRecyclerViewAdapter(private val isHome: Boolean) :
         fun bind(article: Article, isHome: Boolean) {
             binding.article = article
             binding.root.setOnClickListener {
-                TODO("方法未定义")
+                ARouter.getInstance()
+                    .build("/web/activity")
+                    .withString("link", article.link)
+                    .navigation()
             }
             if (!isHome) {
                 binding.tvArticleDesc.visibility = View.GONE

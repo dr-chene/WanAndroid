@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.example.lib_base.showToast
 import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
-
 import com.example.module_search.repository.SearchRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.channelFlow
@@ -24,10 +23,11 @@ class SearchedViewModel internal constructor(
         content: String,
         start: () -> Unit,
         end: () -> Unit,
-        isSearch: Boolean
+        isSearch: Boolean,
+        searchTag: Int
     ) = synchronized(this) {
         channelFlow {
-            searchRepository.search(content, isSearch)
+            searchRepository.search(content, isSearch, searchTag)
                 .onStart { start.invoke() }
                 .onCompletion { end.invoke() }
                 .collectLatest {
@@ -41,7 +41,9 @@ class SearchedViewModel internal constructor(
         }
     }
 
-    suspend fun load(start: () -> Unit, end: () -> Unit) = realSearch("", start, end, false)
+    suspend fun load(searchTag: Int, start: () -> Unit, end: () -> Unit) =
+        realSearch("", start, end, false, searchTag)
 
-    suspend fun search(content: String, end: () -> Unit) = realSearch(content, {}, end, true)
+    suspend fun search(searchTag: Int, content: String, end: () -> Unit) =
+        realSearch(content, {}, end, true, searchTag)
 }
