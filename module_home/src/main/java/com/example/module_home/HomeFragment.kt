@@ -75,14 +75,14 @@ class HomeFragment : BaseFragment() {
                     loadArticle()
                 }
                 if (scrollY == 0) {
-                    homeBinding.fabUp.visibility = View.INVISIBLE
+                    homeBinding.homeFabUp.root.visibility = View.INVISIBLE
                 } else {
-                    homeBinding.fabUp.visibility = View.VISIBLE
+                    homeBinding.homeFabUp.root.visibility = View.VISIBLE
                 }
             })
         //拦截点击事件
-        homeBinding.homeLoad.root.setOnClickListener { }
-        homeBinding.fabUp.setOnClickListener {
+//        homeBinding.homeLoad.root.setOnClickListener { }
+        homeBinding.homeFabUp.fabUp.setOnClickListener {
             (homeBinding.includeContent.root as NestedScrollView).smoothScrollTo(0, 0)
         }
         homeBinding.includeContent.includeSearchBar.searchBar.setOnClickListener {

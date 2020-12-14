@@ -54,7 +54,7 @@ class WebActivity : BaseActivity() {
     }
 
     private fun initAction() {
-        webActivityBinding.webFabUp.setOnClickListener {
+        webActivityBinding.webFabUp.fabUp.setOnClickListener {
             webActivityBinding.webNestScrollView.smoothScrollTo(0, 0)
             webActivityBinding.webAppbar.setExpanded(true)
         }

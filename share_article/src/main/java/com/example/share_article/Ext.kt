@@ -1,12 +1,46 @@
 package com.example.share_article
 
 import androidx.core.text.HtmlCompat
+import com.example.lib_base.showToast
+import com.example.lib_net.bean.NetResult
+import com.example.lib_net.bean.doFailure
+import com.example.lib_net.bean.doSuccess
+import com.example.share_article.bean.Article
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import java.util.*
 import java.util.regex.Pattern
 
 /**
 Created by chene on @date 20-12-8 下午8:45
  **/
+
+fun Flow<NetResult<List<Article>?>>.request(
+    start: (() -> Unit)?,
+    completion: () -> Unit,
+    success: (List<Article>) -> Unit
+) = CoroutineScope(Dispatchers.Main).launch {
+    this@request.onStart { start?.invoke() }
+        .onCompletion { completion.invoke() }
+        .collectLatest {
+            withContext(Dispatchers.Main) {
+                it.doSuccess { articles ->
+                    if (articles == null) {
+                        "data request error".showToast()
+                    } else {
+                        success.invoke(articles)
+                        cancel()
+                    }
+                }
+                it.doFailure { t ->
+                    t?.showToast()
+                }
+            }
+        }
+}
 
 const val emStart = "<em class='highlight'>"
 const val emEnd = "</em>"

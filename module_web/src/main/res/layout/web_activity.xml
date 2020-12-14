@@ -38,13 +38,8 @@
                 android:layout_height="match_parent" />
         </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <include
             android:id="@+id/web_fab_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_up_white"
-            app:fabSize="mini" />
+            layout="@layout/view_item_up"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
