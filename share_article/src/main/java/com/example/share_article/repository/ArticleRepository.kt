@@ -1,24 +1,25 @@
 package com.example.share_article.repository
 
 import android.util.Log
+import com.example.lib_net.bean.NetBean
 import com.example.lib_net.bean.NetResult
-import com.example.share_article.remote.ArticleService
+import com.example.share_article.bean.PageArticle
 import kotlinx.coroutines.flow.flow
 
 /**
 Created by chene on @date 20-12-14 上午9:49
  **/
-open class ArticleRepository {
+abstract class ArticleRepository {
 
-    private var over = false
+    protected var over = false
     private var curPage = 0
 
-    private fun getArticles(api: ArticleService, page: Int) = flow {
+    private fun getArticles(page: Int, query: String, cid: Int) = flow {
         try {
             if (over) {
                 emit(NetResult.Failure("没有更多数据..."))
             } else {
-                val net = api.getArticles(page)
+                val net = request(page, query, cid)
                 if (net.data == null) {
                     emit(NetResult.Failure("网络数据请求失败..."))
                 } else {
@@ -35,8 +36,13 @@ open class ArticleRepository {
         }
     }
 
-    protected fun refresh(api: ArticleService) = getArticles(api, 0)
+    protected abstract suspend fun request(
+        page: Int,
+        query: String,
+        cid: Int
+    ): NetBean<PageArticle>
 
-    protected fun load(api: ArticleService) = getArticles(api, curPage)
+    protected fun refresh(query: String, cid: Int) = getArticles(0, query, cid)
 
+    protected fun load(query: String, cid: Int) = getArticles(curPage, query, cid)
 }

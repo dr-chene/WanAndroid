@@ -29,7 +29,7 @@ class TabTreeFragment : BaseFragment() {
     private val treeViewModel by viewModel<TreeViewModel>()
     private val click: (AdaptTag) -> Unit = {
         ARouter.getInstance()
-            .build("/tree/activity")
+            .build("/cid/activity")
             .withString("cid", it.id.toString())
             .navigation()
     }

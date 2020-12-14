@@ -6,7 +6,7 @@ import com.example.share_article.bean.PageArticle
 /**
 Created by chene on @date 20-12-14 上午10:00
  **/
-open interface ArticleService {
+open interface PageArticleService {
 
     suspend fun getArticles(page: Int): NetBean<PageArticle>
 }
