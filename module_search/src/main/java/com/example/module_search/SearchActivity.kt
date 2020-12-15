@@ -82,7 +82,10 @@ class SearchActivity : BaseActivity() {
 
     private fun subscribe() {
         searchViewModel.searchContent.observe(this) {
-            searchBinding.searchBar.searchBar.setText(it)
+            searchBinding.searchBar.searchBar.apply {
+                setText(it)
+                setSelection(it.length)
+            }
             super.hideInput()
             navToSearched()
         }

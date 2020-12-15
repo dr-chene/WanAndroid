@@ -53,10 +53,8 @@ class ArticleRepository(
         }
     }
 
-    @ExperimentalCoroutinesApi
     fun loadArticles() = getPageArticles(++curPage)
 
-    @ExperimentalCoroutinesApi
     private fun getPageArticles(page: Int) = flow {
         try {
             if (!over) {
@@ -83,7 +81,6 @@ class ArticleRepository(
         }
     }.flowOn(Dispatchers.IO)
 
-    @ExperimentalCoroutinesApi
     private fun getTopArticles() = flow {
         try {
             var data = topArticleDao.getTopArticle()

@@ -10,7 +10,7 @@ import retrofit2.http.Query
 /**
 Created by chene on @date 20-12-14 下午5:01
  **/
-interface CidServiceImpl : CidArticleService {
+interface ArticleCidService : CidArticleService {
 
     @GET("/article/list/{page}/json")
     override suspend fun getArticles(

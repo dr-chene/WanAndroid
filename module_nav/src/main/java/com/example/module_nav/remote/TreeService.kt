@@ -10,5 +10,5 @@ Created by chene on @date 20-12-12 下午8:33
 interface TreeService {
 
     @GET("/tree/json")
-    suspend fun getTree(): NetBean<List<Tree>>
+    suspend fun getData(): NetBean<List<Tree>>
 }

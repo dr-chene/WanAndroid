@@ -10,5 +10,5 @@ Created by chene on @date 20-12-12 下午4:25
 interface NavService {
 
     @GET("/navi/json")
-    suspend fun getNavs(): NetBean<List<Nav>>
+    suspend fun getData(): NetBean<List<Nav>>
 }

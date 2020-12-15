@@ -2,4 +2,6 @@
 <resources>
     <string name="nav_tab_nav">导航</string>
     <string name="nav_tab_tree">体系</string>
+    <string name="nav_tab_public">公众号</string>
+    <string name="nav_tab_project">项目</string>
 </resources>

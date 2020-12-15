@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.lib_net.bean.NetResult
 import com.example.module_home.bean.Banner
 import com.example.module_home.repository.BannerRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 
 /**
@@ -20,7 +19,6 @@ class BannerViewModel(
         get() = _banners
     private val _banners = MutableLiveData<List<Banner>>()
 
-    @ExperimentalCoroutinesApi
     suspend fun loadBanner() = bannerRepository.getBanner().collectLatest {
         if (it is NetResult.Success) {
             _banners.postValue(it.value)

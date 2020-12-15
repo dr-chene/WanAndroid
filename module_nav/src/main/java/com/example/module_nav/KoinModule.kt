@@ -5,12 +5,9 @@ import com.example.module_nav.adapter.TagFlowAdapter
 import com.example.module_nav.bean.AdaptNav
 import com.example.module_nav.bean.AdaptTag
 import com.example.module_nav.remote.NavService
+import com.example.module_nav.remote.ProjectService
+import com.example.module_nav.remote.PublicService
 import com.example.module_nav.remote.TreeService
-import com.example.module_nav.repository.NavRepository
-import com.example.module_nav.repository.TreeRepository
-import com.example.module_nav.viewmodel.NavViewModel
-import com.example.module_nav.viewmodel.TreeViewModel
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -18,16 +15,13 @@ import retrofit2.Retrofit
 Created by chene on @date 20-12-12 下午3:51
  **/
 val navModule = module {
-    single { NavRepository(get()) }
-    single { (get() as Retrofit).create(NavService::class.java) }
+    single { get<Retrofit>().create(NavService::class.java) }
+    single { get<Retrofit>().create(TreeService::class.java) }
+    single { get<Retrofit>().create(ProjectService::class.java) }
+    single { get<Retrofit>().create(PublicService::class.java) }
+
     factory { (tags: List<AdaptTag>) -> TagFlowAdapter(tags) }
 
     single { AdaptNav.AdaptNavDiffCallBack() }
     factory { (click: (AdaptTag) -> Unit) -> NavRecyclerViewAdapter(click) }
-
-    single { (get() as Retrofit).create(TreeService::class.java) }
-    factory { TreeRepository(get()) }
-
-    viewModel { NavViewModel(get()) }
-    viewModel { TreeViewModel(get()) }
 }

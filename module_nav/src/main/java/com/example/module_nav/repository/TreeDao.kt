@@ -14,8 +14,8 @@ Created by chene on @date 20-12-12 下午8:38
 interface TreeDao {
 
     @Query("SELECT * FROM trees ORDER BY id")
-    fun getTrees(): Flow<List<Tree>>
+    fun get(): Flow<List<Tree>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTree(tree: Tree)
+    suspend fun insert(t: Tree)
 }

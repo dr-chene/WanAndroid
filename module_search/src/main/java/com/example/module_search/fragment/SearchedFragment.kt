@@ -66,7 +66,7 @@ class SearchedFragment(private val tag: Int) : BaseFragment() {
         }
     }
 
-    private fun loadMore() = repository.search("", true).request(
+    private fun loadMore() = repository.load().request(
         start = { searchViewModel.startSearch() },
         completion = { searchViewModel.endSearch() }
     ) {

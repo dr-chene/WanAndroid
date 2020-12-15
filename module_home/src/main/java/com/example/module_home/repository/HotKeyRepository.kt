@@ -2,7 +2,6 @@ package com.example.module_home.repository
 
 import com.example.lib_net.bean.NetResult
 import com.example.module_home.remote.HotKeyService
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import org.koin.java.KoinJavaComponent
 
@@ -13,7 +12,6 @@ class HotKeyRepository {
 
     private val hotKeyApi by KoinJavaComponent.inject(HotKeyService::class.java)
 
-    @ExperimentalCoroutinesApi
     fun getHotKey() = flow {
         emit(
             try {

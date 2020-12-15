@@ -25,7 +25,7 @@ abstract class ArticleRepository {
                 } else {
                     net.data?.let {
                         over = it.over
-                        curPage = it.curPage
+                        curPage++
                         emit(NetResult.Success(it.datas))
                     }
                 }
@@ -42,7 +42,10 @@ abstract class ArticleRepository {
         cid: Int
     ): NetBean<PageArticle>
 
-    protected fun refresh(query: String, cid: Int) = getArticles(0, query, cid)
+    protected fun refresh(startPage: Int, query: String, cid: Int) =
+        getArticles(let {
+            curPage = startPage
+            curPage }, query, cid)
 
     protected fun load(query: String, cid: Int) = getArticles(curPage, query, cid)
 }

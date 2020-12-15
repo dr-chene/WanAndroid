@@ -20,39 +20,6 @@ class SearchRepository(
 
     private var curSearch = ""
 
-//    fun search(content: String, isSearch: Boolean, searchTag: Int) = flow {
-//        try {
-//            val searchKey = if (isSearch) {
-//                over = false
-//                curSearch = content
-//                content
-//            } else {
-//                curSearch
-//            }
-//            if (!over) {
-//                val searchResult = searchByTag(searchTag, searchKey, curPage)
-//                if (searchResult == null) {
-//                    emit(NetResult.Failure("搜索tag参数错误..."))
-//                } else {
-//                    searchResult.let {
-//                        if (it.data == null) {
-//                            emit(NetResult.Failure(it.errorMsg))
-//                        } else it.data?.let { page ->
-//                            over = page.over
-//                            curPage = page.curPage
-//                            emit(NetResult.Success(page.datas))
-//                        }
-//                    }
-//                }
-//            } else {
-//                emit(NetResult.Failure("没有更多数据..."))
-//            }
-//        } catch (e: Exception) {
-//            emit(NetResult.Failure(e.message))
-//        }
-//    }
-
-
     override suspend fun request(page: Int, query: String, cid: Int): NetBean<PageArticle> {
         return api().getArticles(page, query)
     }
@@ -62,17 +29,10 @@ class SearchRepository(
         else -> keySearchApi
     }
 
-    private fun load(query: String) = super.load(query, 0)
+    fun load() = super.load(curSearch, 0)
 
-    fun refresh(query: String) = super.refresh(query, 0)
-
-    fun search(query: String, isSearch: Boolean) = load(
-        if (isSearch) {
-            over = false
-            curSearch = query
-            query
-        } else {
-            curSearch
-        }
-    )
+    fun refresh(query: String) = super.refresh(0, query.apply {
+        over = false
+        curSearch = query
+    }, 0)
 }

@@ -10,9 +10,13 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_net.loadAction
 import com.example.module_web.databinding.ActivityCidArticleBinding
+import com.example.module_web.remote.ArticleCidService
+import com.example.module_web.remote.ProjectCidService
+import com.example.module_web.remote.PublicCidService
 import com.example.module_web.repository.CidArticleRepository
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
 import com.example.share_article.request
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -21,10 +25,15 @@ class CidArticleActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCidArticleBinding
     private val adapter by inject<ArticleRecyclerViewAdapter> { parametersOf(false) }
-    private val repository by inject<CidArticleRepository>()
+    private val repository by inject<CidArticleRepository> {
+        parametersOf(api())
+    }
 
     @Autowired(name = "cid")
     lateinit var cid: String
+
+    @Autowired(name = "cate")
+    lateinit var cate: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,5 +101,9 @@ class CidArticleActivity : AppCompatActivity() {
         }
     }
 
-
+    private fun api() = when (cate) {
+        "project" -> get<ProjectCidService>()
+        "public" -> get<PublicCidService>()
+        else -> get<ArticleCidService>()
+    }
 }

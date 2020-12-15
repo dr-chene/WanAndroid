@@ -1,9 +1,6 @@
 package com.example.module_nav
 
-import com.example.module_nav.bean.AdaptNav
-import com.example.module_nav.bean.AdaptTag
-import com.example.module_nav.bean.Nav
-import com.example.module_nav.bean.Tree
+import com.example.module_nav.bean.*
 import com.example.share_article.bean.Article
 
 /**
@@ -25,3 +22,24 @@ fun List<Tree>.adaptTreeTag() = this.map {
     AdaptTag(it.name, "", it.id)
 }
 
+fun List<Project>.adaptNav(): List<AdaptNav> {
+    val name = when (this[0].parentChapterId) {
+        293 -> "项目"
+        407 -> "公众号"
+        else -> ""
+    }
+    return listOf(AdaptNav(this.map {
+        AdaptTag(it.name, "", it.id)
+    }, name))
+}
+
+inline fun <reified T> List<T>.adapt() = if (this.isNotEmpty()) {
+    when (this[0]) {
+        is Nav -> (this as List<Nav>).adaptNavNav()
+        is Tree -> (this as List<Tree>).adaptTreeNav()
+        is Project -> (this as List<Project>).adaptNav()
+        else -> emptyList()
+    }
+} else {
+    emptyList()
+}

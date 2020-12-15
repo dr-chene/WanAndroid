@@ -11,11 +11,14 @@ import org.koin.java.KoinJavaComponent.get
 /**
 Created by chene on @date 20-12-6 上午11:40
  **/
+private var toast: Toast? = null
 fun String.showToast() {
-    Toast.makeText(get(Context::class.java), this, Toast.LENGTH_SHORT).show()
+    toast?.cancel()
+    toast = Toast.makeText(get(Context::class.java), this, Toast.LENGTH_SHORT)
+    toast?.show()
 }
 
-fun User.save(){
+fun User.save() {
     MMKV.defaultMMKV().encode("user", this)
 }
 

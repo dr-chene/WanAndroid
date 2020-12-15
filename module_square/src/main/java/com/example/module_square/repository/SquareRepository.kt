@@ -23,7 +23,7 @@ class SquareRepository(
         else -> qaApi
     }
 
-    fun refresh() = super.refresh("", 0)
+    fun refresh() = super.refresh(0, "", 0)
 
     fun load() = super.load("", 0)
 
