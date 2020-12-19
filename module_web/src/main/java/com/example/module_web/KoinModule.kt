@@ -1,12 +1,10 @@
 
 package com.example.module_web
 
-import com.example.module_web.remote.ArticleCidService
-import com.example.module_web.remote.ProjectCidService
-import com.example.module_web.remote.PublicCidService
-import com.example.module_web.remote.PublicSearchService
+import com.example.module_web.remote.*
 import com.example.module_web.repository.CidArticleRepository
 import com.example.module_web.repository.SearchCidArticleRepository
+import com.example.module_web.repository.UserShareArticleRepository
 import com.example.share_article.remote.CidArticleService
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,4 +20,6 @@ val cidModule = module {
     single { get<Retrofit>().create(PublicSearchService::class.java) }
     factory { (api: CidArticleService) -> CidArticleRepository(api) }
     factory { SearchCidArticleRepository(get()) }
+    single { get<Retrofit>().create(UserShareArticlesService::class.java) }
+    factory { UserShareArticleRepository(get()) }
 }

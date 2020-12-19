@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_rank_coin_head">积分：</string>
+    <string name="my_rank_rank_head">总排名：</string>
+    <string name="my_rank_user_head">分享人：</string>
+</resources>

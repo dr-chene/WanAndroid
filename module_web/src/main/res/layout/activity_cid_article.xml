@@ -20,7 +20,7 @@
             android:id="@+id/web_cid_article_srl"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/article_share_user_coin"
             app:layout_constraintTop_toBottomOf="@id/web_cid_article_toolbar">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -30,6 +30,14 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recycle_item_article" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/article_share_user_coin"
+            layout="@layout/include_my_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
 
         <include
             android:id="@+id/web_cid_article_load"
@@ -42,6 +50,10 @@
 
         <include
             android:id="@+id/web_cid_article_fab_up"
-            layout="@layout/view_item_up"/>
+            layout="@layout/view_item_up"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/article_share_user_coin"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

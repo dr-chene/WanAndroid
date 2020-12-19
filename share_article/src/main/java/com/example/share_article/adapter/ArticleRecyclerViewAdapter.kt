@@ -59,6 +59,15 @@ class ArticleRecyclerViewAdapter(
             if (!isHome) {
                 binding.tvArticleDesc.visibility = View.GONE
             }
+            binding.tvArticleAuthor.setOnClickListener {
+                if (article.userId != -1) {
+                    ARouter.getInstance()
+                        .build("/cid/activity")
+                        .withString("cid", article.userId.toString())
+                        .withString("cate", "share")
+                        .navigation()
+                }
+            }
             if (article.collect) {
                 binding.ivArticleCollect.isSelected = true
             }

@@ -20,6 +20,7 @@ import com.example.module_web.remote.ProjectCidService
 import com.example.module_web.remote.PublicCidService
 import com.example.module_web.repository.CidArticleRepository
 import com.example.module_web.repository.SearchCidArticleRepository
+import com.example.module_web.repository.UserShareArticleRepository
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
 import com.example.share_article.request
 import org.koin.android.ext.android.get
@@ -36,6 +37,7 @@ class CidArticleActivity : AppCompatActivity() {
     }
     private val searchRepository by inject<SearchCidArticleRepository>()
     private var searchQuery: String = ""
+    private val shareArticleRepo by inject<UserShareArticleRepository>()
 
     @Autowired(name = "cid")
     lateinit var cid: String
@@ -58,6 +60,10 @@ class CidArticleActivity : AppCompatActivity() {
         setSupportActionBar(binding.webCidArticleToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.webCidArticleRv.adapter = adapter
+        if (cate == "share"){
+            binding.articleShareUserCoin.root.visibility = View.VISIBLE
+            binding.articleShareUserCoin.myRankUserHead.visibility = View.VISIBLE
+        }
         binding.webCidArticleSrl.isRefreshing = true
         refresh()
     }
@@ -92,6 +98,8 @@ class CidArticleActivity : AppCompatActivity() {
     private fun refresh() {
         if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.refresh(searchQuery, cid.toInt())
+        } else if (cate == "share") {
+            shareArticleRepo.refresh(cid.toInt())
         } else {
             repository.refresh(cid.toInt())
         }.request(
@@ -99,12 +107,18 @@ class CidArticleActivity : AppCompatActivity() {
             completion = { binding.webCidArticleSrl.isRefreshing = false }
         ) {
             adapter.submitList(it)
+            if (cate == "share") {
+                binding.articleShareUserCoin.coin = shareArticleRepo.userCoin?.data
+                binding.executePendingBindings()
+            }
         }
     }
 
     private fun load() {
         if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.load(cid.toInt(), searchQuery)
+        } else if (cate == "share") {
+            shareArticleRepo.load(cid.toInt())
         } else {
             repository.load(cid.toInt())
         }.request(

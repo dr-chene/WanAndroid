@@ -36,7 +36,7 @@ data class Article(
     var tags: List<Tag>,
     val title: String,
     val type: Int,
-    val userId: Long,
+    val userId: Int,
     val visible: Int,
     val zan: Int
 ) {
