@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/menu_item_share"
         android:title="@string/web_menu_share" />
@@ -8,4 +7,8 @@
     <item
         android:id="@+id/menu_item_browser"
         android:title="@string/web_menu_browser" />
+
+    <item
+        android:id="@+id/menu_item_collect"
+        android:title="@string/web_menu_un_collect" />
 </menu>

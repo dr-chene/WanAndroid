@@ -3,6 +3,7 @@ package com.example.module_home.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alibaba.android.arouter.launcher.ARouter
 import com.example.module_home.bean.Banner
 import com.example.module_home.databinding.RecycleItemBannerBinding
 import com.youth.banner.adapter.BannerAdapter
@@ -38,7 +39,11 @@ class MyBannerAdapter(data: List<Banner>) : BannerAdapter<Banner, RecyclerView.V
         fun bind(banner: Banner) {
             binding.banner = banner
             binding.root.setOnClickListener {
-                TODO("未定义")
+                ARouter.getInstance()
+                    .build("/web/activity")
+                    .withString("link", banner.url)
+                    .withString("cate", "web")
+                    .navigation()
             }
             binding.executePendingBindings()
         }

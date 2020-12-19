@@ -18,4 +18,7 @@ class ShareCollectRepository {
 
     suspend fun collectWeb(name: String, link: String) =
         shareCollectApi.collectWeb(name, link).request()
+
+    suspend fun collectInnerArticle(id: Int) =
+        shareCollectApi.collectInnerArticle(id).request()
 }
