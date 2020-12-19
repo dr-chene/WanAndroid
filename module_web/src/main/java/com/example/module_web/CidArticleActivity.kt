@@ -1,9 +1,14 @@
 package com.example.module_web
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -14,6 +19,7 @@ import com.example.module_web.remote.ArticleCidService
 import com.example.module_web.remote.ProjectCidService
 import com.example.module_web.remote.PublicCidService
 import com.example.module_web.repository.CidArticleRepository
+import com.example.module_web.repository.SearchCidArticleRepository
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
 import com.example.share_article.request
 import org.koin.android.ext.android.get
@@ -28,6 +34,8 @@ class CidArticleActivity : AppCompatActivity() {
     private val repository by inject<CidArticleRepository> {
         parametersOf(api())
     }
+    private val searchRepository by inject<SearchCidArticleRepository>()
+    private var searchQuery: String = ""
 
     @Autowired(name = "cid")
     lateinit var cid: String
@@ -43,7 +51,6 @@ class CidArticleActivity : AppCompatActivity() {
 
         initView()
         initAction()
-        subscribe()
 
     }
 
@@ -67,8 +74,9 @@ class CidArticleActivity : AppCompatActivity() {
         }
     }
 
-    private fun subscribe() {
-
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (cate == "public") return initSearchMenu(menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -82,7 +90,11 @@ class CidArticleActivity : AppCompatActivity() {
     }
 
     private fun refresh() {
-        repository.refresh(cid.toInt()).request(
+        if (cate == "public") {
+            searchRepository.refresh(searchQuery, cid.toInt())
+        } else {
+            repository.refresh(cid.toInt())
+        }.request(
             start = null,
             completion = { binding.webCidArticleSrl.isRefreshing = false }
         ) {
@@ -91,7 +103,11 @@ class CidArticleActivity : AppCompatActivity() {
     }
 
     private fun load() {
-        repository.load(cid.toInt()).request(
+        if (cate == "public") {
+            searchRepository.load(cid.toInt(), searchQuery)
+        } else {
+            repository.load(cid.toInt())
+        }.request(
             start = { binding.webCidArticleLoad.root.visibility = View.VISIBLE },
             completion = { binding.webCidArticleLoad.root.visibility = View.INVISIBLE }
         ) {
@@ -105,5 +121,47 @@ class CidArticleActivity : AppCompatActivity() {
         "project" -> get<ProjectCidService>()
         "public" -> get<PublicCidService>()
         else -> get<ArticleCidService>()
+    }
+
+    private fun initSearchMenu(menu: Menu?): Boolean {
+        menu ?: return true
+
+        menuInflater.inflate(R.menu.web_search_menu, menu)
+        (menu.findItem(R.id.web_public_search).actionView as SearchView).apply {
+            findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text).let {
+                it.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.toolbar_searchview_background,
+                    theme
+                )
+                it.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                it.hint = "在公众号中查找..."
+                it.setHintTextColor(Color.GRAY)
+                it.setTextColor(Color.BLACK)
+            }
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    search(query)
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText.isNullOrEmpty()) searchQuery = ""
+                    return false
+                }
+            })
+            setOnCloseListener {
+                searchQuery = ""
+                return@setOnCloseListener false
+            }
+        }
+
+        return true
+    }
+
+    private fun search(query: String?) {
+        query ?: return
+        binding.webCidArticleSrl.isRefreshing = true
+        refresh()
     }
 }
