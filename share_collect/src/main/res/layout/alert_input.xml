@@ -104,7 +104,7 @@
             android:textSize="12sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/alert_confirm_btn"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/alert_input_layout_author"
             app:layout_constraintTop_toTopOf="@id/alert_confirm_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

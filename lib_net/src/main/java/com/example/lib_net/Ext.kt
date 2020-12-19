@@ -56,7 +56,7 @@ suspend inline fun <reified T> Flow<NetResult<T>>.result(
     noinline completion: (() -> Unit)?,
     crossinline success: (T) -> Unit
 ) {
-    this@result.onStart { start?.invoke() }
+    this@result.onStart { start?.invoke()}
         .onCompletion { completion?.invoke() }
         .collectLatest {
             withContext(Dispatchers.Main) {

@@ -6,6 +6,7 @@ import com.example.lib_base.isDebug
 import com.example.lib_net.netModule
 import com.example.module_coin_detail.coinDetailModule
 import com.example.module_coin_rank.coinRankModule
+import com.example.module_collect.collectModule
 import com.example.module_home.homeModule
 import com.example.module_login.loginModule
 import com.example.module_mine.mineModule
@@ -42,7 +43,7 @@ class App : BaseApp() {
             modules(
                 appModule, homeModule, netModule, shareHomeSearchModule, searchModule,
                 mineModule, loginModule, settingModule, coinRankModule, coinDetailModule,
-                navModule, squareModule, cidModule, shareCollectModule
+                navModule, squareModule, cidModule, shareCollectModule, collectModule
             )
         }
 

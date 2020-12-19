@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.bean.User
@@ -15,10 +14,8 @@ import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
 import com.example.lib_net.loginCheck
 import com.example.lib_net.util.MmkvUtil
-import com.example.module_mine.databinding.AlertInputBinding
 import com.example.module_mine.databinding.MineFragmentBinding
 import com.example.module_mine.repository.CoinRepository
-import com.example.share_collect.repository.ShareCollectRepository
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -50,7 +47,6 @@ class MineFragment : BaseFragment() {
         context ?: return mineBinding.root
 
         initAction()
-        subscribe()
 
         return mineBinding.root
     }
@@ -79,13 +75,19 @@ class MineFragment : BaseFragment() {
             loginCheck { coinDetail() }
         }
         mineBinding.mineContent.mineArticle.root.setOnClickListener {
-            loginCheck { shareArticle.show() }
+            loginCheck {
+
+            }
         }
         mineBinding.mineContent.mineCollect.root.setOnClickListener {
-            loginCheck { collectArticle.show() }
+            loginCheck {
+                ARouter.getInstance().build("/article_collect/activity").navigation()
+            }
         }
         mineBinding.mineContent.mineWeb.root.setOnClickListener {
-            loginCheck { collectWeb.show() }
+            loginCheck {
+                ARouter.getInstance().build("/web_collect/activity").navigation()
+            }
         }
     }
 

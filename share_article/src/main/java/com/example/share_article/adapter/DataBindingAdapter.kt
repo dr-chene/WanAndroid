@@ -12,10 +12,10 @@ Created by chene on @date 20-12-8 下午8:53
 @BindingAdapter("bindAuthor")
 fun bindAuthor(view: TextView, article: Article) {
     val text = when {
-        article.author.isNotEmpty() -> {
+        !article.author.isNullOrEmpty() -> {
             "作者：${article.author}"
         }
-        article.shareUser.isNotEmpty() -> {
+        !article.shareUser.isNullOrEmpty() -> {
             "分享人：${article.shareUser}"
         }
         else -> {

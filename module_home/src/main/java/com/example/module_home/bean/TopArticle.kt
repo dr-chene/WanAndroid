@@ -15,7 +15,7 @@ Created by chene on @date 20-12-4 下午2:33
 data class TopArticle(
     val data: List<Article>,
     @PrimaryKey
-    val index: Long = data[0].id,
+    val index: Int = data[0].id,
     @ColumnInfo(name = "last_time")
     val lastTime: Long = System.currentTimeMillis()
 )

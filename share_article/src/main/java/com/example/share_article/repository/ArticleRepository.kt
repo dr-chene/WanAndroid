@@ -45,6 +45,7 @@ abstract class ArticleRepository {
     protected fun refresh(startPage: Int, query: String, cid: Int) =
         getArticles(let {
             curPage = startPage
+            over = false
             curPage }, query, cid)
 
     protected fun load(query: String, cid: Int) = getArticles(curPage, query, cid)
