@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/module_web" />
             <option value="$PROJECT_DIR$/share_article" />
             <option value="$PROJECT_DIR$/share_coin" />
+            <option value="$PROJECT_DIR$/share_collect" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

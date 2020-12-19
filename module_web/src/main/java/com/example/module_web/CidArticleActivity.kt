@@ -90,7 +90,7 @@ class CidArticleActivity : AppCompatActivity() {
     }
 
     private fun refresh() {
-        if (cate == "public") {
+        if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.refresh(searchQuery, cid.toInt())
         } else {
             repository.refresh(cid.toInt())
@@ -103,7 +103,7 @@ class CidArticleActivity : AppCompatActivity() {
     }
 
     private fun load() {
-        if (cate == "public") {
+        if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.load(cid.toInt(), searchQuery)
         } else {
             repository.load(cid.toInt())
@@ -161,6 +161,7 @@ class CidArticleActivity : AppCompatActivity() {
 
     private fun search(query: String?) {
         query ?: return
+        searchQuery = query
         binding.webCidArticleSrl.isRefreshing = true
         refresh()
     }

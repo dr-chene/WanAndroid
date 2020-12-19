@@ -1,4 +1,4 @@
-package com.example.module_mine.bean
+package com.example.share_collect.bean
 
 /**
 Created by chene on @date 20-12-12 上午11:15

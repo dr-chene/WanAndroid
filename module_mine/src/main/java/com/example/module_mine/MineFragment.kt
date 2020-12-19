@@ -18,7 +18,7 @@ import com.example.lib_net.util.MmkvUtil
 import com.example.module_mine.databinding.AlertInputBinding
 import com.example.module_mine.databinding.MineFragmentBinding
 import com.example.module_mine.repository.CoinRepository
-import com.example.module_mine.repository.ShareCollectRepository
+import com.example.share_collect.repository.ShareCollectRepository
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -37,49 +37,8 @@ class MineFragment : BaseFragment() {
     private var user: User? = null
     private var coin: com.example.share_coin.Coin? = null
     private var getCoinJob: Job? = null
-    private val shareCollectRepository by inject<ShareCollectRepository>()
     private val aRouter by lazy {
         ARouter.getInstance()
-    }
-    private val shareArticleView by lazy {
-        AlertInputBinding.bind(
-            LayoutInflater.from(requireContext()).inflate(R.layout.alert_input, null)
-        )
-    }
-    private val shareArticle by lazy {
-        AlertDialog.Builder(requireContext()).apply {
-            setView(shareArticleView.root)
-        }.create()
-    }
-
-    private val collectArticleView by lazy {
-        AlertInputBinding.bind(
-            LayoutInflater.from(requireContext()).inflate(R.layout.alert_input, null)
-        ).apply {
-            alertTitle.text = resources.getText(R.string.item_collect)
-            alertInputLayoutAuthor.visibility = View.VISIBLE
-            alertConfirmBtn.setText(R.string.alert_confirm_btn_collect)
-        }
-    }
-    private val collectArticle by lazy {
-        AlertDialog.Builder(requireContext()).apply {
-            setView(collectArticleView.root)
-        }.create()
-    }
-
-    private val collectWebView by lazy {
-        AlertInputBinding.bind(
-            LayoutInflater.from(requireContext()).inflate(R.layout.alert_input, null)
-        ).apply {
-            alertTitle.text = resources.getText(R.string.item_web)
-            alertInputLayoutTitle.hint = "name"
-            alertConfirmBtn.setText(R.string.alert_confirm_btn_collect)
-        }
-    }
-    private val collectWeb by lazy {
-        AlertDialog.Builder(requireContext()).apply {
-            setView(collectWebView.root)
-        }.create()
     }
 
     override fun onCreateView(
@@ -90,7 +49,6 @@ class MineFragment : BaseFragment() {
         mineBinding = MineFragmentBinding.inflate(inflater, container, false)
         context ?: return mineBinding.root
 
-        initView()
         initAction()
         subscribe()
 
@@ -100,24 +58,6 @@ class MineFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         userShow()
-    }
-
-    private fun initView() {
-        initAlertAction(shareArticleView, shareArticle) { title, link, _ ->
-            CoroutineScope(Dispatchers.Main).launch {
-                shareArticle(title, link)
-            }
-        }
-        initAlertAction(collectArticleView, collectArticle) { title, link, author ->
-            CoroutineScope(Dispatchers.Main).launch {
-                collectArticle(title, author, link)
-            }
-        }
-        initAlertAction(collectWebView, collectWeb) { title, link, _ ->
-            CoroutineScope(Dispatchers.Main).launch {
-                collectWeb(title, link)
-            }
-        }
     }
 
     private fun initAction() {
@@ -147,10 +87,6 @@ class MineFragment : BaseFragment() {
         mineBinding.mineContent.mineWeb.root.setOnClickListener {
             loginCheck { collectWeb.show() }
         }
-    }
-
-    private fun subscribe() {
-
     }
 
     private fun login() {
@@ -202,43 +138,6 @@ class MineFragment : BaseFragment() {
                     t?.showToast()
                 }
             }
-        }
-    }
-
-    private suspend fun shareArticle(title: String, link: String) = netRequest(
-        shareCollectRepository.shareArticle(title, link)
-    ) {
-        shareArticle.dismiss()
-        "文章分享成功".showToast()
-    }
-
-    private suspend fun collectArticle(title: String, author: String, link: String) = netRequest(
-        shareCollectRepository.collectArticle(title, author, link)
-    ) {
-        collectArticle.dismiss()
-        "文章收藏成功".showToast()
-    }
-
-    private suspend fun collectWeb(name: String, link: String) = netRequest(
-        shareCollectRepository.collectWeb(name, link)
-    ) {
-        collectWeb.dismiss()
-        "网站收藏成功".showToast()
-    }
-
-    private fun initAlertAction(
-        view: AlertInputBinding,
-        alert: AlertDialog,
-        confirm: (title: String, link: String, author: String) -> Unit
-    ) {
-        view.alertClose.setOnClickListener {
-            alert.dismiss()
-        }
-        view.alertConfirmBtn.setOnClickListener {
-            val title = view.alertInputTitle.text.toString()
-            val link = view.alertInputLink.text.toString()
-            val author = view.alertInputAuthor.text.toString()
-            confirm.invoke(title, link, author)
         }
     }
 }

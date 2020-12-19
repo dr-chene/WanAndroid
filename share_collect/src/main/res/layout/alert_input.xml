@@ -95,5 +95,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/alert_input_layout_author"
             app:layout_constraintTop_toBottomOf="@id/alert_input_layout_author" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/alert_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alert_delete_btn"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/alert_confirm_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/alert_confirm_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

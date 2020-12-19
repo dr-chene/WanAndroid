@@ -1,3 +1,4 @@
+include ':share_collect'
 include ':module_square'
 include ':module_web'
 include ':module_nav'

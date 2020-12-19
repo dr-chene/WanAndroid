@@ -15,6 +15,7 @@ import com.example.module_setting.settingModule
 import com.example.module_square.squareModule
 import com.example.module_web.cidModule
 import com.example.share_article.shareHomeSearchModule
+import com.example.share_collect.shareCollectModule
 import com.tencent.mmkv.MMKV
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -41,7 +42,7 @@ class App : BaseApp() {
             modules(
                 appModule, homeModule, netModule, shareHomeSearchModule, searchModule,
                 mineModule, loginModule, settingModule, coinRankModule, coinDetailModule,
-                navModule, squareModule, cidModule
+                navModule, squareModule, cidModule, shareCollectModule
             )
         }
 
