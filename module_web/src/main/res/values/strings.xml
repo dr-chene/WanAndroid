@@ -1,0 +1,5 @@
+<resources>
+    <string name="web_menu_browser">用浏览器打开</string>
+    <string name="web_menu_share">分享</string>
+    <string name="web_menu_search">search</string>
+</resources>

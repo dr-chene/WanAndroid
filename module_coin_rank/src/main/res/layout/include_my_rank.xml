@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="coin"
+            type="com.example.share_coin.Coin" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E3F2FD">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/my_rank_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RankAvatarStyle"
+            app:srcCompat="@drawable/img_test_nian" />
+
+        <TextView
+            android:id="@+id/my_rank_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@{coin.username}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/my_rank_avatar"
+            app:layout_constraintTop_toTopOf="@id/my_rank_avatar" />
+
+        <TextView
+            bindLevel="@{coin.level}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/my_rank_username"
+            app:layout_constraintStart_toEndOf="@id/my_rank_username" />
+
+        <TextView
+            android:id="@+id/my_rank_rank_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/my_rank_rank_head"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@id/my_rank_username"
+            app:layout_constraintTop_toBottomOf="@id/my_rank_username"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/my_rank_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="@{String.valueOf(coin.rank)}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/my_rank_rank_head"
+            app:layout_constraintStart_toEndOf="@id/my_rank_rank_head" />
+
+        <TextView
+            android:id="@+id/my_rank_coin_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_rank_coin_head"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@id/my_rank_coin"
+            app:layout_constraintEnd_toStartOf="@id/my_rank_coin"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/my_rank_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:text="@{String.valueOf(coin.coinCount)}"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

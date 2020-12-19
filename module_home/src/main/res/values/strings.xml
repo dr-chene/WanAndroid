@@ -1,0 +1,6 @@
+<resources>
+    <string name="article_test_tag">new</string>
+    <string name="home_fab_desc">tap to up</string>
+    <string name="load_error">加载数据错误</string>
+    <string name="hot_search_et_hint">搜索</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">首页</string>
+    <string name="tab_mine">我的</string>
+    <string name="tab_nav">常用</string>
+    <string name="tab_tree">体系</string>
+    <string name="tab_square">广场</string>
+</resources>
