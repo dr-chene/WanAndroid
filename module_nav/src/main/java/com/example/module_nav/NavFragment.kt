@@ -60,8 +60,6 @@ class NavFragment : BaseFragment() {
         context ?: return navFragmentBinding.root
 
         initView()
-        initAction()
-        subscribe()
 
         return navFragmentBinding.root
     }
@@ -101,13 +99,5 @@ class NavFragment : BaseFragment() {
                 }
             }.attach()
         }
-    }
-
-    private fun initAction() {
-
-    }
-
-    private fun subscribe() {
-
     }
 }

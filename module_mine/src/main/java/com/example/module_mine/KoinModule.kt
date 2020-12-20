@@ -10,5 +10,5 @@ Created by chene on @date 20-12-10 下午12:48
  **/
 val mineModule = module {
     single { (get() as Retrofit).create(CoinService::class.java) }
-    single { CoinRepository() }
+    single { CoinRepository(get()) }
 }

@@ -18,30 +18,6 @@ import java.util.regex.Pattern
 Created by chene on @date 20-12-8 下午8:45
  **/
 
-fun Flow<NetResult<List<Article>?>>.request(
-    start: (() -> Unit)?,
-    completion: () -> Unit,
-    success: (List<Article>) -> Unit
-) = CoroutineScope(Dispatchers.Main).launch {
-    this@request.onStart { start?.invoke() }
-        .onCompletion { completion.invoke() }
-        .collectLatest {
-            withContext(Dispatchers.Main) {
-                it.doSuccess { articles ->
-                    if (articles == null) {
-                        "data request error".showToast()
-                    } else {
-                        success.invoke(articles)
-                        cancel()
-                    }
-                }
-                it.doFailure { t ->
-                    t?.showToast()
-                }
-            }
-        }
-}
-
 const val emStart = "<em class='highlight'>"
 const val emEnd = "</em>"
 const val fontStart = "<font color='red'>"

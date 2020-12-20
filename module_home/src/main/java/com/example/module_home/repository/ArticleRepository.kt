@@ -43,7 +43,7 @@ class ArticleRepository(
                     NetResult.Success(
                         mutableListOf<Article>().apply {
                             if (t != null) addAll(t.data)
-                            if (p != null) addAll(p.datas)
+                            if (p != null) p.datas?.let { addAll(it) }
                         }.toList()
                     )
                 }

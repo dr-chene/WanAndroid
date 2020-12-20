@@ -25,7 +25,6 @@ import com.example.module_web.repository.CidArticleRepository
 import com.example.module_web.repository.SearchCidArticleRepository
 import com.example.module_web.repository.UserShareArticleRepository
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
-import com.example.share_article.request
 import com.example.share_collect.view.ShareArticleDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -131,18 +130,18 @@ class CidArticleActivity : AppCompatActivity() {
         }
     }
 
-    private fun refresh() {
+    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
         if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.refresh(searchQuery, cid.toInt())
         } else if (cate == "share" || cate == "myShare") {
             shareArticleRepo.refresh(cid.toInt())
         } else {
             repository.refresh(cid.toInt())
-        }.request(
+        }.result(
             start = null,
             completion = { binding.webCidArticleSrl.isRefreshing = false }
         ) {
-            adapter.submitList(it)
+            adapter.submitList(it?.datas)
             if (cate == "share" || cate == "myShare") {
                 binding.articleShareUserCoin.coin = shareArticleRepo.userCoin?.data
                 binding.executePendingBindings()
@@ -150,19 +149,19 @@ class CidArticleActivity : AppCompatActivity() {
         }
     }
 
-    private fun load() {
+    private fun load() = CoroutineScope(Dispatchers.Main).launch {
         if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.load(cid.toInt(), searchQuery)
         } else if (cate == "share" || cate == "myShare0") {
             shareArticleRepo.load(cid.toInt())
         } else {
             repository.load(cid.toInt())
-        }.request(
+        }.result(
             start = { binding.webCidArticleLoad.root.visibility = View.VISIBLE },
             completion = { binding.webCidArticleLoad.root.visibility = View.INVISIBLE }
         ) {
             val cur = adapter.currentList.toMutableList()
-            cur.addAll(it)
+            it?.datas?.let { list -> cur.addAll(list) }
             adapter.submitList(cur)
         }
     }

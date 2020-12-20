@@ -1,9 +1,11 @@
 package com.example.module_search.repository
 
 import com.example.lib_net.bean.NetBean
+import com.example.lib_net.bean.NetPage
 import com.example.module_search.bean.SearchHistory
 import com.example.module_search.remote.AuthorSearchService
 import com.example.module_search.remote.KeySearchService
+import com.example.share_article.bean.Article
 import com.example.share_article.bean.PageArticle
 import com.example.share_article.repository.ArticleRepository
 import org.koin.java.KoinJavaComponent.inject
@@ -20,7 +22,7 @@ class SearchRepository(
 
     private var curSearch = ""
 
-    override suspend fun request(page: Int, query: String, cid: Int): NetBean<PageArticle> {
+    override suspend fun request(page: Int, query: String, cid: Int): NetBean<NetPage<Article>> {
         return api().getArticles(page, query)
     }
 
@@ -29,9 +31,9 @@ class SearchRepository(
         else -> keySearchApi
     }
 
-    fun load() = super.load(curSearch, 0)
+    suspend fun load() = super.load(curSearch, 0)
 
-    fun refresh(query: String) = super.refresh(0, query.apply {
+    suspend fun refresh(query: String) = super.refresh(0, query.apply {
         over = false
         curSearch = query
     }, 0)

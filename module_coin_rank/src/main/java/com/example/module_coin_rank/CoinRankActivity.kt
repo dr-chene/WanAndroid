@@ -11,6 +11,7 @@ import com.example.lib_net.bean.NetResult
 import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
 import com.example.lib_net.loadAction
+import com.example.lib_net.result
 import com.example.module_coin_rank.adapter.CoinRankRecyclerViewAdapter
 import com.example.module_coin_rank.bean.PageCoinRank
 import com.example.module_coin_rank.databinding.CoinRankActivityBinding
@@ -74,43 +75,20 @@ class CoinRankActivity : BaseActivity() {
 
     }
 
-    private fun load() = dataRequest(
-        pageCoinRankRepository.load(),
-        loadSuccess
-    ) {
-        val before = adapter.currentList.toMutableList()
-        before.addAll(it.datas)
-        adapter.submitList(before)
+    private fun load() =  CoroutineScope(Dispatchers.Main).launch {
+        pageCoinRankRepository.load().result(null, loadSuccess) {
+            val before = adapter.currentList.toMutableList()
+            it?.datas?.let { list -> before.addAll(list) }
+            adapter.submitList(before)
+        }
     }
 
-    private fun refresh() = dataRequest(
-        pageCoinRankRepository.refresh(),
-        refreshSuccess,
-    ) {
-        adapter.submitList(it.datas)
+    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
+        pageCoinRankRepository.refresh().result(null,
+            refreshSuccess,
+        ) {
+            adapter.submitList(it?.datas)
+        }
     }
 
-    private fun dataRequest(
-        request: Flow<NetResult<PageCoinRank?>>,
-        onCompletion: () -> Unit,
-        onSuccess: (page: PageCoinRank) -> Unit
-    ) = CoroutineScope(Dispatchers.IO).launch {
-        request.onCompletion { onCompletion.invoke() }
-            .collectLatest {
-                withContext(Dispatchers.Main) {
-                    it.doSuccess { page ->
-                        if (page == null) {
-                            "data request error".showToast()
-                        } else {
-                            onSuccess.invoke(page)
-                            cancel()
-                        }
-                    }
-                    it.doFailure { t ->
-                        Log.d("TAG_debug", "refresh: $t")
-                        t?.showToast()
-                    }
-                }
-            }
-    }
 }

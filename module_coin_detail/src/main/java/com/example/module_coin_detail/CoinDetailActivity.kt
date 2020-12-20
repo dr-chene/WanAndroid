@@ -10,6 +10,7 @@ import com.example.lib_net.bean.NetResult
 import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
 import com.example.lib_net.loadAction
+import com.example.lib_net.result
 import com.example.module_coin_detail.adapter.CoinDetailRecyclerViewAdapter
 import com.example.module_coin_detail.bean.CoinDetail
 import com.example.module_coin_detail.bean.PageCoinDetail
@@ -43,7 +44,6 @@ class CoinDetailActivity : BaseActivity() {
 
         initView()
         initAction()
-        subscribe()
     }
 
     private fun initView() {
@@ -65,46 +65,18 @@ class CoinDetailActivity : BaseActivity() {
         }
     }
 
-    private fun subscribe() {
-
+    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
+        pageCoinDetailRepository.refresh().result(null, refreshSuccess) {
+            coinDetailAdapter.submitList(it?.datas)
+        }
     }
 
-    private fun refresh() = dataRequest(
-        pageCoinDetailRepository.refresh(),
-        refreshSuccess
-    ) {
-        coinDetailAdapter.submitList(it)
+    private fun load() = CoroutineScope(Dispatchers.Main).launch {
+        pageCoinDetailRepository.load().result(null, loadSuccess) {
+            val before = coinDetailAdapter.currentList.toMutableList()
+            it?.datas?.let { list -> before.addAll(list) }
+            coinDetailAdapter.submitList(before)
+        }
     }
 
-    private fun load() = dataRequest(
-        pageCoinDetailRepository.load(),
-        loadSuccess
-    ) {
-        val before = coinDetailAdapter.currentList.toMutableList()
-        before.addAll(it)
-        coinDetailAdapter.submitList(before)
-    }
-
-    private fun dataRequest(
-        request: Flow<NetResult<PageCoinDetail?>>,
-        completion: () -> Unit,
-        success: (List<CoinDetail>) -> Unit
-    ) = CoroutineScope(Dispatchers.IO).launch {
-        request.onCompletion { completion.invoke() }
-            .collectLatest {
-                withContext(Dispatchers.Main) {
-                    it.doSuccess { page ->
-                        if (page == null) {
-                            "data request error".showToast()
-                        } else {
-                            success.invoke(page.datas)
-                            cancel()
-                        }
-                    }
-                    it.doFailure { t ->
-                        t?.showToast()
-                    }
-                }
-            }
-    }
 }

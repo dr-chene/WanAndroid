@@ -12,5 +12,5 @@ Created by chene on @date 20-12-13 下午10:36
 val squareModule = module {
     single { (get() as Retrofit).create(SquareService::class.java) }
     single { (get() as Retrofit).create(QaService::class.java) }
-    factory { (type: Int) -> SquareRepository(type) }
+    factory { (type: Int) -> SquareRepository(type, get(), get()) }
 }

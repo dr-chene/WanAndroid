@@ -29,8 +29,6 @@ class SquareFragment : BaseFragment() {
         context ?: return squareBinding.root
 
         initView()
-        initAction()
-        subscribe()
 
         return squareBinding.root
     }
@@ -55,14 +53,6 @@ class SquareFragment : BaseFragment() {
             }.attach()
         }
         squareBinding.squareViewPage.isUserInputEnabled = false
-    }
-
-    private fun initAction() {
-
-    }
-
-    private fun subscribe() {
-
     }
 
     companion object {

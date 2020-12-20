@@ -1,6 +1,8 @@
 package com.example.module_web.remote
 
 import com.example.lib_net.bean.NetBean
+import com.example.lib_net.bean.NetPage
+import com.example.share_article.bean.Article
 import com.example.share_article.bean.PageArticle
 import com.example.share_article.remote.CidArticleService
 import retrofit2.http.GET
@@ -15,5 +17,5 @@ interface PublicCidService : CidArticleService {
     override suspend fun getArticles(
         @Path("page") page: Int,
         @Path("cid") cid: Int
-    ): NetBean<PageArticle>
+    ): NetBean<NetPage<Article>>
 }

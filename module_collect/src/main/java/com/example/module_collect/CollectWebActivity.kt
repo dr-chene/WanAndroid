@@ -55,10 +55,12 @@ class CollectWebActivity : CollectActivity() {
     }
 
     override fun refresh() {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             api.getWebs().request().result(
                 start = null,
-                completion = { binding.collectSrl.isRefreshing = false }
+                completion = {
+                    binding.collectSrl.isRefreshing = false
+                }
             ) {
                 adapter.submitList(it)
             }

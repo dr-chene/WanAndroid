@@ -13,6 +13,7 @@ import com.example.lib_net.bean.NetResult
 import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
 import com.example.lib_net.loginCheck
+import com.example.lib_net.result
 import com.example.lib_net.util.MmkvUtil
 import com.example.module_mine.databinding.MineFragmentBinding
 import com.example.module_mine.repository.CoinRepository
@@ -124,26 +125,12 @@ class MineFragment : BaseFragment() {
         mineBinding.executePendingBindings()
     }
 
-    private fun getCoin() = netRequest(coinRepository.getCoin()) {
-        mineBinding.coin = it
-        mmkv.encode("coin", it)
-        mineBinding.executePendingBindings()
-        "coin get success".showToast()
-    }
-
-    private inline fun <reified T> netRequest(
-        request: Flow<NetResult<T>>,
-        crossinline success: (T) -> Unit
-    ) = CoroutineScope(Dispatchers.IO).launch {
-        request.collectLatest {
-            withContext(Dispatchers.Main) {
-                it.doSuccess { r ->
-                    success.invoke(r)
-                }
-                it.doFailure { t ->
-                    t?.showToast()
-                }
-            }
+    private fun getCoin() = CoroutineScope(Dispatchers.Main).launch {
+        coinRepository.getCoin().result(null, null) {
+            mineBinding.coin = it
+            mmkv.encode("coin", it)
+            mineBinding.executePendingBindings()
+            "coin get success".showToast()
         }
     }
 }

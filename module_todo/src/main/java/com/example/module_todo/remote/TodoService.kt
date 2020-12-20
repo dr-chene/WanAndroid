@@ -1,7 +1,7 @@
 package com.example.module_todo.remote
 
 import com.example.lib_net.bean.NetBean
-import com.example.lib_net.bean.Page
+import com.example.lib_net.bean.NetPage
 import com.example.module_todo.bean.Todo
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -46,5 +46,5 @@ interface TodoService {
         @Query("type") type: Int? = null,
         @Query("priority") priority: Int? = null,
         @Query("orderby") orderby: Int = 4
-    ): NetBean<Page<Todo>>
+    ): NetBean<NetPage<Todo>>
 }

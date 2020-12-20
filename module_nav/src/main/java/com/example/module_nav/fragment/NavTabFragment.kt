@@ -14,7 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -39,7 +38,6 @@ class NavTabFragment(
 
         initView()
         initAction()
-        subscribe()
 
         return fragmentNavBinding.root
     }
@@ -55,19 +53,13 @@ class NavTabFragment(
         }
     }
 
-    private fun subscribe() {
-
-    }
-
-    private fun refresh() = CoroutineScope(Dispatchers.IO).launch {
+    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
         repository.refresh()
     }
 
-    private fun load() = CoroutineScope(Dispatchers.IO).launch {
+    private fun load() = CoroutineScope(Dispatchers.Main).launch {
         repository.load()?.collectLatest {
-            withContext(Dispatchers.Main) {
-                navAdapter.submitList(it.adapt())
-            }
+            navAdapter.submitList(it.adapt())
         }
     }
 

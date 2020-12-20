@@ -18,7 +18,7 @@ class TodoActivity : BaseActivity() {
     private lateinit var binding: TodoActivityBinding
     private val sortFragment by inject<SortDialogFragment>()
     private val sortViewModel by viewModel<SortViewModel>()
-    private var
+//    private var
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

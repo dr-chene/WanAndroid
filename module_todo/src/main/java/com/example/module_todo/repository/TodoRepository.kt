@@ -15,5 +15,5 @@ class TodoRepository(
     suspend fun refresh(status: Int? = null, type: Int? = null, priority: Int? = null, orderby: Int = 4) =
         api.list(1, status, type, priority, orderby).request()
 
-    suspend fun load() =
+//    suspend fun load() =
 }

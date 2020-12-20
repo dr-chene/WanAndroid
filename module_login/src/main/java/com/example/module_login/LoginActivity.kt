@@ -33,7 +33,6 @@ class LoginActivity : BaseActivity() {
 
         initView()
         initAction()
-        subscribe()
     }
 
     private fun initView() {
@@ -78,10 +77,6 @@ class LoginActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    private fun subscribe() {
-
     }
 
     private fun login(username: String, password: String) =

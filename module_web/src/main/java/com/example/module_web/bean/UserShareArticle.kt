@@ -1,6 +1,8 @@
 package com.example.module_web.bean
 
 import com.example.lib_net.bean.NetBean
+import com.example.lib_net.bean.NetPage
+import com.example.share_article.bean.Article
 import com.example.share_article.bean.PageArticle
 import com.example.share_coin.Coin
 
@@ -9,7 +11,7 @@ import com.example.share_coin.Coin
  */
 data class UserShareArticle(
     val coinInfo: Coin,
-    val shareArticles: PageArticle
+    val shareArticles: NetPage<Article>
 )
 
 fun NetBean<UserShareArticle>.coinInfo() = NetBean(this.data?.coinInfo, this.errorCode, this.errorMsg)

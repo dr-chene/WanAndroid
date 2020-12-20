@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.lib_base.view.BaseFragment
 import com.example.lib_net.loadAction
+import com.example.lib_net.result
 import com.example.module_square.databinding.FragmentSquareBinding
 import com.example.module_square.repository.SquareRepository
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
-import com.example.share_article.request
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -60,7 +63,7 @@ class TabSquareFragment(
             refresh()
         }
         tabSquareBinding.squareFabUp.fabUp.setOnClickListener {
-            tabSquareBinding.squareRv.smoothScrollToPosition( 0)
+            tabSquareBinding.squareRv.smoothScrollToPosition(0)
         }
     }
 
@@ -68,13 +71,17 @@ class TabSquareFragment(
 
     }
 
-    private fun refresh() = repository.refresh().request(null, refreshCompletion) {
-        adapter.submitList(it)
+    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
+        repository.refresh().result(null, refreshCompletion) {
+            adapter.submitList(it?.datas)
+        }
     }
 
-    private fun load() = repository.load().request(loadStart, loadCompletion) {
-        val cur = adapter.currentList.toMutableList()
-        cur.addAll(it)
-        adapter.submitList(cur)
+    private fun load() = CoroutineScope(Dispatchers.Main).launch {
+        repository.load().result(loadStart, loadCompletion) {
+            val cur = adapter.currentList.toMutableList()
+            it?.datas?.let { list -> cur.addAll(list) }
+            adapter.submitList(cur)
+        }
     }
 }

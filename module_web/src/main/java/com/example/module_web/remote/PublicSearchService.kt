@@ -1,6 +1,8 @@
 package com.example.module_web.remote
 
 import com.example.lib_net.bean.NetBean
+import com.example.lib_net.bean.NetPage
+import com.example.share_article.bean.Article
 import com.example.share_article.bean.PageArticle
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,5 +18,5 @@ interface PublicSearchService {
         @Path("page") page: Int,
         @Path("cid") cid: Int,
         @Query("k") query: String
-    ): NetBean<PageArticle>
+    ): NetBean<NetPage<Article>>
 }

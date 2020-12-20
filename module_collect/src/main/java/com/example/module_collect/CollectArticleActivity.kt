@@ -56,26 +56,30 @@ class CollectArticleActivity : CollectActivity() {
     }
 
     override fun refresh() {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             repository.refresh().result(
                 start = null,
                 completion = {
                     binding.collectSrl.isRefreshing = false
                 }
             ) {
-                adapter.submitList(it)
+                adapter.submitList(it?.datas)
             }
         }
     }
 
     override fun load() {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             repository.load().result(
-                start = { CoroutineScope(Dispatchers.Main).launch { binding.collectLoad.root.visibility = View.VISIBLE } },
-                completion = { CoroutineScope(Dispatchers.Main).launch { binding.collectLoad.root.visibility = View.INVISIBLE } }
+                start = {
+                    binding.collectLoad.root.visibility = View.VISIBLE
+                },
+                completion = {
+                    binding.collectLoad.root.visibility = View.INVISIBLE
+                }
             ) {
                 val before = adapter.currentList.toMutableList()
-                before.addAll(it)
+                it?.datas?.let { list -> before.addAll(list) }
                 adapter.submitList(before)
             }
         }

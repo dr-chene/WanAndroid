@@ -9,6 +9,7 @@ import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseActivity
 import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
+import com.example.lib_net.result
 import com.example.lib_net.util.MmkvUtil
 import com.example.module_setting.databinding.SettingActivityBinding
 import com.example.module_setting.repository.LoginOutRepository
@@ -32,13 +33,7 @@ class SettingActivity : BaseActivity() {
 
         settingBinding = DataBindingUtil.setContentView(this, R.layout.setting_activity)
 
-        initView()
         initAction()
-        subscribe()
-    }
-
-    private fun initView() {
-
     }
 
     private fun initAction() {
@@ -52,10 +47,6 @@ class SettingActivity : BaseActivity() {
                 "暂未登录".showToast()
             }
         }
-    }
-
-    private fun subscribe() {
-
     }
 
     private fun loginOutConfirm() {
@@ -73,17 +64,10 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun loginOut() = CoroutineScope(Dispatchers.IO).launch {
-        loginOutRepository.loginOut().collectLatest {
-            withContext(Dispatchers.Main) {
-                it.doSuccess {
-                    MmkvUtil.loginOut()
+        loginOutRepository.loginOut().result(null, null) {
+            MmkvUtil.loginOut()
                     finish()
                     "login out success".showToast()
-                }
-                it.doFailure {
-                    it?.showToast()
-                }
-            }
         }
     }
 }
