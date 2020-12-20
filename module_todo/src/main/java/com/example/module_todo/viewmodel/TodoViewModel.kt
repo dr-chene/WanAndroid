@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 /**
  *Created by chene on 20-12-20
  */
-class SortViewModel internal constructor(
+class TodoViewModel internal constructor(
     private val repository: TodoRepository
 ) : ViewModel() {
 
@@ -21,6 +21,12 @@ class SortViewModel internal constructor(
     private var _type: Int? = null
     private var _priority: Int? = null
     private var _orderby: Int = 4
+
+    var modifyTodo: Todo? = null
+
+    val  refreshing: LiveData<Boolean>
+        get() = _refreshing
+    private val _refreshing = MutableLiveData<Boolean>()
 
     val todos: LiveData<List<Todo>>
         get() = _todos
@@ -31,11 +37,13 @@ class SortViewModel internal constructor(
         _priority = priority
         _orderby = orderby
         refresh(null)
+        _refreshing.postValue(true)
     }
 
     fun refresh(completion: (() -> Unit)?) = CoroutineScope(Dispatchers.IO).launch {
         repository.refresh(_status, _type, _priority, _orderby).result(null, completion) {
             _todos.postValue(it?.datas)
+            _refreshing.postValue(false)
         }
     }
 

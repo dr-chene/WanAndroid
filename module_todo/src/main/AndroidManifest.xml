@@ -3,7 +3,8 @@
     package="com.example.module_todo">
 
     <application>
-        <activity android:name=".TodoActivity"></activity>
+        <activity android:name=".TodoAddActivity"></activity>
+        <activity android:name=".TodoActivity" />
     </application>
 
 </manifest>

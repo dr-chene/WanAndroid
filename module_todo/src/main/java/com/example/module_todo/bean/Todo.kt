@@ -20,11 +20,11 @@ data class Todo(
 ){
     class TodoDiffCallBack : DiffUtil.ItemCallback<Todo>() {
         override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-            return oldItem.title == newItem.title
+            return oldItem.status == newItem.status
         }
 
     }

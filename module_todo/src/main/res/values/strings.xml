@@ -19,4 +19,14 @@
     <string name="todo_sort_orderby_complete_desc">完成日期逆序</string>
     <string name="todo_sort_orderby_create">创建日期顺序</string>
     <string name="todo_sort_oderby_create_desc">创建日期逆序</string>
+    <string name="todo_menu_options_item_delete">删除</string>
+    <string name="todo_menu_options_item_modify">修改</string>
+    <string name="todo_menu_options_item_complete">标记完成</string>
+    <string name="todo_menu_options_item_un_complete">标记未完成</string>
+    <string name="todo_add_date_select">date select</string>
+    <string name="todo_add_title_hint">title</string>
+    <string name="todo_add_btn_add">add</string>
+    <string name="todo_add_content_hint">content</string>
+    <string name="todo_add_type_hint">type</string>
+    <string name="todo_add_priority_hint">priority</string>
 </resources>

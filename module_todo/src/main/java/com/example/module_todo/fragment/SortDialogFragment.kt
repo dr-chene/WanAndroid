@@ -17,7 +17,7 @@ import com.example.module_todo.TodoActivity.Companion.TYPE_LIFE
 import com.example.module_todo.TodoActivity.Companion.TYPE_PLAY
 import com.example.module_todo.TodoActivity.Companion.TYPE_WORK
 import com.example.module_todo.databinding.FragmentSortBinding
-import com.example.module_todo.viewmodel.SortViewModel
+import com.example.module_todo.viewmodel.TodoViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.ext.android.inject
 
@@ -27,7 +27,7 @@ import org.koin.android.ext.android.inject
 class SortDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentSortBinding
-    private val sortViewModel by inject<SortViewModel>()
+    private val sortViewModel by inject<TodoViewModel>()
     private var status: Int? = null
     private var type: Int? = null
     private var priority: Int? = null

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/todo_menu_options_item_delete"
+        android:title="@string/todo_menu_options_item_delete" />
+    <item
+        android:id="@+id/todo_menu_options_item_modify"
+        android:title="@string/todo_menu_options_item_modify" />
+    <item
+        android:id="@+id/todo_menu_options_item_complete"
+        android:title="@string/todo_menu_options_item_complete" />
+    <item
+        android:id="@+id/todo_menu_options_item_un_complete"
+        android:title="@string/todo_menu_options_item_un_complete" />
+</menu>
