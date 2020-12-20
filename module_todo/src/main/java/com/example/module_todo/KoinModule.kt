@@ -1,5 +1,7 @@
 package com.example.module_todo
 
+import com.example.module_todo.adapter.TodoRecyclerViewAdapter
+import com.example.module_todo.bean.Todo
 import com.example.module_todo.fragment.SortDialogFragment
 import com.example.module_todo.remote.TodoService
 import com.example.module_todo.repository.TodoRepository
@@ -15,5 +17,7 @@ val todoModule = module {
     single { SortDialogFragment() }
     single { get<Retrofit>().create(TodoService::class.java) }
     factory { TodoRepository(get()) }
-    viewModel { SortViewModel(get()) }
+    single { SortViewModel(get()) }
+    single { Todo.TodoDiffCallBack() }
+    single { TodoRecyclerViewAdapter() }
 }
