@@ -12,19 +12,26 @@ import com.example.share_coin.Coin
  *Created by chene on 20-12-20
  */
 class UserShareArticleRepository(
-    private val api: UserShareArticlesService
-) : ArticleRepository(){
+    private val api: UserShareArticlesService,
+    private val isMyShare: Boolean
+) : ArticleRepository() {
 
     var userCoin: NetBean<Coin>? = null
 
     override suspend fun request(page: Int, query: String, cid: Int): NetBean<PageArticle> {
-        return api.getArticles(page, cid).let {
+        return if (isMyShare) {
+            api.myShare(page)
+        } else {
+            api.otherShare(page, cid)
+        }.let {
             userCoin = it.coinInfo()
             it.shareArticles()
         }
     }
 
-    fun refresh(id: Int) = super.refresh(0, "", id)
+    fun refresh(id: Int) = super.refresh(if (isMyShare) 1 else 0, "", id)
 
     fun load(id: Int) = super.load("", id)
+
+    suspend fun delete(id: Int) = api.deleteMyShare(id)
 }

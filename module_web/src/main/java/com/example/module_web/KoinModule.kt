@@ -21,5 +21,5 @@ val cidModule = module {
     factory { (api: CidArticleService) -> CidArticleRepository(api) }
     factory { SearchCidArticleRepository(get()) }
     single { get<Retrofit>().create(UserShareArticlesService::class.java) }
-    factory { UserShareArticleRepository(get()) }
+    factory { (isMyShare: Boolean) -> UserShareArticleRepository(get(), isMyShare) }
 }

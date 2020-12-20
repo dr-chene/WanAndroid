@@ -7,5 +7,5 @@ import org.koin.dsl.module
 Created by chene on @date 20-12-8 下午9:01
  **/
 val shareHomeSearchModule = module {
-    factory { (isHome: Boolean) -> ArticleRecyclerViewAdapter(isHome, get(), get()) }
+    factory { (isHome: Boolean, isMyShare: Boolean, delete: ((Int) -> Unit)?) -> ArticleRecyclerViewAdapter(isHome, get(), get(), isMyShare, delete) }
 }

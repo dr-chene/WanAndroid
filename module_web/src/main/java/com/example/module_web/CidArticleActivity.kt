@@ -13,7 +13,10 @@ import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.example.lib_base.showToast
 import com.example.lib_net.loadAction
+import com.example.lib_net.request
+import com.example.lib_net.result
 import com.example.module_web.databinding.ActivityCidArticleBinding
 import com.example.module_web.remote.ArticleCidService
 import com.example.module_web.remote.ProjectCidService
@@ -23,6 +26,10 @@ import com.example.module_web.repository.SearchCidArticleRepository
 import com.example.module_web.repository.UserShareArticleRepository
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
 import com.example.share_article.request
+import com.example.share_collect.view.ShareArticleDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -31,13 +38,28 @@ import org.koin.core.parameter.parametersOf
 class CidArticleActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCidArticleBinding
-    private val adapter by inject<ArticleRecyclerViewAdapter> { parametersOf(false) }
+    private val delete: (Int) -> Unit = {
+        CoroutineScope(Dispatchers.IO).launch {
+            shareArticleRepo.delete(it).request().result(null, null) {
+                binding.webCidArticleSrl.isRefreshing = true
+                refresh()
+                "分享文章删除成功".showToast()
+            }
+        }
+    }
+    private val adapter by inject<ArticleRecyclerViewAdapter> {
+        parametersOf(
+            false,
+            cate == "myShare",
+            if (cate != "myShare") null else delete
+        )
+    }
     private val repository by inject<CidArticleRepository> {
         parametersOf(api())
     }
     private val searchRepository by inject<SearchCidArticleRepository>()
     private var searchQuery: String = ""
-    private val shareArticleRepo by inject<UserShareArticleRepository>()
+    private val shareArticleRepo by inject<UserShareArticleRepository> { parametersOf(cate == "myShare") }
 
     @Autowired(name = "cid")
     lateinit var cid: String
@@ -60,7 +82,7 @@ class CidArticleActivity : AppCompatActivity() {
         setSupportActionBar(binding.webCidArticleToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.webCidArticleRv.adapter = adapter
-        if (cate == "share"){
+        if (cate == "share" || cate == "myShare") {
             binding.articleShareUserCoin.root.visibility = View.VISIBLE
             binding.articleShareUserCoin.myRankUserHead.visibility = View.VISIBLE
         }
@@ -82,6 +104,10 @@ class CidArticleActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (cate == "public") return initSearchMenu(menu)
+        else if (cate == "myShare") {
+            menuInflater.inflate(R.menu.web_share_article, menu)
+            return true
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -91,6 +117,16 @@ class CidArticleActivity : AppCompatActivity() {
                 onBackPressed()
                 true
             }
+            R.id.menu_item_share_article -> {
+                ShareArticleDialog(this).apply {
+                    setOnDismissListener {
+                        binding.webCidArticleSrl.isRefreshing = true
+                        refresh()
+                    }
+                    show()
+                }
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -98,7 +134,7 @@ class CidArticleActivity : AppCompatActivity() {
     private fun refresh() {
         if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.refresh(searchQuery, cid.toInt())
-        } else if (cate == "share") {
+        } else if (cate == "share" || cate == "myShare") {
             shareArticleRepo.refresh(cid.toInt())
         } else {
             repository.refresh(cid.toInt())
@@ -107,7 +143,7 @@ class CidArticleActivity : AppCompatActivity() {
             completion = { binding.webCidArticleSrl.isRefreshing = false }
         ) {
             adapter.submitList(it)
-            if (cate == "share") {
+            if (cate == "share" || cate == "myShare") {
                 binding.articleShareUserCoin.coin = shareArticleRepo.userCoin?.data
                 binding.executePendingBindings()
             }
@@ -117,7 +153,7 @@ class CidArticleActivity : AppCompatActivity() {
     private fun load() {
         if (cate == "public" && searchQuery.isNotEmpty()) {
             searchRepository.load(cid.toInt(), searchQuery)
-        } else if (cate == "share") {
+        } else if (cate == "share" || cate == "myShare0") {
             shareArticleRepo.load(cid.toInt())
         } else {
             repository.load(cid.toInt())
@@ -169,7 +205,6 @@ class CidArticleActivity : AppCompatActivity() {
                 return@setOnCloseListener false
             }
         }
-
         return true
     }
 

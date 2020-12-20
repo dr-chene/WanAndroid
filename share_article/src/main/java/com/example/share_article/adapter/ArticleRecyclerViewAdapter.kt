@@ -24,7 +24,9 @@ Created by chene on @date 20-12-4 下午8:59
 class ArticleRecyclerViewAdapter(
     private val isHome: Boolean,
     private val collectRepo: ShareCollectRepository,
-    private val unCollectRepo: ArticleUnCollectRepository
+    private val unCollectRepo: ArticleUnCollectRepository,
+    private val isMyShare: Boolean,
+    private val delete: ((Int) -> Unit)?
 ) : ListAdapter<Article, RecyclerView.ViewHolder>(get(Article.ArticleDiffCallBack::class.java)) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ArticleViewHolder(
@@ -35,7 +37,7 @@ class ArticleRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ArticleViewHolder).bind(getItem(position), isHome)
+        (holder as ArticleViewHolder).bind(getItem(position), isHome, isMyShare, delete)
     }
 
     class ArticleViewHolder(
@@ -44,7 +46,7 @@ class ArticleRecyclerViewAdapter(
         private val unCollectRepo: ArticleUnCollectRepository
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(article: Article, isHome: Boolean) {
+        fun bind(article: Article, isHome: Boolean, isMyShare: Boolean, delete: ((Int) -> Unit)?) {
             binding.article = article
             binding.tvArticleTitle.setOnClickListener {
                 ARouter.getInstance()
@@ -58,6 +60,12 @@ class ArticleRecyclerViewAdapter(
             }
             if (!isHome) {
                 binding.tvArticleDesc.visibility = View.GONE
+            }
+            if (isMyShare) {
+                binding.ivArticleDelete.visibility = View.VISIBLE
+                binding.ivArticleDelete.setOnClickListener {
+                    delete?.invoke(article.id)
+                }
             }
             binding.tvArticleAuthor.setOnClickListener {
                 if (article.userId != -1) {

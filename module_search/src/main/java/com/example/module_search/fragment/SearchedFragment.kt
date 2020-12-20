@@ -22,7 +22,7 @@ class SearchedFragment(private val tag: Int) : BaseFragment() {
 
     private lateinit var searchedBinding: FragmentSearchedBinding
     private val searchViewModel by sharedViewModel<SearchActivityViewModel>()
-    private val searchAdapter by inject<ArticleRecyclerViewAdapter> { parametersOf(false) }
+    private val searchAdapter by inject<ArticleRecyclerViewAdapter> { parametersOf(false, false, null) }
     private val repository by inject<SearchRepository> { parametersOf(tag) }
 
     override fun onCreateView(

@@ -22,7 +22,7 @@ class TabSquareFragment(
 
     private lateinit var tabSquareBinding: FragmentSquareBinding
     private val repository by inject<SquareRepository> { parametersOf(type) }
-    private val adapter by inject<ArticleRecyclerViewAdapter> { parametersOf(false) }
+    private val adapter by inject<ArticleRecyclerViewAdapter> { parametersOf(false, false, null) }
     private val refreshCompletion = {
         tabSquareBinding.squareSrl.isRefreshing = false
     }

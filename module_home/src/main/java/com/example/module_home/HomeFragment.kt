@@ -30,7 +30,7 @@ class HomeFragment : BaseFragment() {
     private val articleViewModel by viewModel<ArticleViewModel>()
     private val bannerViewModel by viewModel<BannerViewModel>()
     private val hotKeyViewModel by viewModel<HotKeyViewModel>()
-    private val articleAdapter by inject<ArticleRecyclerViewAdapter> { parametersOf(true) }
+    private val articleAdapter by inject<ArticleRecyclerViewAdapter> { parametersOf(true, false, null) }
     private val bannerAdapter by inject<MyBannerAdapter> { parametersOf(listOf<Banner>()) }
     private var hotKeys: List<HotKey> = listOf()
     private var hotKeysAnim: Job? = null

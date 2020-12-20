@@ -76,7 +76,11 @@ class MineFragment : BaseFragment() {
         }
         mineBinding.mineContent.mineArticle.root.setOnClickListener {
             loginCheck {
-
+                ARouter.getInstance()
+                    .build("/cid/activity")
+                    .withString("cate", "myShare")
+                    .withString("cid", "-1")
+                    .navigation()
             }
         }
         mineBinding.mineContent.mineCollect.root.setOnClickListener {
