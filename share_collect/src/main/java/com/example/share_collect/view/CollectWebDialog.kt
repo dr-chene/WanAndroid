@@ -10,7 +10,6 @@ import com.example.share_collect.R
 import com.example.share_collect.bean.CollectWeb
 import com.example.share_collect.databinding.AlertInputBinding
 import com.example.share_collect.remote.ModifyCollectWebService
-import com.example.share_collect.repository.ShareCollectRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

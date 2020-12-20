@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/Theme.MaterialComponents.DayNight.BottomSheetDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.WanAndroid">
+
+
+            <TextView
+                android:id="@+id/todo_sort_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/todo_sort_status"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/todo_sort_status_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_status"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_status_complete"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_status_complete"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_status_un_complete"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_status_un_complete"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_status_all"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_status_all"
+                    android:textColor="@color/black" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/todo_sort_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/todo_sort_type"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_status_chips" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/todo_sort_type_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_type"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_type_work"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_type_work"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_type_life"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_type_life"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_type_play"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_type_play"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_type_all"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_type_all"
+                    android:textColor="@color/black" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/todo_sort_priority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/todo_sort_priority"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_type_chips" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/todo_sort_priority_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_priority"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_priority_important"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_priority_important"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_priority_normal"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_priority_normal"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_priority_all"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_priority_all"
+                    android:textColor="@color/black" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/todo_sort_orderby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/todo_sort_orderby"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_priority_chips" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/todo_sort_orderby_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_orderby"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_oderby_complete"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_orderby_complete"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_oderby_complete_desc"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_orderby_complete_desc"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_orderby_create"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_orderby_create"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/todo_sort_orderby_create_desc"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todo_sort_oderby_create_desc"
+                    android:textColor="@color/black" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/todo_sort_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/todo_sort_orderby_chips"
+                app:layout_constraintEnd_toEndOf="@id/todo_sort_orderby_chips"
+                android:text="@string/todo_sort_confirm"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

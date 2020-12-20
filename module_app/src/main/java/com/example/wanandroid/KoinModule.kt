@@ -17,6 +17,5 @@ val appModule = module {
     single { get<AppDataBase>().getTreeDao() }
     single { get<AppDataBase>().getProjectDao() }
     single { get<AppDataBase>().getPublicDao() }
-
     single { Random(System.currentTimeMillis()) }
 }

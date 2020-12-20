@@ -1,0 +1,22 @@
+<resources>
+    <string name="todo_sort_status">status</string>
+    <string name="todo_sort_type">type</string>
+    <string name="todo_sort_priority">priority</string>
+    <string name="todo_sort_orderby">orderby</string>
+    <string name="todo_menu_item_sort">筛选</string>
+    <string name="todo_sort_confirm">确定</string>
+    <string name="todo_sort_status_complete">完成</string>
+    <string name="todo_sort_status_un_complete">未完成</string>
+    <string name="todo_sort_status_all">全部</string>
+    <string name="todo_sort_type_work">工作</string>
+    <string name="todo_sort_type_life">生活</string>
+    <string name="todo_sort_type_play">娱乐</string>
+    <string name="todo_sort_type_all">全部</string>
+    <string name="todo_sort_priority_important">重要</string>
+    <string name="todo_sort_priority_normal">一般</string>
+    <string name="todo_sort_priority_all">全部</string>
+    <string name="todo_sort_orderby_complete">完成日期顺序</string>
+    <string name="todo_sort_orderby_complete_desc">完成日期逆序</string>
+    <string name="todo_sort_orderby_create">创建日期顺序</string>
+    <string name="todo_sort_oderby_create_desc">创建日期逆序</string>
+</resources>

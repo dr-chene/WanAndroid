@@ -1,7 +1,6 @@
 package com.example.module_collect.repository
 
 import com.example.lib_net.bean.NetBean
-import com.example.lib_net.request
 import com.example.module_collect.remote.CollectArticleService
 import com.example.share_article.bean.PageArticle
 import com.example.share_article.repository.ArticleRepository

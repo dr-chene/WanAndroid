@@ -11,9 +11,9 @@
         android:title="@string/tab_nav"/>
 
     <item
-        android:id="@+id/item_tree"
-        android:icon="@drawable/ic_tree"
-        android:title="@string/tab_tree" />
+        android:id="@+id/item_todo"
+        android:icon="@drawable/ic_todo"
+        android:title="@string/tab_todo" />
 
     <item
         android:id="@+id/item_square"

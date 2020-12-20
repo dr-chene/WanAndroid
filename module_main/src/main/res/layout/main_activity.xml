@@ -6,7 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.module_main.MainActivity">
+        tools:context="com.example.module_main.MainActivity"
+        android:theme="@style/Theme.WanAndroid">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_fragment_container"

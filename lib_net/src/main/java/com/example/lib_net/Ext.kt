@@ -38,12 +38,17 @@ fun loginCheck(isLogin: () -> Unit) {
 }
 
 private const val SUCCESS = 0
-fun <T> NetBean<T>.request() = flow {
+fun <T> NetBean<T>.request(over: Boolean = false, requestSuccess: ((T?) -> Unit)? = null) = flow {
     try {
-        if (this@request.errorCode == SUCCESS) {
-            emit(NetResult.Success(this@request.data))
+        if (over) {
+            emit(NetResult.Failure("没有更多数据..."))
         } else {
-            emit(NetResult.Failure(this@request.errorMsg))
+            if (this@request.errorCode == SUCCESS) {
+                requestSuccess?.invoke(this@request.data)
+                emit(NetResult.Success(this@request.data))
+            } else {
+                emit(NetResult.Failure(this@request.errorMsg))
+            }
         }
     } catch (e: Exception) {
         Log.d("TAG_debug", "${e.message}")

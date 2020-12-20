@@ -7,6 +7,7 @@ import androidx.fragment.app.commit
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.view.BaseActivity
+import com.example.lib_net.loginCheck
 import com.example.module_main.databinding.MainActivityBinding
 
 @Route(path = "/main/activity")
@@ -33,7 +34,9 @@ class MainActivity : BaseActivity() {
             when (it.itemId) {
                 R.id.item_home -> nav("/home/fragment")
                 R.id.item_nav -> nav("/nav/fragment")
-                R.id.item_tree -> nav("")
+                R.id.item_todo -> loginCheck {
+                    ARouter.getInstance().build("/todo/activity").navigation()
+                }
                 R.id.item_square -> nav("/square/fragment")
                 R.id.item_mine -> nav("/mine/fragment")
             }
