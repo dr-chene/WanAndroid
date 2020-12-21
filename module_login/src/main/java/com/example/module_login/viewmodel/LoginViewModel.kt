@@ -1,6 +1,7 @@
-package com.example.module_login.repository
+package com.example.module_login.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import com.example.lib_base.bean.User
 import com.example.lib_net.bean.NetBean
 import com.example.lib_net.bean.NetResult
@@ -13,16 +14,16 @@ import retrofit2.Response
 /**
 Created by chene on @date 20-12-10 下午10:24
  **/
-class LoginRepository {
-
-    private val loginApi by inject(LoginService::class.java)
+class LoginViewModel(
+    private val api: LoginService
+): ViewModel() {
 
     suspend fun login(username: String, password: String) = userOpera(
-        loginApi.login(username, password)
+        api.login(username, password)
     )
 
     suspend fun register(username: String, password: String, repassword: String) = userOpera(
-        loginApi.register(username, password, repassword)
+        api.register(username, password, repassword)
     )
 
     private fun <T> cacheCookie(response: Response<T>){

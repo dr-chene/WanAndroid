@@ -14,10 +14,9 @@ import com.example.module_search.adapter.MyFlowTagAdapter
 import com.example.module_search.bean.SearchHistory
 import com.example.module_search.bean.SearchHistoryTag
 import com.example.module_search.databinding.FragmentNotSearchedBinding
-import com.example.module_search.viewmodel.SearchActivityViewModel
+import com.example.module_search.viewmodel.SearchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
@@ -30,9 +29,9 @@ Created by chene on @date 20-12-8 下午7:24
 class NotSearchedFragment : BaseFragment() {
 
     private lateinit var notSearchedBinding: FragmentNotSearchedBinding
-    private val searchActivityViewModel by sharedViewModel<SearchActivityViewModel>()
+    private val searchViewModel by sharedViewModel<SearchViewModel>()
     private val click: (SearchHistoryTag) -> Unit = {
-        searchActivityViewModel.search(it.content)
+        searchViewModel.search(it.content)
     }
     private val hotKeyAdapter by inject<HotKeyAdapter> { parametersOf(click) }
 
@@ -54,13 +53,14 @@ class NotSearchedFragment : BaseFragment() {
     private fun initView() {
         notSearchedBinding.searchRvHotKey.adapter = hotKeyAdapter
         notSearchedBinding.searchChipKey.isChecked = true
+        searchViewModel.getSearchHistory()
     }
 
     private fun initAction() {
         notSearchedBinding.searchSearchHistory.apply {
             setOnTagClickListener { _, position, _ ->
                 (adapter.getItem(position) as SearchHistoryTag).apply {
-                    searchActivityViewModel.search(content)
+                    searchViewModel.search(content)
                 }
                 return@setOnTagClickListener true
             }
@@ -71,30 +71,28 @@ class NotSearchedFragment : BaseFragment() {
         notSearchedBinding.searchNotSearchChipGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.search_chip_key -> {
-                    searchActivityViewModel.changeSearchTag(SearchHistory.SEARCH_TAG_KEY)
+                    searchViewModel.changeSearchTag(SearchHistory.SEARCH_TAG_KEY)
                 }
                 R.id.search_chip_author -> {
-                    searchActivityViewModel.changeSearchTag(SearchHistory.SEARCH_TAG_AUTHOR)
+                    searchViewModel.changeSearchTag(SearchHistory.SEARCH_TAG_AUTHOR)
                 }
             }
         }
     }
 
     private fun subscribe() {
-        searchActivityViewModel.hotKeys.observe(viewLifecycleOwner) {
+        searchViewModel.hotKeys.observe(viewLifecycleOwner) {
             hotKeyAdapter.submitList(it)
         }
-        CoroutineScope(Dispatchers.Main).launch {
-            searchActivityViewModel.searchHistory.collect {
-                notSearchedBinding.searchSearchHistory.adapter =
-                    get<MyFlowTagAdapter> {
-                        parametersOf(it.map { search ->
-                            SearchHistoryTag(search.searchContent, search.searchTag)
-                        })
-                    }
-                notSearchedBinding.searchIvDeleteSearchHistory.visibility =
-                    if (it.isEmpty()) View.INVISIBLE else View.VISIBLE
-            }
+        searchViewModel.searchHistory.observe(viewLifecycleOwner){
+            notSearchedBinding.searchSearchHistory.adapter =
+                get<MyFlowTagAdapter> {
+                    parametersOf(it.map { search ->
+                        SearchHistoryTag(search.searchContent, search.searchTag)
+                    })
+                }
+            notSearchedBinding.searchIvDeleteSearchHistory.visibility =
+                if (it.isEmpty()) View.INVISIBLE else View.VISIBLE
         }
     }
 
@@ -115,7 +113,7 @@ class NotSearchedFragment : BaseFragment() {
     private fun deleteAll() = CoroutineScope(Dispatchers.IO).launch {
         notSearchedBinding.searchSearchHistory.adapter.apply {
             for (i in 0 until count) {
-                searchActivityViewModel.deleteSearchHistory((getItem(i) as SearchHistoryTag).content)
+                searchViewModel.deleteSearchHistory((getItem(i) as SearchHistoryTag).content)
             }
         }
     }

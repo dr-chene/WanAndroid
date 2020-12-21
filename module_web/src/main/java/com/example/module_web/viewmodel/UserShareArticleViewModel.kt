@@ -1,4 +1,4 @@
-package com.example.module_web.repository
+package com.example.module_web.viewmodel
 
 import com.example.lib_net.bean.NetBean
 import com.example.lib_net.bean.NetPage
@@ -6,17 +6,16 @@ import com.example.module_web.bean.coinInfo
 import com.example.module_web.bean.shareArticles
 import com.example.module_web.remote.UserShareArticlesService
 import com.example.share_article.bean.Article
-import com.example.share_article.bean.PageArticle
-import com.example.share_article.repository.ArticleRepository
+import com.example.share_article.viewmodel.ArticleViewModel
 import com.example.share_coin.Coin
 
 /**
  *Created by chene on 20-12-20
  */
-class UserShareArticleRepository(
+class UserShareArticleViewModel(
     private val api: UserShareArticlesService,
     private val isMyShare: Boolean
-) : ArticleRepository() {
+) : ArticleViewModel() {
 
     var userCoin: NetBean<Coin>? = null
 
@@ -31,9 +30,9 @@ class UserShareArticleRepository(
         }
     }
 
-    suspend fun refresh(id: Int) = super.refresh(if (isMyShare) 1 else 0, "", id)
+     fun refresh(id: Int) = super.refresh(if (isMyShare) 1 else 0, "", id)
 
-    suspend fun load(id: Int) = super.load("", id)
+     fun load(id: Int, curList: MutableList<Article>) = super.load("", id, curList)
 
     suspend fun delete(id: Int) = api.deleteMyShare(id)
 }

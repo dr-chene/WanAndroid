@@ -9,18 +9,14 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.bean.User
 import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseFragment
-import com.example.lib_net.bean.NetResult
-import com.example.lib_net.bean.doFailure
-import com.example.lib_net.bean.doSuccess
 import com.example.lib_net.loginCheck
 import com.example.lib_net.result
 import com.example.lib_net.util.MmkvUtil
 import com.example.module_mine.databinding.MineFragmentBinding
-import com.example.module_mine.repository.CoinRepository
+import com.example.module_mine.viewmodel.CoinViewModel
+import com.example.share_coin.Coin
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.ext.android.inject
 
 /**
@@ -30,10 +26,10 @@ Created by chene on @date 20-12-10 下午12:21
 class MineFragment : BaseFragment() {
 
     private lateinit var mineBinding: MineFragmentBinding
-    private val coinRepository by inject<CoinRepository>()
+    private val coinRepository by inject<CoinViewModel>()
     private val mmkv = MMKV.defaultMMKV()
     private var user: User? = null
-    private var coin: com.example.share_coin.Coin? = null
+    private var coin: Coin? = null
     private var getCoinJob: Job? = null
     private val aRouter by lazy {
         ARouter.getInstance()
@@ -126,7 +122,7 @@ class MineFragment : BaseFragment() {
     }
 
     private fun getCoin() = CoroutineScope(Dispatchers.Main).launch {
-        coinRepository.getCoin().result(null, null) {
+        coinRepository.getCoin().result(null) {
             mineBinding.coin = it
             mmkv.encode("coin", it)
             mineBinding.executePendingBindings()

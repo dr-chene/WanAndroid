@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 @Route(path = "/todo/activity")
@@ -75,18 +76,10 @@ class TodoActivity : BaseActivity() {
 
     private fun initAction() {
         binding.todoSrl.setOnRefreshListener {
-            todoViewModel.refresh {
-                CoroutineScope(Dispatchers.Main).launch {
-                    binding.todoSrl.isRefreshing = false
-                }
-            }
+            todoViewModel.refresh()
         }
         binding.todoRv.loadAction {
-            todoViewModel.load(adapter.currentList, {}) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    "load data success".showToast()
-                }
-            }
+            todoViewModel.load(adapter.currentList.toMutableList())
         }
         binding.todoFabAdd.setOnClickListener {
             add()
@@ -95,9 +88,7 @@ class TodoActivity : BaseActivity() {
 
     private fun refresh() {
         binding.todoSrl.isRefreshing = true
-        todoViewModel.refresh {
-            binding.todoSrl.isRefreshing = false
-        }
+        todoViewModel.refresh()
     }
 
     private fun subscribe() {
@@ -132,7 +123,7 @@ class TodoActivity : BaseActivity() {
 
     private fun complete(id: Int, status: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            todoViewModel.complete(id, status).result(null, null) {
+            todoViewModel.complete(id, status).result(null) {
                 refresh()
                 "待办事项修改成功".showToast()
             }
@@ -146,7 +137,7 @@ class TodoActivity : BaseActivity() {
 
     private fun delete(id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            todoViewModel.delete(id).result(null, null) {
+            todoViewModel.delete(id).result(null) {
                 refresh()
                 "待办事项删除成功".showToast()
             }

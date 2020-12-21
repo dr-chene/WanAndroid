@@ -14,8 +14,8 @@ import com.example.lib_base.view.BaseActivity
 import com.example.lib_net.request
 import com.example.lib_net.result
 import com.example.module_web.databinding.WebActivityBinding
-import com.example.share_collect.repository.ArticleUnCollectRepository
-import com.example.share_collect.repository.ShareCollectRepository
+import com.example.share_collect.viewmodel.ArticleUnCollectViewModel
+import com.example.share_collect.viewmodel.ShareCollectViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,8 +25,8 @@ import org.koin.android.ext.android.inject
 class WebActivity : BaseActivity() {
 
     private lateinit var webActivityBinding: WebActivityBinding
-    private val collectRepo by inject<ShareCollectRepository>()
-    private val unCollectRepo by inject<ArticleUnCollectRepository>()
+    private val collectRepo by inject<ShareCollectViewModel>()
+    private val unCollectRepo by inject<ArticleUnCollectViewModel>()
     private var collectMenuItem: MenuItem? = null
 
     @Autowired(name = "link")
@@ -117,7 +117,7 @@ class WebActivity : BaseActivity() {
         synchronized(mCollect) {
             if (mCollect) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    unCollectRepo.unCollect(mId, mOriginId).request().result(null, null) {
+                    unCollectRepo.unCollect(mId, mOriginId).request().result(null) {
                         mCollect = false
                         collectMenuItem?.title = resources.getString(R.string.web_menu_collect)
                         "取消收藏成功".showToast()
@@ -125,7 +125,7 @@ class WebActivity : BaseActivity() {
                 }
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
-                    collectRepo.collectInnerArticle(mId).result(null, null) {
+                    collectRepo.collectInnerArticle(mId).result(null) {
                         mCollect = true
                         collectMenuItem?.title = resources.getString(R.string.web_menu_un_collect)
                         "收藏成功".showToast()

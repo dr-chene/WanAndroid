@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.lib_base.view.BaseFragment
 import com.example.lib_net.loadAction
-import com.example.lib_net.result
 import com.example.module_square.databinding.FragmentSquareBinding
-import com.example.module_square.repository.SquareRepository
+import com.example.module_square.viewmodel.SquareViewModel
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 /**
@@ -24,17 +22,8 @@ class TabSquareFragment(
 ) : BaseFragment() {
 
     private lateinit var tabSquareBinding: FragmentSquareBinding
-    private val repository by inject<SquareRepository> { parametersOf(type) }
+    private val viewModel by viewModel<SquareViewModel> { parametersOf(type) }
     private val adapter by inject<ArticleRecyclerViewAdapter> { parametersOf(false, false, null) }
-    private val refreshCompletion = {
-        tabSquareBinding.squareSrl.isRefreshing = false
-    }
-    private val loadStart = {
-        tabSquareBinding.squareLoad.root.visibility = View.VISIBLE
-    }
-    private val loadCompletion = {
-        tabSquareBinding.squareLoad.root.visibility = View.INVISIBLE
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,21 +57,18 @@ class TabSquareFragment(
     }
 
     private fun subscribe() {
-
-    }
-
-    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
-        repository.refresh().result(null, refreshCompletion) {
-            adapter.submitList(it?.datas)
+        viewModel.articles.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+        viewModel.refreshing.observe(viewLifecycleOwner) {
+            tabSquareBinding.squareSrl.isRefreshing = it
+        }
+        viewModel.loading.observe(viewLifecycleOwner) {
+            tabSquareBinding.squareLoad.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 
-    private fun load() = CoroutineScope(Dispatchers.Main).launch {
-        loadStart.invoke()
-        repository.load().result(null, loadCompletion) {
-            val cur = adapter.currentList.toMutableList()
-            it?.datas?.let { list -> cur.addAll(list) }
-            adapter.submitList(cur)
-        }
-    }
+    private fun refresh() = viewModel.refresh()
+
+    private fun load() = viewModel.load(adapter.currentList.toMutableList())
 }

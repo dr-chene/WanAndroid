@@ -8,6 +8,8 @@ import com.example.module_nav.remote.NavService
 import com.example.module_nav.remote.ProjectService
 import com.example.module_nav.remote.PublicService
 import com.example.module_nav.remote.TreeService
+import com.example.module_nav.viewmodel.NavViewModel
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -24,4 +26,6 @@ val navModule = module {
 
     single { AdaptNav.AdaptNavDiffCallBack() }
     factory { (click: (AdaptTag) -> Unit) -> NavRecyclerViewAdapter(click) }
+
+    viewModel { (tab: Int) -> NavViewModel(tab, get(), get(), get(), get(), get(), get(), get(), get()) }
 }

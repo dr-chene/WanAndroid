@@ -10,19 +10,20 @@ import com.example.lib_base.view.BaseActivity
 import com.example.lib_net.bean.doFailure
 import com.example.lib_net.bean.doSuccess
 import com.example.module_login.databinding.LoginActivityBinding
-import com.example.module_login.repository.LoginRepository
+import com.example.module_login.viewmodel.LoginViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 @Route(path = "/login/activity")
 class LoginActivity : BaseActivity() {
 
     private lateinit var loginBinding: LoginActivityBinding
-    private val loginRepository by inject<LoginRepository>()
+    private val loginViewModel by viewModel<LoginViewModel>()
     private var login = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +82,7 @@ class LoginActivity : BaseActivity() {
 
     private fun login(username: String, password: String) =
         CoroutineScope(Dispatchers.IO).launch {
-            loginRepository.login(username, password).collectLatest {
+            loginViewModel.login(username, password).collectLatest {
                 withContext(Dispatchers.Main) {
                     it.doSuccess { user ->
                         user.save()
@@ -97,7 +98,7 @@ class LoginActivity : BaseActivity() {
 
     private fun register(username: String, password: String, repassword: String) =
         CoroutineScope(Dispatchers.IO).launch {
-            loginRepository.register(username, password, repassword).collectLatest {
+            loginViewModel.register(username, password, repassword).collectLatest {
                 withContext(Dispatchers.Main) {
                     it.doSuccess { user ->
                         user.save()

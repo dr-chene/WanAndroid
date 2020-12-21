@@ -1,24 +1,23 @@
-package com.example.module_web.repository
+package com.example.module_web.viewmodel
 
 import com.example.lib_net.bean.NetBean
 import com.example.lib_net.bean.NetPage
-import com.example.module_web.remote.ArticleCidService
 import com.example.module_web.remote.PublicSearchService
 import com.example.share_article.bean.Article
-import com.example.share_article.bean.PageArticle
-import com.example.share_article.repository.ArticleRepository
+import com.example.share_article.viewmodel.ArticleViewModel
 
 /**
  *Created by chene on 20-12-19
  */
-class SearchCidArticleRepository(
+class SearchCidArticleViewModel(
     private val api: PublicSearchService
-) : ArticleRepository() {
+) : ArticleViewModel() {
+
     override suspend fun request(page: Int, query: String, cid: Int): NetBean<NetPage<Article>> {
         return api.getArticles(page, cid, query)
     }
 
-    suspend fun refresh(query: String, cid: Int) = super.refresh(0, query, cid)
+    fun refresh(query: String, cid: Int) = super.refresh(0, query, cid)
 
-    suspend fun load(cid: Int, query: String) = super.load(query, cid)
+    fun load(cid: Int, query: String, curList: MutableList<Article>) = super.load(query, cid, curList)
 }

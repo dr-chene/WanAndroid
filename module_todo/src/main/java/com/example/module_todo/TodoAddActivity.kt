@@ -75,7 +75,7 @@ class TodoAddActivity : AppCompatActivity() {
 
     private fun modify(id: Int, status: Int) = commit { title, content, date, t, p ->
         CoroutineScope(Dispatchers.IO).launch {
-            todoViewModel.modify(id, title, content, date, status, t, p).result(null, null) {
+            todoViewModel.modify(id, title, content, date, status, t, p).result(null) {
                 this@TodoAddActivity.finish()
                 "待办事项修改成功".showToast()
             }
@@ -84,7 +84,7 @@ class TodoAddActivity : AppCompatActivity() {
 
     private fun add() = commit { title, content, date, t, p ->
         CoroutineScope(Dispatchers.IO).launch {
-            todoViewModel.add(title, content, date, t, p).result(null, null) {
+            todoViewModel.add(title, content, date, t, p).result(null) {
                 this@TodoAddActivity.finish()
                 "待办事项添加成功".showToast()
             }

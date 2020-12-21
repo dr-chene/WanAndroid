@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import com.example.lib_base.view.BaseFragment
 import com.example.lib_net.loadAction
 import com.example.module_search.databinding.FragmentSearchedBinding
-import com.example.module_search.viewmodel.SearchActivityViewModel
+import com.example.module_search.viewmodel.SearchViewModel
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 /**
@@ -20,13 +19,9 @@ Created by chene on @date 20-12-8 下午7:24
 class SearchedFragment : BaseFragment() {
 
     private lateinit var searchedBinding: FragmentSearchedBinding
-    private val searchViewModel by sharedViewModel<SearchActivityViewModel>()
+    private val searchViewModel by sharedViewModel<SearchViewModel>()
     private val searchAdapter by inject<ArticleRecyclerViewAdapter> {
-        parametersOf(
-            false,
-            false,
-            null
-        )
+        parametersOf(false, false, null)
     }
 
     override fun onCreateView(

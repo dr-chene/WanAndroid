@@ -8,10 +8,8 @@ import com.example.module_search.fragment.SearchedFragment
 import com.example.module_search.remote.AuthorSearchService
 import com.example.module_search.remote.KeySearchService
 import com.example.module_search.repository.SearchHistoryRepository
-import com.example.module_search.repository.SearchRepository
-import com.example.module_search.viewmodel.SearchActivityViewModel
+import com.example.module_search.viewmodel.SearchViewModel
 import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -28,7 +26,6 @@ val searchModule = module {
     factory { SearchedFragment() }
     single { (get() as Retrofit).create(KeySearchService::class.java) }
     single { (get() as Retrofit).create(AuthorSearchService::class.java) }
-    factory { SearchRepository(get(), get()) }
 
-    viewModel {SearchActivityViewModel(get(), get()) }
+    viewModel {SearchViewModel(get(), get(), get()) }
 }

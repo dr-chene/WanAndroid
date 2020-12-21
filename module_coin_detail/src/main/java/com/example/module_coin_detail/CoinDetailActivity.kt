@@ -16,24 +16,20 @@ import com.example.module_coin_detail.bean.CoinDetail
 import com.example.module_coin_detail.bean.PageCoinDetail
 import com.example.module_coin_detail.databinding.CoinDetailActivityBinding
 import com.example.module_coin_detail.respository.PageCoinDetailRepository
+import com.example.module_coin_detail.viewmodel.CoinDetailViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 @Route(path = "/coin_detail/activity")
 class CoinDetailActivity : BaseActivity() {
 
     private lateinit var coinDetailActivityBinding: CoinDetailActivityBinding
-    private val pageCoinDetailRepository by inject<PageCoinDetailRepository>()
+    private val coinDetailViewModel by viewModel<CoinDetailViewModel>()
     private val coinDetailAdapter by inject<CoinDetailRecyclerViewAdapter>()
-    private val refreshSuccess = {
-        coinDetailActivityBinding.coinDetailSwipe.isRefreshing = false
-    }
-    private val loadSuccess = {
-        coinDetailActivityBinding.coinDetailLoad.root.visibility = View.INVISIBLE
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +40,7 @@ class CoinDetailActivity : BaseActivity() {
 
         initView()
         initAction()
+        subscribe()
     }
 
     private fun initView() {
@@ -60,23 +57,24 @@ class CoinDetailActivity : BaseActivity() {
             refresh()
         }
         coinDetailActivityBinding.coinDetailRvContent.loadAction {
-            coinDetailActivityBinding.coinDetailLoad.root.visibility = View.VISIBLE
             load()
         }
     }
 
-    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
-        pageCoinDetailRepository.refresh().result(null, refreshSuccess) {
-            coinDetailAdapter.submitList(it?.datas)
+    private fun subscribe() {
+        coinDetailViewModel.coins.observe(this){
+            coinDetailAdapter.submitList(it)
+        }
+        coinDetailViewModel.refreshing.observe(this){
+            coinDetailActivityBinding.coinDetailSwipe.isRefreshing = it
+        }
+        coinDetailViewModel.loading.observe(this){
+            coinDetailActivityBinding.coinDetailLoad.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 
-    private fun load() = CoroutineScope(Dispatchers.Main).launch {
-        pageCoinDetailRepository.load().result(null, loadSuccess) {
-            val before = coinDetailAdapter.currentList.toMutableList()
-            it?.datas?.let { list -> before.addAll(list) }
-            coinDetailAdapter.submitList(before)
-        }
-    }
+    private fun refresh() = coinDetailViewModel.refresh()
+
+    private fun load() = coinDetailViewModel.load(coinDetailAdapter.currentList.toMutableList())
 
 }

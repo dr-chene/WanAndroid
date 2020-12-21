@@ -1,16 +1,19 @@
 package com.example.module_collect
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lib_base.view.BaseActivity
+import com.example.lib_base.viewmodel.BaseViewModel
 import com.example.lib_net.loadAction
 import com.example.module_collect.databinding.CollectActivityBinding
 
 
-abstract class CollectActivity : BaseActivity() {
+abstract class CollectActivity(
+    private val viewModel: BaseViewModel
+) : BaseActivity() {
 
     protected lateinit var binding: CollectActivityBinding
 
@@ -20,6 +23,17 @@ abstract class CollectActivity : BaseActivity() {
 
         initView()
         initAction()
+        subscribe()
+    }
+
+    private fun subscribe() {
+        submitList()
+        viewModel.loading.observe(this) {
+            binding.collectLoad.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
+        viewModel.refreshing.observe(this) {
+            binding.collectSrl.isRefreshing = it
+        }
     }
 
     private fun initView() {
@@ -58,9 +72,11 @@ abstract class CollectActivity : BaseActivity() {
         }
     }
 
-    abstract fun add()
+    protected abstract fun add()
 
     protected abstract fun refresh()
 
     protected abstract fun load()
+
+    protected abstract fun submitList()
 }

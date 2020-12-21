@@ -2,10 +2,11 @@ package com.example.module_todo.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.lib_net.repository.PageViewModel
+import com.example.lib_net.request
 import com.example.lib_net.result
 import com.example.module_todo.bean.Todo
-import com.example.module_todo.repository.TodoRepository
+import com.example.module_todo.remote.TodoService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,47 +14,9 @@ import kotlinx.coroutines.launch
 /**
  *Created by chene on 20-12-20
  */
-class TodoViewModel internal constructor(
-    private val repository: TodoRepository
-) : ViewModel() {
-
-    private var _status: Int? = null
-    private var _type: Int? = null
-    private var _priority: Int? = null
-    private var _orderby: Int = 4
-
-    var modifyTodo: Todo? = null
-
-    val  refreshing: LiveData<Boolean>
-        get() = _refreshing
-    private val _refreshing = MutableLiveData<Boolean>()
-
-    val todos: LiveData<List<Todo>>
-        get() = _todos
-    private val _todos = MutableLiveData<List<Todo>>()
-    fun sort(status: Int? = null, type: Int? = null, priority: Int? = null, orderby: Int = 4) {
-        _status = status
-        _type = type
-        _priority = priority
-        _orderby = orderby
-        refresh(null)
-        _refreshing.postValue(true)
-    }
-
-    fun refresh(completion: (() -> Unit)?) = CoroutineScope(Dispatchers.IO).launch {
-        repository.refresh(_status, _type, _priority, _orderby).result(null, completion) {
-            _todos.postValue(it?.datas)
-            _refreshing.postValue(false)
-        }
-    }
-
-    fun load(current: List<Todo>, start: () -> Unit, completion: () -> Unit) =
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.load(_status, _type, _priority, _orderby).result(start, completion) {
-                it?.datas?.let { list -> current.toMutableList().addAll(list) }
-                _todos.postValue(current)
-            }
-        }
+class TodoViewModel(
+    private val api: TodoService
+) : PageViewModel() {
 
     suspend fun add(
         title: String,
@@ -61,7 +24,7 @@ class TodoViewModel internal constructor(
         date: String? = null,
         type: Int? = null,
         priority: Int? = null
-    ) = repository.add(title, content, date, type, priority)
+    ) = api.add(title, content, date, type, priority).request()
 
     suspend fun modify(
         id: Int,
@@ -71,9 +34,54 @@ class TodoViewModel internal constructor(
         status: Int? = null,
         type: Int? = null,
         priority: Int? = null
-    ) = repository.modify(id, title, content, date, status, type, priority)
+    ) = api.modify(id, title, content, date, status, type, priority).request()
 
-    suspend fun delete(id: Int) = repository.delete(id)
+    suspend fun delete(id: Int) = api.delete(id).request()
 
-    suspend fun complete(id: Int, status: Int) = repository.complete(id, status)
+    suspend fun complete(id: Int, status: Int) = api.complete(id, status).request()
+
+    private var _status: Int? = null
+    private var _type: Int? = null
+    private var _priority: Int? = null
+    private var _orderby: Int = 4
+
+    var modifyTodo: Todo? = null
+
+    val todos: LiveData<List<Todo>>
+        get() = _todos
+    private val _todos = MutableLiveData<List<Todo>>()
+    fun sort(status: Int? = null, type: Int? = null, priority: Int? = null, orderby: Int = 4) {
+        _status = status
+        _type = type
+        _priority = priority
+        _orderby = orderby
+        refresh()
+        _refreshing.postValue(true)
+    }
+
+    fun refresh(){
+        CoroutineScope(Dispatchers.IO).launch {
+            api.list(let {
+                over = false
+                curPage = 1
+                1
+            },_status, _type, _priority, _orderby).pageRequest().result(
+                completion = {_refreshing.postValue(false)}
+            ) {
+                _todos.postValue(it?.datas)
+            }
+        }
+    }
+
+    fun load(curList: MutableList<Todo>) {
+        _loading.postValue(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            api.list(curPage, _status, _type, _priority, _orderby).pageRequest().result(
+                completion = { _loading.postValue(false) }
+            ) {
+                it?.datas?.let { list -> curList.addAll(list) }
+                _todos.postValue(curList)
+            }
+        }
+    }
 }

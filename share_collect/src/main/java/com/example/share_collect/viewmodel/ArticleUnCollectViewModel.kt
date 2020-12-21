@@ -1,11 +1,11 @@
-package com.example.share_collect.repository
+package com.example.share_collect.viewmodel
 
 import com.example.share_collect.remote.UnCollectArticleService
 
 /**
  *Created by chene on 20-12-19
  */
-class ArticleUnCollectRepository(
+class ArticleUnCollectViewModel(
     private val api: UnCollectArticleService
 ) {
 

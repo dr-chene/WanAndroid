@@ -59,12 +59,10 @@ fun <T> NetBean<T>.request(over: Boolean = false, requestSuccess: ((T?) -> Unit)
 }
 
 suspend inline fun <reified T> Flow<NetResult<T>>.result(
-    noinline start: (() -> Unit)?,
     noinline completion: (() -> Unit)?,
     crossinline success: (T) -> Unit
 ) {
-    this@result.onStart { start?.invoke()}
-        .onCompletion { completion?.invoke() }
+    this@result.onCompletion { completion?.invoke() }
         .collectLatest {
             withContext(Dispatchers.Main) {
                 it.doSuccess {

@@ -1,43 +1,27 @@
 package com.example.module_coin_rank
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseActivity
-import com.example.lib_net.bean.NetResult
-import com.example.lib_net.bean.doFailure
-import com.example.lib_net.bean.doSuccess
 import com.example.lib_net.loadAction
-import com.example.lib_net.result
 import com.example.module_coin_rank.adapter.CoinRankRecyclerViewAdapter
-import com.example.module_coin_rank.bean.PageCoinRank
 import com.example.module_coin_rank.databinding.CoinRankActivityBinding
-import com.example.module_coin_rank.repository.PageCoinRankRepository
+import com.example.module_coin_rank.viewmodel.CoinRankViewModel
 import com.example.share_coin.Coin
 import com.tencent.mmkv.MMKV
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onCompletion
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 @Route(path = "/coin/rank/activity")
 class CoinRankActivity : BaseActivity() {
 
     private lateinit var coinRankBinding: CoinRankActivityBinding
-    private val pageCoinRankRepository by inject<PageCoinRankRepository>()
+    private val coinRankViewModel by viewModel<CoinRankViewModel>()
     private val adapter by inject<CoinRankRecyclerViewAdapter>()
     private val myCoin by lazy {
         MMKV.defaultMMKV().decodeParcelable("coin", Coin::class.java)
-    }
-    private val refreshSuccess = {
-        coinRankBinding.coinRankContent.coinSwipe.isRefreshing = false
-    }
-    private val loadSuccess = {
-        coinRankBinding.coinRankLoad.root.visibility = View.INVISIBLE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,23 +56,18 @@ class CoinRankActivity : BaseActivity() {
     }
 
     private fun subscribe() {
-
-    }
-
-    private fun load() =  CoroutineScope(Dispatchers.Main).launch {
-        pageCoinRankRepository.load().result(null, loadSuccess) {
-            val before = adapter.currentList.toMutableList()
-            it?.datas?.let { list -> before.addAll(list) }
-            adapter.submitList(before)
+        coinRankViewModel.coins.observe(this) {
+            adapter.submitList(it)
+        }
+        coinRankViewModel.refreshing.observe(this) {
+            coinRankBinding.coinRankContent.coinSwipe.isRefreshing = it
+        }
+        coinRankViewModel.loading.observe(this) {
+            coinRankBinding.coinRankLoad.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 
-    private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
-        pageCoinRankRepository.refresh().result(null,
-            refreshSuccess,
-        ) {
-            adapter.submitList(it?.datas)
-        }
-    }
+    private fun load() = coinRankViewModel.load(adapter.currentList.toMutableList())
 
+    private fun refresh() = coinRankViewModel.refresh()
 }

@@ -7,7 +7,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import com.example.lib_base.showToast
 import com.example.share_collect.databinding.AlertInputBinding
-import com.example.share_collect.repository.ShareCollectRepository
+import com.example.share_collect.viewmodel.ShareCollectViewModel
 import org.koin.java.KoinJavaComponent.inject
 
 /**
@@ -17,7 +17,7 @@ abstract class MyBaseAlertDialog(
     context: Context
 ) : AlertDialog(context) {
     private lateinit var binding: AlertInputBinding
-    protected val repository by inject(ShareCollectRepository::class.java)
+    protected val repository by inject(ShareCollectViewModel::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AlertInputBinding.inflate(

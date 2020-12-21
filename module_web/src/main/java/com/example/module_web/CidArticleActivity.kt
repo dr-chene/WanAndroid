@@ -21,9 +21,9 @@ import com.example.module_web.databinding.ActivityCidArticleBinding
 import com.example.module_web.remote.ArticleCidService
 import com.example.module_web.remote.ProjectCidService
 import com.example.module_web.remote.PublicCidService
-import com.example.module_web.repository.CidArticleRepository
-import com.example.module_web.repository.SearchCidArticleRepository
-import com.example.module_web.repository.UserShareArticleRepository
+import com.example.module_web.viewmodel.CidArticleViewModel
+import com.example.module_web.viewmodel.SearchCidArticleViewModel
+import com.example.module_web.viewmodel.UserShareArticleViewModel
 import com.example.share_article.adapter.ArticleRecyclerViewAdapter
 import com.example.share_collect.view.ShareArticleDialog
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +39,7 @@ class CidArticleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCidArticleBinding
     private val delete: (Int) -> Unit = {
         CoroutineScope(Dispatchers.IO).launch {
-            shareArticleRepo.delete(it).request().result(null, null) {
+            userShareArticleViewModel.delete(it).request().result(null) {
                 binding.webCidArticleSrl.isRefreshing = true
                 refresh()
                 "分享文章删除成功".showToast()
@@ -53,12 +53,12 @@ class CidArticleActivity : AppCompatActivity() {
             if (cate != "myShare") null else delete
         )
     }
-    private val repository by inject<CidArticleRepository> {
+    private val viewModel by inject<CidArticleViewModel> {
         parametersOf(api())
     }
-    private val searchRepository by inject<SearchCidArticleRepository>()
+    private val cidArticleViewModel by inject<SearchCidArticleViewModel>()
     private var searchQuery: String = ""
-    private val shareArticleRepo by inject<UserShareArticleRepository> { parametersOf(cate == "myShare") }
+    private val userShareArticleViewModel by inject<UserShareArticleViewModel> { parametersOf(cate == "myShare") }
 
     @Autowired(name = "cid")
     lateinit var cid: String
@@ -74,7 +74,24 @@ class CidArticleActivity : AppCompatActivity() {
 
         initView()
         initAction()
+        subscribe()
 
+    }
+
+    private fun subscribe() {
+        viewModel().articles.observe(this){
+            adapter.submitList(it)
+            if (cate == "share" || cate == "myShare") {
+                binding.articleShareUserCoin.coin = userShareArticleViewModel.userCoin?.data
+                binding.executePendingBindings()
+            }
+        }
+        viewModel().refreshing.observe(this){
+            binding.webCidArticleSrl.isRefreshing = it
+        }
+        viewModel().loading.observe(this){
+            binding.webCidArticleLoad.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
     }
 
     private fun initView() {
@@ -132,37 +149,21 @@ class CidArticleActivity : AppCompatActivity() {
 
     private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
         if (cate == "public" && searchQuery.isNotEmpty()) {
-            searchRepository.refresh(searchQuery, cid.toInt())
+            cidArticleViewModel.refresh(searchQuery, cid.toInt())
         } else if (cate == "share" || cate == "myShare") {
-            shareArticleRepo.refresh(cid.toInt())
+            userShareArticleViewModel.refresh(cid.toInt())
         } else {
-            repository.refresh(cid.toInt())
-        }.result(
-            start = null,
-            completion = { binding.webCidArticleSrl.isRefreshing = false }
-        ) {
-            adapter.submitList(it?.datas)
-            if (cate == "share" || cate == "myShare") {
-                binding.articleShareUserCoin.coin = shareArticleRepo.userCoin?.data
-                binding.executePendingBindings()
-            }
+            viewModel.refresh(cid.toInt())
         }
     }
 
     private fun load() = CoroutineScope(Dispatchers.Main).launch {
         if (cate == "public" && searchQuery.isNotEmpty()) {
-            searchRepository.load(cid.toInt(), searchQuery)
-        } else if (cate == "share" || cate == "myShare0") {
-            shareArticleRepo.load(cid.toInt())
+            cidArticleViewModel.load(cid.toInt(), searchQuery, adapter.currentList.toMutableList())
+        } else if (cate == "share" || cate == "myShare") {
+            userShareArticleViewModel.load(cid.toInt(), adapter.currentList.toMutableList())
         } else {
-            repository.load(cid.toInt())
-        }.result(
-            start = { binding.webCidArticleLoad.root.visibility = View.VISIBLE },
-            completion = { binding.webCidArticleLoad.root.visibility = View.INVISIBLE }
-        ) {
-            val cur = adapter.currentList.toMutableList()
-            it?.datas?.let { list -> cur.addAll(list) }
-            adapter.submitList(cur)
+            viewModel.load(cid.toInt(), adapter.currentList.toMutableList())
         }
     }
 
@@ -212,5 +213,13 @@ class CidArticleActivity : AppCompatActivity() {
         searchQuery = query
         binding.webCidArticleSrl.isRefreshing = true
         refresh()
+    }
+
+    private fun viewModel() = if (cate == "public" && searchQuery.isNotEmpty()) {
+        cidArticleViewModel
+    } else if (cate == "share" || cate == "myShare") {
+        userShareArticleViewModel
+    } else {
+        viewModel
     }
 }

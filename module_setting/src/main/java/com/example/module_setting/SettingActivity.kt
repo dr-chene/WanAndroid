@@ -7,24 +7,20 @@ import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.lib_base.showToast
 import com.example.lib_base.view.BaseActivity
-import com.example.lib_net.bean.doFailure
-import com.example.lib_net.bean.doSuccess
 import com.example.lib_net.result
 import com.example.lib_net.util.MmkvUtil
 import com.example.module_setting.databinding.SettingActivityBinding
-import com.example.module_setting.repository.LoginOutRepository
+import com.example.module_setting.viewmodel.LoginOutViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 @Route(path = "/setting/activity")
 class SettingActivity : BaseActivity() {
 
     private lateinit var settingBinding: SettingActivityBinding
-    private val loginOutRepository by inject<LoginOutRepository>()
+    private val loginOutViewModel by viewModel<LoginOutViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +60,7 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun loginOut() = CoroutineScope(Dispatchers.IO).launch {
-        loginOutRepository.loginOut().result(null, null) {
+        loginOutViewModel.loginOut().result(null) {
             MmkvUtil.loginOut()
                     finish()
                     "login out success".showToast()

@@ -11,8 +11,8 @@ import com.example.lib_net.request
 import com.example.lib_net.result
 import com.example.share_article.bean.Article
 import com.example.share_article.databinding.RecycleItemArticleBinding
-import com.example.share_collect.repository.ArticleUnCollectRepository
-import com.example.share_collect.repository.ShareCollectRepository
+import com.example.share_collect.viewmodel.ArticleUnCollectViewModel
+import com.example.share_collect.viewmodel.ShareCollectViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,8 +23,8 @@ Created by chene on @date 20-12-4 下午8:59
  **/
 class ArticleRecyclerViewAdapter(
     private val isHome: Boolean,
-    private val collectRepo: ShareCollectRepository,
-    private val unCollectRepo: ArticleUnCollectRepository,
+    private val collectRepo: ShareCollectViewModel,
+    private val unCollectRepo: ArticleUnCollectViewModel,
     private val isMyShare: Boolean,
     private val delete: ((Int) -> Unit)?
 ) : ListAdapter<Article, RecyclerView.ViewHolder>(get(Article.ArticleDiffCallBack::class.java)) {
@@ -42,8 +42,8 @@ class ArticleRecyclerViewAdapter(
 
     class ArticleViewHolder(
         private val binding: RecycleItemArticleBinding,
-        private val collectRepo: ShareCollectRepository,
-        private val unCollectRepo: ArticleUnCollectRepository
+        private val collectRepo: ShareCollectViewModel,
+        private val unCollectRepo: ArticleUnCollectViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(article: Article, isHome: Boolean, isMyShare: Boolean, delete: ((Int) -> Unit)?) {
@@ -89,13 +89,13 @@ class ArticleRecyclerViewAdapter(
                     CoroutineScope(Dispatchers.IO).launch {
                         if (article.collect) {
                             unCollectRepo.unCollect(article.id, article.originId).request()
-                                .result(null, null) {
+                                .result(null) {
                                     binding.ivArticleCollect.isSelected = false
                                     article.collect = false
                                     "文章取消收藏成功".showToast()
                                 }
                         } else {
-                            collectRepo.collectInnerArticle(article.id).result(null, null) {
+                            collectRepo.collectInnerArticle(article.id).result(null) {
                                 binding.ivArticleCollect.isSelected = true
                                 article.collect = true
                                 "文章收藏成功".showToast()

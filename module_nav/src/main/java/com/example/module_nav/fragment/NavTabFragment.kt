@@ -9,7 +9,7 @@ import com.example.module_nav.adapt
 import com.example.module_nav.adapter.NavRecyclerViewAdapter
 import com.example.module_nav.bean.AdaptTag
 import com.example.module_nav.databinding.NavContentBinding
-import com.example.module_nav.repository.NavRepository
+import com.example.module_nav.viewmodel.NavViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -22,7 +22,7 @@ Created by chene on @date 20-12-12 下午7:47
  **/
 class NavTabFragment(
     private val click: (AdaptTag) -> Unit,
-    private val repository: NavRepository
+    private val viewModel: NavViewModel
 ) : BaseFragment() {
 
     private lateinit var fragmentNavBinding: NavContentBinding
@@ -54,11 +54,11 @@ class NavTabFragment(
     }
 
     private fun refresh() = CoroutineScope(Dispatchers.Main).launch {
-        repository.refresh()
+        viewModel.refresh()
     }
 
     private fun load() = CoroutineScope(Dispatchers.Main).launch {
-        repository.load()?.collectLatest {
+        viewModel.load()?.collectLatest {
             navAdapter.submitList(it.adapt())
         }
     }

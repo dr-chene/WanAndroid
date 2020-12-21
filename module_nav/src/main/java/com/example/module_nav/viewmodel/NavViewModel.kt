@@ -1,38 +1,26 @@
-package com.example.module_nav.repository
+package com.example.module_nav.viewmodel
 
+import androidx.lifecycle.ViewModel
 import com.example.module_nav.remote.NavService
 import com.example.module_nav.remote.ProjectService
 import com.example.module_nav.remote.PublicService
 import com.example.module_nav.remote.TreeService
+import com.example.module_nav.repository.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
 
-/**
-Created by chene on @date 20-12-14 下午11:18
- **/
-class NavRepository(
-    private val tab: Int
-) {
-
-    private val navApi by inject(NavService::class.java)
-    private val treeApi by inject(TreeService::class.java)
-    private val projectApi by inject(ProjectService::class.java)
-    private val publicApi by inject(PublicService::class.java)
-
-    private val navDao by inject(NavDao::class.java)
-    private val treeDao by inject(TreeDao::class.java)
-    private val projectDao by inject(ProjectDao::class.java)
-    private val publicDao by inject(PublicDao::class.java)
-
-    fun load() = when (tab) {
-        TAB_NAV -> navDao.get()
-        TAB_TREE -> treeDao.get()
-        TAB_PROJECT -> projectDao.get()
-        TAB_PUBLIC -> publicDao.get()
-        else -> null
-    }
+class NavViewModel(
+    private val tab: Int,
+    private val navDao: NavDao,
+    private val treeDao: TreeDao,
+    private val projectDao: ProjectDao,
+    private val publicDao: PublicDao,
+    private val navApi: NavService,
+    private val treeApi: TreeService,
+    private val projectApi: ProjectService,
+    private val publicApi: PublicService
+) : ViewModel() {
 
     fun refresh() = CoroutineScope(Dispatchers.IO).launch {
         when (tab) {
@@ -57,6 +45,14 @@ class NavRepository(
                 }
             }
         }
+    }
+
+    fun load() = when (tab) {
+        TAB_NAV -> navDao.get()
+        TAB_TREE -> treeDao.get()
+        TAB_PROJECT -> projectDao.get()
+        TAB_PUBLIC -> publicDao.get()
+        else -> null
     }
 
     companion object {
