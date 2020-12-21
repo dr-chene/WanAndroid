@@ -11,6 +11,7 @@ import com.example.module_search.repository.SearchHistoryRepository
 import com.example.module_search.repository.SearchRepository
 import com.example.module_search.viewmodel.SearchActivityViewModel
 import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -24,10 +25,10 @@ val searchModule = module {
     single { SearchHistoryRepository(get()) }
 
     factory { NotSearchedFragment() }
-    factory { (tag: Int) -> SearchedFragment(tag) }
+    factory { SearchedFragment() }
     single { (get() as Retrofit).create(KeySearchService::class.java) }
     single { (get() as Retrofit).create(AuthorSearchService::class.java) }
-    factory { (tag: Int) -> SearchRepository(tag) }
+    factory { SearchRepository(get(), get()) }
 
-    viewModel { SearchActivityViewModel(get()) }
+    viewModel {SearchActivityViewModel(get(), get()) }
 }

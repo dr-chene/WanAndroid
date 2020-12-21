@@ -8,7 +8,6 @@ Created by chene on @date 20-12-8 下午9:42
 class SearchHistoryRepository(
     private val searchHistoryDao: SearchHistoryDao
 ) {
-
     val searchHistory = searchHistoryDao.getSearchHistory()
 
     suspend fun insertSearchHistory(searchHistory: SearchHistory) {

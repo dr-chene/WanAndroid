@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 
@@ -58,7 +59,7 @@ class PageCoinRankRepository(
         } catch (e: Exception) {
             emit(NetResult.Failure(e.message))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     private fun insertPageCoinRank(pageCoinRank: PageCoinRank) =
         CoroutineScope(Dispatchers.IO).launch {

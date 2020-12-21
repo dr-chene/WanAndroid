@@ -32,7 +32,7 @@ class NotSearchedFragment : BaseFragment() {
     private lateinit var notSearchedBinding: FragmentNotSearchedBinding
     private val searchActivityViewModel by sharedViewModel<SearchActivityViewModel>()
     private val click: (SearchHistoryTag) -> Unit = {
-        searchActivityViewModel.search(it.content, it.tag)
+        searchActivityViewModel.search(it.content)
     }
     private val hotKeyAdapter by inject<HotKeyAdapter> { parametersOf(click) }
 
@@ -60,7 +60,7 @@ class NotSearchedFragment : BaseFragment() {
         notSearchedBinding.searchSearchHistory.apply {
             setOnTagClickListener { _, position, _ ->
                 (adapter.getItem(position) as SearchHistoryTag).apply {
-                    searchActivityViewModel.search(content, tag)
+                    searchActivityViewModel.search(content)
                 }
                 return@setOnTagClickListener true
             }

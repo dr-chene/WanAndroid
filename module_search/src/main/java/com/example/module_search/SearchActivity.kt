@@ -1,6 +1,7 @@
 package com.example.module_search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
@@ -30,7 +31,6 @@ class SearchActivity : BaseActivity() {
 
     private lateinit var searchBinding: SearchActivityBinding
     private val searchViewModel by viewModel<SearchActivityViewModel>()
-    private var searchTag = SearchHistory.SEARCH_TAG_KEY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         makeStatusBarTransparent()
@@ -58,7 +58,7 @@ class SearchActivity : BaseActivity() {
                     val key = if (v.text.isNullOrEmpty()) {
                         v.hint
                     } else v.text
-                    searchViewModel.search(key.toString(), searchTag)
+                    searchViewModel.search(key.toString())
                     super.hideInput()
                 }
                 return@setOnEditorActionListener false
@@ -89,19 +89,18 @@ class SearchActivity : BaseActivity() {
             super.hideInput()
             navToSearched()
         }
-        searchViewModel.searching.observe(this) {
+        searchViewModel.loading.observe(this) {
             searchBinding.searchSearching.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        }
-        searchViewModel.searchTag.observe(this) {
-            searchTag = it
         }
     }
 
     private fun navToSearched() {
         supportFragmentManager.commit {
             addToBackStack("searched")
-            replace(R.id.search_fragment_container,
-                get<SearchedFragment> { parametersOf(searchTag) })
+            replace(
+                R.id.search_fragment_container,
+                get<SearchedFragment>()
+            )
         }
     }
 }

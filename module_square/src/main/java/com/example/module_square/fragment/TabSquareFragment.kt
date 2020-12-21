@@ -78,7 +78,8 @@ class TabSquareFragment(
     }
 
     private fun load() = CoroutineScope(Dispatchers.Main).launch {
-        repository.load().result(loadStart, loadCompletion) {
+        loadStart.invoke()
+        repository.load().result(null, loadCompletion) {
             val cur = adapter.currentList.toMutableList()
             it?.datas?.let { list -> cur.addAll(list) }
             adapter.submitList(cur)
