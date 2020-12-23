@@ -1,10 +1,13 @@
 package com.example.module_web
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -14,19 +17,20 @@ import com.example.lib_base.view.BaseActivity
 import com.example.lib_net.request
 import com.example.lib_net.result
 import com.example.module_web.databinding.WebActivityBinding
-import com.example.share_collect.viewmodel.ArticleUnCollectViewModel
+import com.example.share_collect.viewmodel.UnCollectArticleViewModel
 import com.example.share_collect.viewmodel.ShareCollectViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent
 
 @Route(path = "/web/activity")
 class WebActivity : BaseActivity() {
 
     private lateinit var webActivityBinding: WebActivityBinding
-    private val collectRepo by inject<ShareCollectViewModel>()
-    private val unCollectRepo by inject<ArticleUnCollectViewModel>()
+    private val collectViewModel by inject<ShareCollectViewModel>()
+    private val unCollectArticleViewModel by inject<UnCollectArticleViewModel>()
     private var collectMenuItem: MenuItem? = null
 
     @Autowired(name = "link")
@@ -116,22 +120,34 @@ class WebActivity : BaseActivity() {
     private fun collect() {
         synchronized(mCollect) {
             if (mCollect) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    unCollectRepo.unCollect(mId, mOriginId).request().result(null) {
-                        mCollect = false
-                        collectMenuItem?.title = resources.getString(R.string.web_menu_collect)
-                        "取消收藏成功".showToast()
+                AlertDialog.Builder(KoinJavaComponent.get(Context::class.java)).apply {
+                    setMessage("是否取消收藏?")
+                    setPositiveButton("删除") { _, _ ->
+                        unCollect()
                     }
+                    setNegativeButton("取消操作") { _, _ ->
+                        "操作取消".showToast()
+                    }
+                }.show().apply {
+                    getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
                 }
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
-                    collectRepo.collectInnerArticle(mId).result(null) {
+                    collectViewModel.collectInnerArticle(mId).result(null) {
                         mCollect = true
                         collectMenuItem?.title = resources.getString(R.string.web_menu_un_collect)
                         "收藏成功".showToast()
                     }
                 }
             }
+        }
+    }
+
+    private fun unCollect() = CoroutineScope(Dispatchers.IO).launch {
+        unCollectArticleViewModel.unCollect(mId, mOriginId).request().result(null) {
+            mCollect = false
+            collectMenuItem?.title = resources.getString(R.string.web_menu_collect)
+            "取消收藏成功".showToast()
         }
     }
 

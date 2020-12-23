@@ -6,24 +6,23 @@ import com.example.lib_base.bean.User
 import com.example.lib_net.bean.NetBean
 import com.example.lib_net.bean.NetResult
 import com.example.lib_net.util.MmkvUtil
-import com.example.module_login.remote.LoginService
+import com.example.module_login.repository.LoginRepository
 import kotlinx.coroutines.flow.flow
-import org.koin.java.KoinJavaComponent.inject
 import retrofit2.Response
 
 /**
 Created by chene on @date 20-12-10 下午10:24
  **/
 class LoginViewModel(
-    private val api: LoginService
+   private val repository: LoginRepository
 ): ViewModel() {
 
     suspend fun login(username: String, password: String) = userOpera(
-        api.login(username, password)
+        repository.remoteLogin(username, password)
     )
 
     suspend fun register(username: String, password: String, repassword: String) = userOpera(
-        api.register(username, password, repassword)
+        repository.remoteRegister(username, password, repassword)
     )
 
     private fun <T> cacheCookie(response: Response<T>){

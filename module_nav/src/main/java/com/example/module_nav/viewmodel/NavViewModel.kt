@@ -9,56 +9,16 @@ import com.example.module_nav.repository.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.inject
 
 class NavViewModel(
-    private val tab: Int,
-    private val navDao: NavDao,
-    private val treeDao: TreeDao,
-    private val projectDao: ProjectDao,
-    private val publicDao: PublicDao,
-    private val navApi: NavService,
-    private val treeApi: TreeService,
-    private val projectApi: ProjectService,
-    private val publicApi: PublicService
+    private val tab: Int
 ) : ViewModel() {
 
-    fun refresh() = CoroutineScope(Dispatchers.IO).launch {
-        when (tab) {
-            TAB_NAV -> {
-                navApi.getData().data?.forEach {
-                    navDao.insert(it)
-                }
-            }
-            TAB_TREE -> {
-                treeApi.getData().data?.forEach {
-                    treeDao.insert(it)
-                }
-            }
-            TAB_PROJECT -> {
-                projectApi.getData().data?.forEach {
-                    projectDao.insert(it)
-                }
-            }
-            TAB_PUBLIC -> {
-                publicApi.getData().data?.forEach {
-                    publicDao.insert(it)
-                }
-            }
-        }
-    }
+    private val repository by inject(NavRepository::class.java){ parametersOf(tab) }
 
-    fun load() = when (tab) {
-        TAB_NAV -> navDao.get()
-        TAB_TREE -> treeDao.get()
-        TAB_PROJECT -> projectDao.get()
-        TAB_PUBLIC -> publicDao.get()
-        else -> null
-    }
+    fun refresh() = repository.refresh()
 
-    companion object {
-        const val TAB_NAV = 0
-        const val TAB_TREE = 1
-        const val TAB_PROJECT = 2
-        const val TAB_PUBLIC = 3
-    }
+    fun load() = repository.load()
 }

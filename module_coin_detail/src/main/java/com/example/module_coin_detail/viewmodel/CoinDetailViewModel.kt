@@ -3,10 +3,10 @@ package com.example.module_coin_detail.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.lib_base.viewmodel.BaseViewModel
 import com.example.lib_net.bean.NetResult
 import com.example.lib_net.result
 import com.example.module_coin_detail.bean.CoinDetail
-import com.example.module_coin_detail.remote.CoinDetailService
 import com.example.module_coin_detail.respository.PageCoinDetailRepository
 import com.example.module_coin_detail.shouldUpdate
 import kotlinx.coroutines.CoroutineScope
@@ -15,8 +15,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class CoinDetailViewModel(
-    private val repository: PageCoinDetailRepository,
-    private val api: CoinDetailService
+    private val repository: PageCoinDetailRepository
 ) : BaseViewModel() {
 
     val coins: LiveData<List<CoinDetail>>
@@ -58,7 +57,7 @@ class CoinDetailViewModel(
             if (!over) {
                 var localPage = repository.getLocalPageCoin(page)
                 if (localPage == null || localPage.lastTime.shouldUpdate()) {
-                    api.getPageCoinDetail(page).let {
+                    repository.getRemotePageCoinDetail(page).let {
                         if (it.data != null) {
                             it.data?.let { netPage ->
                                 localPage = netPage

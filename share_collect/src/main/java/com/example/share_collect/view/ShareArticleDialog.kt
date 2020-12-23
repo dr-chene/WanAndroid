@@ -21,7 +21,7 @@ class ShareArticleDialog(
 
     override fun share(title: String, link: String, author: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            repository.shareArticle(title, link).result(null, null) {
+            repository.shareArticle(title, link).result(null) {
                 dismiss()
                 "文章分享成功".showToast()
             }

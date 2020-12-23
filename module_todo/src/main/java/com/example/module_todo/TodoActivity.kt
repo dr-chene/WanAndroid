@@ -1,11 +1,14 @@
 package com.example.module_todo
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.lib_base.showToast
@@ -23,6 +26,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent
 
 @Route(path = "/todo/activity")
 class TodoActivity : BaseActivity() {
@@ -136,11 +140,21 @@ class TodoActivity : BaseActivity() {
     }
 
     private fun delete(id: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            todoViewModel.delete(id).result(null) {
-                refresh()
-                "待办事项删除成功".showToast()
+        AlertDialog.Builder(this).apply {
+            setMessage("确认删除该待办事项?")
+            setPositiveButton("删除") { _, _ ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    todoViewModel.delete(id).result(null) {
+                        refresh()
+                        "待办事项删除成功".showToast()
+                    }
+                }
             }
+            setNegativeButton("取消操作") { _, _ ->
+                "操作取消".showToast()
+            }
+        }.show().apply {
+            getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
         }
     }
 

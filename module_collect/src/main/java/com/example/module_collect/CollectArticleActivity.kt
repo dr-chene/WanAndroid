@@ -8,7 +8,7 @@ import com.example.lib_net.request
 import com.example.lib_net.result
 import com.example.module_collect.adapter.CollectArticleAdapter
 import com.example.module_collect.viewmodel.CollectArticlePageViewModel
-import com.example.share_collect.viewmodel.ArticleUnCollectViewModel
+import com.example.share_collect.viewmodel.UnCollectArticleViewModel
 import com.example.share_collect.view.CollectArticleDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,7 @@ class CollectArticleActivity(
 ): CollectActivity(viewModel) {
 
 
-    private val unCollectRepository by inject<ArticleUnCollectViewModel>()
+    private val unCollectRepository by inject<UnCollectArticleViewModel>()
     private val unCollect: (Int, Int) -> Unit = { id, originId ->
         CoroutineScope(Dispatchers.IO).launch {
             unCollectRepository.unCollect(id, originId).request().result(null) {

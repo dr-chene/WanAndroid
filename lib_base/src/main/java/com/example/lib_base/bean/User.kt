@@ -33,8 +33,7 @@ class User(
         parcel.readString(),
         parcel.readInt(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeByte(if (admin) 1 else 0)

@@ -12,11 +12,10 @@ import com.example.lib_base.view.BaseFragment
 import com.example.module_nav.bean.AdaptTag
 import com.example.module_nav.databinding.NavFragmentBinding
 import com.example.module_nav.fragment.NavTabFragment
-import com.example.module_nav.viewmodel.NavViewModel
-import com.example.module_nav.viewmodel.NavViewModel.Companion.TAB_NAV
-import com.example.module_nav.viewmodel.NavViewModel.Companion.TAB_PROJECT
-import com.example.module_nav.viewmodel.NavViewModel.Companion.TAB_PUBLIC
-import com.example.module_nav.viewmodel.NavViewModel.Companion.TAB_TREE
+import com.example.module_nav.repository.NavRepository.Companion.TAB_NAV
+import com.example.module_nav.repository.NavRepository.Companion.TAB_PROJECT
+import com.example.module_nav.repository.NavRepository.Companion.TAB_PUBLIC
+import com.example.module_nav.repository.NavRepository.Companion.TAB_TREE
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
@@ -78,7 +77,7 @@ class NavFragment : BaseFragment() {
                 return when (position) {
                     0 -> NavTabFragment(
                         navClick,
-                       get{ parametersOf(TAB_NAV) }
+                        get { parametersOf(TAB_NAV) }
                     )
                     1 -> NavTabFragment(
                         treeClick,

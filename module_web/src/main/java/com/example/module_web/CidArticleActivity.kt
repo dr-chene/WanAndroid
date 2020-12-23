@@ -21,6 +21,7 @@ import com.example.module_web.databinding.ActivityCidArticleBinding
 import com.example.module_web.remote.ArticleCidService
 import com.example.module_web.remote.ProjectCidService
 import com.example.module_web.remote.PublicCidService
+import com.example.module_web.repository.CidArticleRepository
 import com.example.module_web.viewmodel.CidArticleViewModel
 import com.example.module_web.viewmodel.SearchCidArticleViewModel
 import com.example.module_web.viewmodel.UserShareArticleViewModel
@@ -54,7 +55,7 @@ class CidArticleActivity : AppCompatActivity() {
         )
     }
     private val viewModel by inject<CidArticleViewModel> {
-        parametersOf(api())
+        parametersOf( get<CidArticleRepository>{ parametersOf(api()) } )
     }
     private val cidArticleViewModel by inject<SearchCidArticleViewModel>()
     private var searchQuery: String = ""

@@ -14,9 +14,9 @@ Created by chene on @date 20-12-11 下午10:49
  **/
 val coinDetailModule = module {
     single { (get() as Retrofit).create(CoinDetailService::class.java) }
-    single { PageCoinDetailRepository(get()) }
+    single { PageCoinDetailRepository(get(), get()) }
     single { CoinDetail.CoinDetailDiffCallBack() }
 
     single { CoinDetailRecyclerViewAdapter() }
-    viewModel { CoinDetailViewModel(get(), get()) }
+    viewModel { CoinDetailViewModel(get()) }
 }

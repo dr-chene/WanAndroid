@@ -6,7 +6,6 @@ import com.example.lib_base.viewmodel.BaseViewModel
 import com.example.lib_net.bean.NetResult
 import com.example.lib_net.result
 import com.example.module_coin_rank.bean.CoinRank
-import com.example.module_coin_rank.remote.PageCoinRankService
 import com.example.module_coin_rank.repository.PageCoinRankRepository
 import com.example.module_coin_rank.shouldUpdate
 import kotlinx.coroutines.CoroutineScope
@@ -15,8 +14,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class CoinRankViewModel(
-    private val repository: PageCoinRankRepository,
-    private val api: PageCoinRankService
+    private val repository: PageCoinRankRepository
 ) : BaseViewModel() {
 
     val coins: LiveData<List<CoinRank>>
@@ -57,7 +55,7 @@ class CoinRankViewModel(
             if (!over) {
                 var localPage = repository.getLocalPageCoinRank(page)
                 if (localPage == null || localPage.lastTime.shouldUpdate()) {
-                    api.getPageCoinRank(page).let {
+                    repository.getRemotePageCoinRank(page).let {
                         if (it.data == null) {
                             emit(NetResult.Failure(it.errorMsg))
                         } else {

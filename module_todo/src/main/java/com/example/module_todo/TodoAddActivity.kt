@@ -97,8 +97,8 @@ class TodoAddActivity : AppCompatActivity() {
         val date = binding.todoAddDate.editText?.text.toString()
         val t = binding.todoAddType.editText?.text.toString()
         val p = binding.todoAddPriority.editText?.text.toString()
-        if (title.isEmpty() || content.isEmpty()) {
-            "请输入title或content".showToast()
+        if (title.isEmpty() || content.isEmpty() || date.isEmpty()) {
+            "请输入title、content或date".showToast()
         } else {
             action.invoke(title, content, date, type(t), priority(p))
         }

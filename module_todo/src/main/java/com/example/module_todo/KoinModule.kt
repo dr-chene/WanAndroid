@@ -5,6 +5,7 @@ import com.example.module_todo.adapter.TodoRecyclerViewAdapter
 import com.example.module_todo.bean.Todo
 import com.example.module_todo.fragment.SortDialogFragment
 import com.example.module_todo.remote.TodoService
+import com.example.module_todo.repository.TodoRepository
 import com.example.module_todo.viewmodel.TodoViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -18,5 +19,6 @@ val todoModule = module {
     single { get<Retrofit>().create(TodoService::class.java) }
     single { TodoViewModel(get()) }
     single { Todo.TodoDiffCallBack() }
+    single { TodoRepository(get()) }
     single { (option: (Todo, View) -> Unit) -> TodoRecyclerViewAdapter(option) }
 }

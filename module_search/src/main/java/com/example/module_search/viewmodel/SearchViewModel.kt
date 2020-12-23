@@ -8,6 +8,7 @@ import com.example.module_search.bean.SearchHistory
 import com.example.module_search.remote.AuthorSearchService
 import com.example.module_search.remote.KeySearchService
 import com.example.module_search.repository.SearchHistoryRepository
+import com.example.module_search.repository.SearchRepository
 import com.example.share_article.bean.Article
 import com.example.share_article.bean.HotKey
 import com.example.share_article.remote.QueryArticleService
@@ -23,8 +24,7 @@ Created by chene on @date 20-12-8 下午11:07
  **/
 class SearchViewModel(
     private val searchHistoryRepository: SearchHistoryRepository,
-    private val keySearchApi: KeySearchService,
-    private val authorSearchApi: AuthorSearchService
+    private val searchRepository: SearchRepository
 ) : ArticleViewModel() {
 
     val hotKeys: LiveData<List<HotKey>>
@@ -66,28 +66,18 @@ class SearchViewModel(
 
     private var curTag = SearchHistory.SEARCH_TAG_KEY
     fun changeSearchTag(tag: Int) {
-        api(tag)
+        searchRepository.api(tag)
         curTag = tag
     }
 
-    private var curSearch = ""
-    private var curApi: QueryArticleService = keySearchApi
-
     override suspend fun request(page: Int, query: String, cid: Int): NetBean<NetPage<Article>> {
-        return curApi.getArticles(page, query)
+        return searchRepository.curApi.getArticles(page, query)
     }
 
-    private fun api(tag: Int) {
-        curApi = when (tag) {
-            SearchHistory.SEARCH_TAG_AUTHOR -> authorSearchApi
-            else -> keySearchApi
-        }
-    }
+    fun load(curList: MutableList<Article>) = super.load(searchRepository.curSearch, 0, curList)
 
-     fun load(curList: MutableList<Article>) = super.load(curSearch, 0, curList)
-
-     fun refresh(query: String) = super.refresh(0, query.apply {
+    fun refresh(query: String) = super.refresh(0, query.apply {
         over = false
-        curSearch = query
+        searchRepository.curSearch = query
     }, 0)
 }

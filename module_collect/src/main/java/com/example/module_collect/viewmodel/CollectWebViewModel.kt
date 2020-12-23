@@ -6,13 +6,14 @@ import com.example.lib_base.viewmodel.BaseViewModel
 import com.example.lib_net.request
 import com.example.lib_net.result
 import com.example.module_collect.remote.CollectWebService
+import com.example.module_collect.repository.CollectWebRepository
 import com.example.share_collect.bean.CollectWeb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CollectWebViewModel(
-    private val api: CollectWebService
+   private val repository: CollectWebRepository
 ) : BaseViewModel() {
 
     val webs: LiveData<List<CollectWeb>>
@@ -21,7 +22,7 @@ class CollectWebViewModel(
 
     fun refresh() {
         CoroutineScope(Dispatchers.IO).launch {
-            api.getWebs().request().result(
+           repository.getRemoteWebs().result(
                 completion = { _refreshing.postValue(false) }
             ) {
                 _webs.postValue(it)

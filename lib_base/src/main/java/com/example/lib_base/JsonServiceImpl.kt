@@ -11,9 +11,9 @@ Created by chene on @date 20-12-6 上午11:09
  **/
 @Route(path = "/service/json")
 class JsonServiceImpl : SerializationService {
-    
+
     private val gson: Gson = Gson()
-    
+
     override fun init(context: Context?) {}
 
     override fun <T : Any?> json2Object(input: String?, clazz: Class<T>?): T {

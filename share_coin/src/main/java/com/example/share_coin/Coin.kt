@@ -19,8 +19,7 @@ data class Coin(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(coinCount)

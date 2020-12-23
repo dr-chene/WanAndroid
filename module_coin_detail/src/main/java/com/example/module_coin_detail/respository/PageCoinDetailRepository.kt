@@ -16,7 +16,8 @@ import org.koin.java.KoinJavaComponent.inject
 Created by chene on @date 20-12-11 下午11:20
  **/
 class PageCoinDetailRepository(
-    private val pageCoinDetailDao: PageCoinDetailDao
+    private val pageCoinDetailDao: PageCoinDetailDao,
+    private val api: CoinDetailService
 ) {
 
     fun getLocalPageCoin(page: Int) = pageCoinDetailDao.getPageCoinDetail(page)
@@ -24,4 +25,6 @@ class PageCoinDetailRepository(
     suspend fun insertPageCoinDetail(pageCoinDetail: PageCoinDetail) = withContext(Dispatchers.IO) {
             pageCoinDetailDao.insertPageCoinDetail(pageCoinDetail)
         }
+
+    suspend fun getRemotePageCoinDetail(page: Int) = api.getPageCoinDetail(page)
 }

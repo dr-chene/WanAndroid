@@ -43,12 +43,12 @@ class CollectWebDialog(
     override fun share(title: String, link: String, author: String) {
         CoroutineScope(Dispatchers.IO).launch {
             if (web == null) {
-                repository.collectWeb(title, link).result(null, null) {
+                repository.collectWeb(title, link).result(null) {
                     dismiss()
                     "网站收藏成功".showToast()
                 }
             } else {
-                modifyApi.modify(web.id, title, link).request().result(null, null) {
+                modifyApi.modify(web.id, title, link).request().result(null) {
                     dismiss()
                     "网站修改成功".showToast()
                 }
@@ -57,7 +57,7 @@ class CollectWebDialog(
     }
 
     private fun delete(id: Int) = CoroutineScope(Dispatchers.IO).launch{
-        modifyApi.delete(id).request().result(null, null) {
+        modifyApi.delete(id).request().result(null) {
             dismiss()
             "网站删除成功".showToast()
         }

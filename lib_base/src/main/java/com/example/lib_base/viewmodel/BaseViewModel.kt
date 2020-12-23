@@ -11,5 +11,5 @@ open class BaseViewModel : ViewModel() {
 
     val loading: LiveData<Boolean>
         get() = _loading
-    protected val  _loading = MutableLiveData<Boolean>()
+    protected val _loading = MutableLiveData<Boolean>()
 }

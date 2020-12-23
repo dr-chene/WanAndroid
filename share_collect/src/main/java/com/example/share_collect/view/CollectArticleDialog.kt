@@ -28,7 +28,7 @@ class CollectArticleDialog(
 
     override fun share(title: String, link: String, author: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            repository.collectArticle(title, author, link).result(null, null) {
+            repository.collectArticle(title, author, link).result(null) {
                 dismiss()
                 "文章收藏成功".showToast()
             }
