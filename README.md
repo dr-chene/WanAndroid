@@ -4,4 +4,4 @@
 
 本app采用kotlin+mvvm编写，使用了模块化编程、retrofit+flow、jetpack、material design组件等技术
 
-参考：[WanAndroidJetpack](https://github.com/jhbxyz/WanAndroidJetpack) [PokemonGo](https://github.com/hi-dhl/PokemonGo)
+参考感谢：[WanAndroidJetpack](https://github.com/jhbxyz/WanAndroidJetpack) [PokemonGo](https://github.com/hi-dhl/PokemonGo)
