@@ -22,7 +22,6 @@ class ArticleViewModel(
         get() = _articles
     private val _articles = MutableLiveData<List<Article>>()
 
-
     @ExperimentalCoroutinesApi
     suspend fun refreshArticle(start: () -> Unit, end: () -> Unit, error: (msg: String?) -> Unit) =
         articleRepository.refreshArticles()

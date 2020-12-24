@@ -4,7 +4,8 @@
 
     <application>
         <activity android:name=".SearchActivity"
-            android:theme="@style/Theme.WanAndroid"/>
+            android:theme="@style/Theme.WanAndroid"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

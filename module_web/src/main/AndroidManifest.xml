@@ -3,8 +3,10 @@
     package="com.example.module_web">
 
     <application>
-        <activity android:name=".WebActivity"></activity>
-        <activity android:name=".CidArticleActivity"/>
+        <activity android:name=".WebActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".CidArticleActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

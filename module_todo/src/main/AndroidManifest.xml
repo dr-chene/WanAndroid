@@ -3,8 +3,10 @@
     package="com.example.module_todo">
 
     <application>
-        <activity android:name=".TodoAddActivity"></activity>
-        <activity android:name=".TodoActivity" />
+        <activity android:name=".TodoAddActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".TodoActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

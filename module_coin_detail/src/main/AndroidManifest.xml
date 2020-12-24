@@ -3,7 +3,8 @@
     package="com.example.module_coin_detail">
 
     <application>
-        <activity android:name=".CoinDetailActivity"></activity>
+        <activity android:name=".CoinDetailActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

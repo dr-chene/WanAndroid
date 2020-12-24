@@ -3,8 +3,10 @@
     package="com.example.module_collect">
 
     <application>
-        <activity android:name=".CollectArticleActivity"/>
-        <activity android:name=".CollectWebActivity"/>
+        <activity android:name=".CollectArticleActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".CollectWebActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

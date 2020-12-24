@@ -3,7 +3,8 @@
     package="com.example.module_setting">
 
     <application>
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".SettingActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

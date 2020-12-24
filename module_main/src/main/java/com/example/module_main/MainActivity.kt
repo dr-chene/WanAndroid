@@ -3,7 +3,7 @@ package com.example.module_main
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.lib_base.view.BaseActivity
@@ -27,7 +27,22 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initView() {
-        nav("/home/fragment", R.id.item_home)
+        mainBinding.mainFragmentViewPager.apply {
+            isUserInputEnabled = false
+            adapter = object : FragmentStateAdapter(this@MainActivity) {
+                override fun getItemCount(): Int = 4
+
+                override fun createFragment(position: Int): Fragment {
+                    return when (position) {
+                        0 -> fragment("/home/fragment")
+                        1 -> fragment("/nav/fragment")
+                        2 -> fragment("/square/fragment")
+                        else -> fragment("/mine/fragment")
+                    }
+                }
+            }
+            setCurrentItem(0, false)
+        }
     }
 
     override fun onResume() {
@@ -38,23 +53,31 @@ class MainActivity : BaseActivity() {
     private fun initAction() {
         mainBinding.mainNavBottom.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.item_home -> nav("/home/fragment", R.id.item_home)
-                R.id.item_nav -> nav("/nav/fragment", R.id.item_nav)
+                R.id.item_home -> nav(0)
+                R.id.item_nav -> nav(1)
                 R.id.item_todo -> loginCheck {
                     ARouter.getInstance().build("/todo/activity").navigation()
+
                 }
-                R.id.item_square -> nav("/square/fragment", R.id.item_square)
-                R.id.item_mine -> nav("/mine/fragment", R.id.item_mine)
+                R.id.item_square -> nav(2)
+                R.id.item_mine -> nav(3)
             }
             true
         }
     }
 
-    private fun nav(path: String, selectId: Int){
-        supportFragmentManager.commit {
-            replace(R.id.main_fragment_container,
-                ARouter.getInstance().build(path).navigation() as Fragment)
-        }
-        before = selectId
+    private fun fragment(path: String) = ARouter.getInstance().build(path).navigation() as Fragment
+
+    private fun nav(position: Int) {
+        before = toBottomNavId(position)
+        mainBinding.mainFragmentViewPager.setCurrentItem(position, false)
+    }
+
+    private fun toBottomNavId(position: Int) = when (position) {
+        0 -> R.id.item_home
+        1 -> R.id.item_nav
+        2 -> R.id.item_square
+        3 -> R.id.item_mine
+        else -> R.id.item_home
     }
 }
