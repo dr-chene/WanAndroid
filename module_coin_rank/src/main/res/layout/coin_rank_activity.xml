@@ -36,5 +36,10 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/coin_my_rank"
             app:layout_constraintTop_toBottomOf="@id/coin_rank_head" />
+
+        <include
+            android:id="@+id/coin_rank_no_data"
+            layout="@layout/view_item_no_data"
+            android:visibility="invisible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

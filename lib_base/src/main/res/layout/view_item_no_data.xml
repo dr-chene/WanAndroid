@@ -8,7 +8,7 @@
 
         <ImageView
             android:id="@+id/iv_no_data"
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="80dp"
             android:src="@drawable/ic_article_grey"
             app:layout_constraintTop_toTopOf="parent"
@@ -18,13 +18,11 @@
             app:layout_constraintVertical_bias="0.38"/>
 
         <TextView
-            android:id="@+id/tv_no_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_data"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/iv_no_data"
             app:layout_constraintStart_toStartOf="@id/iv_no_data"
             app:layout_constraintEnd_toEndOf="@id/iv_no_data"/>

@@ -17,7 +17,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 @Route(path = "/coin/rank/activity")
 class CoinRankActivity : BaseActivity() {
 
-    private lateinit var coinRankBinding: CoinRankActivityBinding
+    private lateinit var binding: CoinRankActivityBinding
     private val coinRankViewModel by viewModel<CoinRankViewModel>()
     private val adapter by inject<CoinRankRecyclerViewAdapter>()
     private val myCoin by lazy {
@@ -28,7 +28,7 @@ class CoinRankActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         makeStatusBarTransparent()
         makeStatusBarIconDark()
-        coinRankBinding = DataBindingUtil.setContentView(this, R.layout.coin_rank_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.coin_rank_activity)
 
         initView()
         initAction()
@@ -36,21 +36,21 @@ class CoinRankActivity : BaseActivity() {
     }
 
     private fun initView() {
-        coinRankBinding.coinRankContent.coinSwipe.isRefreshing = true
-        coinRankBinding.coinRankContent.coinRv.adapter = adapter
-        coinRankBinding.coinMyRank.coin = myCoin
+        binding.coinRankContent.coinSwipe.isRefreshing = true
+        binding.coinRankContent.coinRv.adapter = adapter
+        binding.coinMyRank.coin = myCoin
         refresh()
     }
 
     private fun initAction() {
-        coinRankBinding.coinRankContent.coinSwipe.setOnRefreshListener {
+        binding.coinRankContent.coinSwipe.setOnRefreshListener {
             refresh()
         }
-        coinRankBinding.coinRankHead.coinIvBack.setOnClickListener {
+        binding.coinRankHead.coinIvBack.setOnClickListener {
             onBackPressed()
         }
-        coinRankBinding.coinRankContent.coinRv.loadAction {
-            coinRankBinding.coinRankLoad.root.visibility = View.VISIBLE
+        binding.coinRankContent.coinRv.loadAction {
+            binding.coinRankLoad.root.visibility = View.VISIBLE
             load()
         }
     }
@@ -58,12 +58,13 @@ class CoinRankActivity : BaseActivity() {
     private fun subscribe() {
         coinRankViewModel.coins.observe(this) {
             adapter.submitList(it)
+            binding.coinRankNoData.root.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
         }
         coinRankViewModel.refreshing.observe(this) {
-            coinRankBinding.coinRankContent.coinSwipe.isRefreshing = it
+            binding.coinRankContent.coinSwipe.isRefreshing = it
         }
         coinRankViewModel.loading.observe(this) {
-            coinRankBinding.coinRankLoad.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            binding.coinRankLoad.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 

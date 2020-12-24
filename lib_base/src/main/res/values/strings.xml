@@ -2,5 +2,6 @@
 <resources>
     <string name="app_name">WanAndroid</string>
     <string name="view_item_load_text">正在加载，请稍候…</string>
+    <string name="no_data">暂无数据</string>
     <string name="fab_up_desc">tap to up</string>
 </resources>

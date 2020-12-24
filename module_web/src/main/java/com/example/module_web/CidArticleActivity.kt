@@ -82,6 +82,7 @@ class CidArticleActivity : AppCompatActivity() {
     private fun subscribe() {
         viewModel().articles.observe(this){
             adapter.submitList(it)
+            binding.webCidArticleNoData.root.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
             if (cate == "share" || cate == "myShare") {
                 binding.articleShareUserCoin.coin = userShareArticleViewModel.userCoin?.data
                 binding.executePendingBindings()

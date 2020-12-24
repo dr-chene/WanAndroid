@@ -1,6 +1,7 @@
 package com.example.module_collect
 
 import android.view.Menu
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -65,6 +66,7 @@ class CollectWebActivity(
     override fun submitList() {
         viewModel.webs.observe(this){
             adapter.submitList(it)
+            binding.collectNoData.root.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
         }
     }
 

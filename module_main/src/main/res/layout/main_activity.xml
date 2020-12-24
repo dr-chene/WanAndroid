@@ -23,6 +23,6 @@
             app:itemIconSize="20dp"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/nav_bottom" />
+            app:menu="@menu/nav_bottom_menu" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

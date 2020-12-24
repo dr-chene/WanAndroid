@@ -47,5 +47,10 @@
             android:layout_margin="16dp"
             android:src="@drawable/ic_add_white"
             app:fabSize="mini" />
+
+        <include
+            android:id="@+id/todo_no_data"
+            layout="@layout/view_item_no_data"
+            android:visibility="invisible"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

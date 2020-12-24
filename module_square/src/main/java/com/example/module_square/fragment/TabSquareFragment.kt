@@ -59,6 +59,7 @@ class TabSquareFragment(
     private fun subscribe() {
         viewModel.articles.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            tabSquareBinding.squareNoData.root.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
         }
         viewModel.refreshing.observe(viewLifecycleOwner) {
             tabSquareBinding.squareSrl.isRefreshing = it

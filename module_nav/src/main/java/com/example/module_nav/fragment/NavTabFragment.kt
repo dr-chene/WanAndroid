@@ -60,6 +60,7 @@ class NavTabFragment(
     private fun load() = CoroutineScope(Dispatchers.Main).launch {
         viewModel.load()?.collectLatest {
             navAdapter.submitList(it.adapt())
+            fragmentNavBinding.navNoData.root.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
         }
     }
 

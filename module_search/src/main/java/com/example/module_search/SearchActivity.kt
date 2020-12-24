@@ -89,6 +89,9 @@ class SearchActivity : BaseActivity() {
         searchViewModel.loading.observe(this) {
             searchBinding.searchSearching.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
+        searchViewModel.refreshing.observe(this) {
+            searchBinding.searchSearching.root.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
     }
 
     private fun navToSearched() {

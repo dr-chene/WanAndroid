@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/searched_no_data"
-            layout="@layout/include_no_data"
-            android:visibility="gone"/>
+            layout="@layout/view_item_no_data"
+            android:visibility="invisible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

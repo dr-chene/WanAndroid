@@ -4,6 +4,8 @@ import com.example.module_coin_rank.adapter.CoinRankRecyclerViewAdapter
 import com.example.module_coin_rank.bean.CoinRank
 import com.example.module_coin_rank.remote.PageCoinRankService
 import com.example.module_coin_rank.repository.PageCoinRankRepository
+import com.example.module_coin_rank.viewmodel.CoinRankViewModel
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -15,4 +17,5 @@ val coinRankModule = module {
     single { CoinRank.CoinRankDiffCallBack() }
     single { CoinRankRecyclerViewAdapter() }
     single { (get() as Retrofit).create(PageCoinRankService::class.java) }
+    viewModel { CoinRankViewModel(get()) }
 }

@@ -24,5 +24,10 @@
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/nav_no_data"
+            layout="@layout/view_item_no_data"
+            android:visibility="invisible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

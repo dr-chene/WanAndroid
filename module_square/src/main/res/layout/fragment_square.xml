@@ -29,5 +29,10 @@
         <include
             android:id="@+id/square_fab_up"
             layout="@layout/view_item_up"/>
+
+        <include
+            android:id="@+id/square_no_data"
+            layout="@layout/view_item_no_data"
+            android:visibility="invisible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

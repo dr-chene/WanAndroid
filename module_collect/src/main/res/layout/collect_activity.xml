@@ -45,5 +45,10 @@
         <include
             android:id="@+id/collect_fab_up"
             layout="@layout/view_item_up"/>
+
+        <include
+            android:id="@+id/collect_no_data"
+            layout="@layout/view_item_no_data"
+            android:visibility="invisible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,7 +3,6 @@
     package="com.example.module_collect">
 
     <application>
-        <activity android:name=".CollectActivity"></activity>
         <activity android:name=".CollectArticleActivity"/>
         <activity android:name=".CollectWebActivity"/>
     </application>

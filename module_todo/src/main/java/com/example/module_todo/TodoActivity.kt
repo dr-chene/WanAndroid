@@ -98,6 +98,7 @@ class TodoActivity : BaseActivity() {
     private fun subscribe() {
         todoViewModel.todos.observe(this) {
             adapter.submitList(it)
+            binding.todoNoData.root.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
         }
         todoViewModel.refreshing.observe(this){
             binding.todoSrl.isRefreshing = it

@@ -57,5 +57,10 @@
             android:id="@+id/coin_detail_load"
             layout="@layout/view_item_load"
             android:visibility="invisible" />
+
+        <include
+            android:id="@+id/coin_detail_no_data"
+            layout="@layout/view_item_no_data"
+            android:visibility="invisible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,6 +1,7 @@
 package com.example.module_collect
 
 import android.view.Menu
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.lib_base.showToast
@@ -64,6 +65,7 @@ class CollectArticleActivity(
     override fun submitList() {
         viewModel.articles.observe(this){
             adapter.submitList(it)
+            binding.collectNoData.root.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
         }
     }
 
